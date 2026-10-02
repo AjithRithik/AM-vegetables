@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AM Vegetables — Catalog review</title>
+<style>
+  *{box-sizing:border-box}body{margin:0;background:#f4f7f1;color:#173b28;font:15px system-ui,sans-serif}header{padding:28px 5vw;background:white;border-bottom:1px solid #dbe6db}h1{margin:0 0 8px;font-size:28px}p{margin:8px 0;color:#526b59}main{padding:24px 5vw}input,select{padding:12px;border:1px solid #c4d5c8;border-radius:8px;background:white;font:inherit}input{width:min(420px,100%)}.filters{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:18px}article{background:white;border:1px solid #dbe6db;border-radius:14px;overflow:hidden}img{width:100%;aspect-ratio:1;object-fit:contain;background:#f4edde}article div{padding:14px}h2{font-size:16px;margin:0 0 6px}.ta{color:#45644e;line-height:1.5}.meta{font-size:12px;color:#697c6d;margin-top:10px}.missing{width:100%;aspect-ratio:1;display:grid;place-items:center;background:#e7eee4;color:#566959}#status{padding:10px 0 20px}footer{padding:20px 5vw;color:#697c6d}
+</style>
+<header><h1>AM Vegetables</h1><p>Product names, varieties, and branded images — catalog review</p></header>
+<main><div class="filters"><input id="search" placeholder="Search English, Tamil, or transliteration" aria-label="Search products"><select id="category" aria-label="Category"><option value="">All categories</option></select></div><p id="status">Loading catalog…</p><div id="grid" class="grid"></div></main>
+<footer>New stock settings must be confirmed in the CMS. Prices and availability are confirmed by the shop.</footer>
+<script>
+  let products=[];
+  const search=document.querySelector('#search'),category=document.querySelector('#category'),grid=document.querySelector('#grid'),status=document.querySelector('#status');
+  function render(){
+    const query=search.value.trim().toLocaleLowerCase();
+    const filtered=products.filter(p=>(!category.value||p.category_en===category.value)&&[p.name_en,p.name_ta,p.name_alt,...(p.keywords||[])].some(v=>v.toLocaleLowerCase().includes(query)));
+    grid.replaceChildren();
+    for(const p of filtered){
+      const card=document.createElement('article');
+      if(p.image){const img=document.createElement('img');img.src='..'+p.image;img.alt=p.name_en;img.loading='lazy';card.append(img);}
+      else {const missing=document.createElement('section');missing.className='missing';missing.textContent='Image pending';card.append(missing);}
+      const info=document.createElement('div'),name=document.createElement('h2'),tamil=document.createElement('p'),meta=document.createElement('p');
+      name.textContent=p.name_en;tamil.textContent=p.name_ta;tamil.className='ta';meta.textContent=p.category_en+' · '+p.sold_by+' · '+(p.in_stock?'In stock':'Stock unconfirmed / unavailable');meta.className='meta';
+      info.append(name,tamil,meta);card.append(info);grid.append(card);
+    }
+    status.textContent=`${filtered.length} of ${products.length} products · ${products.filter(p=>p.image).length} images linked`;
+  }
+  fetch('../content/products.json').then(r=>{if(!r.ok)throw Error('HTTP '+r.status);return r.json();}).then(data=>{
+    products=data.products;for(const value of new Set(products.map(p=>p.category_en))){const option=document.createElement('option');option.value=value;option.textContent=value;category.append(option);}render();
+  }).catch(error=>{status.textContent='Serve the project with npm run dev to review the catalog. '+error.message;});
+  search.addEventListener('input',render);category.addEventListener('change',render);
+</script>
+</html>

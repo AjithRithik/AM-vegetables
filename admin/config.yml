@@ -1,0 +1,182 @@
+# Decap CMS config for AM Vegetables (ஏ எம் காய்கறி அங்காடி)
+#
+# Data model (mirrors the Flutter app screens):
+#   (categories come from each product: category_en / category_ta)
+#   catalog/products    -> Fresh Picks, Daily Vegetable List, Product Detail
+#   settings/shop       -> header, open hours, WhatsApp number, banners, pincodes
+#
+# The Flutter app reads two static JSON files (no build step needed):
+#   /content/products.json   /content/shop.json
+
+backend:
+  name: github
+  repo: YOUR_GITHUB_USER/am-vegetables-cms   # TODO: change to your repo
+  branch: main
+  # If hosting on Netlify, you can instead use:
+  #   name: git-gateway
+  # For GitHub without Netlify you need an OAuth proxy; uncomment & set:
+  # base_url: https://YOUR-OAUTH-PROXY.example.com
+
+# Local editing: run `npx decap-server` + `npx serve .`, open /admin/
+local_backend: true
+
+publish_mode: editorial_workflow   # remove this line to publish directly to main
+media_folder: images/uploads
+public_folder: /images/uploads
+locale: en
+site_url: https://YOUR-SITE.example.com
+display_url: https://YOUR-SITE.example.com
+
+collections:
+  # ------------------------------------------------------------------
+  # CATALOG (products; categories are derived from them)
+  # ------------------------------------------------------------------
+  - name: catalog
+    label: "Catalogue / பட்டியல்"
+    label_singular: "Catalogue"
+    description: "Products shown in the app"
+    files:
+      # ---------------------------- PRODUCTS ------------------------
+      - name: products
+        label: "Products / பொருட்கள்"
+        file: content/products.json
+        fields:
+          - label: Products
+            name: products
+            widget: list
+            label_singular: Product
+            summary: "{{fields.name_en}} / {{fields.name_ta}} ({{fields.category_en}})"
+            fields:
+              - { label: "ID (lowercase, no spaces, never change later)", name: id, widget: string, pattern: ["^[a-z0-9-]+$", "Use lowercase letters, numbers and dashes only"], hint: "e.g. country-tomato" }
+              - { label: "Name (English)", name: name_en, widget: string }
+              - { label: "Name (Tamil)", name: name_ta, widget: string }
+              - { label: "Transliterated name", name: name_alt, widget: string, required: false, hint: "e.g. Nattu Thakkali" }
+              - { label: "Category (English)", name: category_en, widget: string, hint: "Filter chip in the app. Products with identical text are grouped, e.g. Vegetables, Leafy Greens" }
+              - { label: "Category (Tamil)", name: category_ta, widget: string, required: false, hint: "e.g. காய்கறிகள்" }
+              - { label: "Image", name: image, widget: image, required: false }
+              - { label: "Gallery images", name: gallery, widget: list, required: false, field: { label: Image, name: image, widget: image } }
+              - { label: "Origin / Farm", name: origin, widget: string, required: false, hint: "e.g. Dharmapuri Farm, Nashik Quality, Ooty Hill Station" }
+              - { label: "Short tagline", name: tagline, widget: string, required: false, hint: "e.g. Firm & Juicy" }
+              - { label: "Card badge", name: badge, widget: string, required: false, hint: "e.g. Fresh Harvest, Big Size, 100% Organic" }
+              - { label: "Description (English)", name: description_en, widget: text, required: false }
+              - { label: "Description (Tamil)", name: description_ta, widget: text, required: false }
+              - label: "Highlights"
+                name: highlights
+                widget: list
+                required: false
+                hint: "Chips on the detail page, e.g. High Lycopene, Chemical Ripening Free"
+                field: { label: Highlight, name: highlight, widget: string }
+              - label: "Trust points"
+                name: trust_points
+                widget: list
+                required: false
+                hint: "Three small icons below the image, e.g. Dharmapuri / Pure Country / Clean Washed"
+                max: 3
+                fields:
+                  - { label: "Title (English)", name: title_en, widget: string }
+                  - { label: "Title (Tamil)", name: title_ta, widget: string, required: false }
+                  - { label: Icon, name: icon, widget: select, default: farm, options: [farm, verified, wash, organic, fresh, delivery] }
+              - { label: "Harvest note", name: harvest_note, widget: string, required: false, hint: "e.g. 5:30 AM இன்று பறித்தது" }
+              - { label: "Sold by", name: sold_by, widget: select, default: weight, options: [{ label: "Weight (kg / g)", value: weight }, { label: "Bunch", value: bunch }, { label: "Piece", value: piece }] }
+              - label: "Pack options"
+                name: packs
+                widget: list
+                label_singular: Pack
+                summary: "{{fields.label_en}}{{fields.popular | default}}"
+                min: 1
+                fields:
+                  - { label: "Label (English)", name: label_en, widget: string, hint: "e.g. 1 kg, 500 g, 2 Bunches" }
+                  - { label: "Label (Tamil)", name: label_ta, widget: string, required: false, hint: "e.g. 1 கிலோ" }
+                  - { label: "Sub-label", name: note, widget: string, required: false, hint: "e.g. Standard Daily Pack" }
+                  - { label: "Quantity value", name: quantity, widget: number, value_type: float, min: 0, hint: "Numeric amount, e.g. 0.5 for 500 g, 2 for 2 bunches" }
+                  - { label: "Unit", name: unit, widget: select, default: kg, options: [kg, g, bunch, piece] }
+                  - { label: "Default selection", name: is_default, widget: boolean, default: false }
+                  - { label: "Mark as Popular", name: popular, widget: boolean, default: false }
+              - { label: "Allow custom note (preference)", name: allow_note, widget: boolean, default: true }
+              - { label: "Preference suggestion", name: note_hint, widget: string, required: false, hint: "Placeholder/preset, e.g. Medium sized bulbs" }
+              - { label: "Featured in Fresh Picks Today", name: featured, widget: boolean, default: false }
+              - { label: "Frequently paired (Don't forget!)", name: paired_with, widget: list, required: false, hint: "IDs of related products", field: { label: "Product ID", name: id, widget: string } }
+              - { label: "In stock today", name: in_stock, widget: boolean, default: true }
+              - { label: "Sort order", name: sort, widget: number, value_type: int, default: 100, min: 0 }
+              - { label: "Search keywords", name: keywords, widget: list, required: false, hint: "Extra English/Tamil words for search", field: { label: Keyword, name: keyword, widget: string } }
+
+  # ------------------------------------------------------------------
+  # SHOP SETTINGS
+  # ------------------------------------------------------------------
+  - name: settings
+    label: "Shop Settings"
+    files:
+      - name: shop
+        label: "Shop / கடை விவரங்கள்"
+        file: content/shop.json
+        fields:
+          - { label: "Shop name (English)", name: name_en, widget: string, default: "AM Vegetables" }
+          - { label: "Shop name (Tamil)", name: name_ta, widget: string, default: "ஏ எம் காய்கறி அங்காடி" }
+          - { label: "Header badge", name: badge, widget: string, default: "FRESH" }
+          - { label: Logo, name: logo, widget: image, required: false }
+          - label: "Category icons"
+            name: category_icons
+            widget: list
+            required: false
+            summary: "{{fields.category}} — {{fields.icon}}"
+            hint: "Icons used in Shop by Category. Match the product's English category name."
+            fields:
+              - { label: "Category (English)", name: category, widget: string }
+              - label: Icon
+                name: icon
+                widget: select
+                options:
+                  - { label: "Vegetables — carrot", value: vegetables }
+                  - { label: "Leafy greens — leafy bunch", value: leafy-greens }
+                  - { label: "Roots & tubers — potatoes", value: roots-tubers }
+                  - { label: "Herbs — sprig", value: herbs }
+                  - { label: "Leaves — banana leaf", value: leaves }
+                  - { label: "Fresh essentials — garlic", value: fresh-essentials }
+                  - { label: "Fruits — apple", value: fruits }
+          - { label: "Splash tagline (English)", name: splash_tagline_en, widget: string, default: "Farm fresh, every morning" }
+          - { label: "Splash tagline (Tamil)", name: splash_tagline_ta, widget: string, default: "தினமும் புதிய காய்கறிகள்" }
+          - { label: "WhatsApp number (digits with country code, no +)", name: whatsapp, widget: string, pattern: ["^[0-9]{10,15}$", "Digits only, e.g. 919840123456"] }
+          - { label: "Call number", name: phone, widget: string }
+          - { label: "Open today label (English)", name: open_label_en, widget: string, default: "Open Today" }
+          - { label: "Open today label (Tamil)", name: open_label_ta, widget: string, default: "நேரடி அங்காடி" }
+          - { label: "Opening hours", name: hours, widget: string, default: "6:00 AM – 9:00 PM" }
+          - { label: "Shop open (master switch)", name: is_open, widget: boolean, default: true }
+          - { label: "Payment note", name: payment_note, widget: string, default: "No Online Payment • WhatsApp Confirm" }
+          - label: "Morning arrivals banner"
+            name: banner
+            widget: object
+            fields:
+              - { label: "Title (English)", name: title_en, widget: string, default: "Farm Fresh Morning Arrivals" }
+              - { label: "Title (Tamil)", name: title_ta, widget: string }
+              - { label: "Chip text", name: chip, widget: string, default: "Morning 6 AM" }
+              - { label: "Body", name: body, widget: text }
+          - label: "Zero advance payment message"
+            name: no_payment
+            widget: object
+            fields:
+              - { label: "Title (English)", name: title_en, widget: string, default: "No Advance Payment Required" }
+              - { label: "Title (Tamil)", name: title_ta, widget: string }
+              - { label: "Body (English)", name: body_en, widget: text }
+              - { label: "Body (Tamil)", name: body_ta, widget: text, required: false }
+          - label: "How it works steps"
+            name: how_it_works
+            widget: list
+            max: 3
+            fields:
+              - { label: "Title (English)", name: title_en, widget: string }
+              - { label: "Title (Tamil)", name: title_ta, widget: string, required: false }
+          - label: "Footer badges"
+            name: footer_badges
+            widget: list
+            hint: "e.g. Same-Day Slot, Pay On Delivery, 100% Quality Guarantee"
+            fields:
+              - { label: "Text (English)", name: text_en, widget: string }
+              - { label: "Text (Tamil)", name: text_ta, widget: string, required: false }
+          - label: "Delivery pincodes"
+            name: pincodes
+            widget: list
+            summary: "{{fields.pincode}} · {{fields.area}}"
+            fields:
+              - { label: Pincode, name: pincode, widget: string, pattern: ["^[0-9]{6}$", "6 digit pincode"] }
+              - { label: "Area / District", name: area, widget: string }
+              - { label: "Delivers here", name: active, widget: boolean, default: true }

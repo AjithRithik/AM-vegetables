@@ -1,0 +1,19 @@
+{
+  "products": 129,
+  "builtInGeneratedImages": 131,
+  "failedRequests": [],
+  "selectedCorrections": [
+    "drumstick-v2.jpg",
+    "snake-gourd-v2.jpg"
+  ],
+  "pilotReassignments": {
+    "purple-brinjal": "striped-brinjal",
+    "arai-keerai": "red-amaranth"
+  },
+  "verification": {
+    "catalog": "All products have locally saved images; IDs, Tamil encoding, categories, packs and paired-product references validated.",
+    "flutterAnalyze": "No issues found.",
+    "browser": "Automation unavailable: browser connection failed due to missing sandboxPolicy.",
+    "previewHttp": "200 OK from localhost:56433/docs/catalog-preview.html"
+  }
+}

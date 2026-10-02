@@ -1,0 +1,97 @@
+{
+  "name_en": "AM Vegetables",
+  "name_ta": "ஏ எம் காய்கறி அங்காடி",
+  "badge": "FRESH",
+  "logo": "/images/uploads/branding/am-vegetables-logo.png",
+  "splash_tagline_en": "Farm fresh, every morning",
+  "splash_tagline_ta": "தினமும் புதிய காய்கறிகள்",
+  "whatsapp": "919840123456",
+  "phone": "+91 98401 23456",
+  "open_label_en": "Open Today",
+  "open_label_ta": "நேரடி அங்காடி",
+  "hours": "6:00 AM – 9:00 PM",
+  "is_open": true,
+  "payment_note": "No Online Payment • WhatsApp Confirm",
+  "banner": {
+    "title_en": "Farm Fresh Morning Arrivals",
+    "title_ta": "நேரடி கிராமத்து விளைச்சல்",
+    "chip": "Morning 6 AM",
+    "body": "Select your desired quantity or weight — prices & availability are confirmed directly on WhatsApp before dispatch. Zero upfront payment!"
+  },
+  "no_payment": {
+    "title_en": "No Advance Payment Required",
+    "title_ta": "ஆன்லைன் பணம் இல்லை",
+    "body_en": "Daily vegetable rates and final availability are confirmed directly via WhatsApp after weight verification. Pay upon receipt.",
+    "body_ta": "காய்கறி சந்தை விலை தினமும் மாறுபடுவதால், சரியான எடையுடன் கூடிய இறுதி பட்டியல் உங்கள் வாட்ஸ்அப்பிற்கு அனுப்பப்படும்."
+  },
+  "how_it_works": [
+    {
+      "title_en": "Send your list",
+      "title_ta": "பட்டியல் தேர்வு அனுப்பவும்"
+    },
+    {
+      "title_en": "Get weight & price on WhatsApp",
+      "title_ta": "எடை & விலை வாட்ஸ்அப்பில்"
+    },
+    {
+      "title_en": "Receive & pay on delivery",
+      "title_ta": "பெற்று பணம் தரவும்"
+    }
+  ],
+  "footer_badges": [
+    {
+      "text_en": "Same-Day Slot",
+      "text_ta": "இன்றே டெலிவரி"
+    },
+    {
+      "text_en": "Pay On Delivery",
+      "text_ta": "பொருட்கள் வந்தபின் பணம்"
+    },
+    {
+      "text_en": "100% Quality Guarantee",
+      "text_ta": "100% மாற்று உத்திரவாதம்"
+    }
+  ],
+  "pincodes": [
+    {
+      "pincode": "626001",
+      "area": "Virudhunagar",
+      "active": true
+    },
+    {
+      "pincode": "625001",
+      "area": "Madurai",
+      "active": true
+    }
+  ],
+  "category_icons": [
+    {
+      "category": "Vegetables",
+      "icon": "vegetables"
+    },
+    {
+      "category": "Leafy Greens",
+      "icon": "leafy-greens"
+    },
+    {
+      "category": "Roots & Tubers",
+      "icon": "roots-tubers"
+    },
+    {
+      "category": "Herbs",
+      "icon": "herbs"
+    },
+    {
+      "category": "Leaves",
+      "icon": "leaves"
+    },
+    {
+      "category": "Fresh Essentials",
+      "icon": "fresh-essentials"
+    },
+    {
+      "category": "Fruits",
+      "icon": "fruits"
+    }
+  ]
+}

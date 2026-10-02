@@ -1,0 +1,35 @@
+{
+  "generator": "Built-in image_gen",
+  "transparent_background": true,
+  "styleReference": "app/assets/category-icons/vegetables.png",
+  "icons": [
+    {
+      "id": "vegetables",
+      "prompt": "Use case: illustration-story. Asset type: small produce category UI icon for a grocery app. Subject: one orange carrot with three green leafy tops, diagonally positioned. Create a polished flat illustrated icon with a clear bold silhouette, rounded dark-green outlines, simple solid natural colors, minimal interior detail and no gradients. Designed to remain immediately recognizable at only 32 pixels. Center the single subject group, fill approximately 85 percent of square canvas. Genuinely transparent background. No background circle, no shadow, no text, no logo, no photo texture, no extra objects."
+    },
+    {
+      "id": "leafy-greens",
+      "prompt": "Use case: illustration-story. Asset: small grocery category UI icon. Reference image is STYLE ONLY: match its dark-green rounded outlines, bold clean silhouette and illustrated natural colors. Replace the carrot with ONLY a small upright bunch of broad green spinach leaves with short pale green stems. Accurate recognizable anatomy, simple polished flat illustration with minimal interior detail, no realistic photo texture, no gradients, no 3D. Must remain legible at 32 pixels. Center the single subject group, fill 85 percent of square canvas with margin. Genuinely transparent background, no background circle, no shadow, no text, no logo, no extra objects, NO CARROT."
+    },
+    {
+      "id": "roots-tubers",
+      "prompt": "Use case: illustration-story. Asset: small grocery category UI icon. Reference image is STYLE ONLY: match its dark-green rounded outlines, bold clean silhouette and illustrated natural colors. Replace the carrot with ONLY two recognizable tan-brown potatoes, one larger and one smaller, with a few subtle potato eyes. Accurate recognizable anatomy, simple polished flat illustration with minimal interior detail, no realistic photo texture, no gradients, no 3D. Must remain legible at 32 pixels. Center the single subject group, fill 85 percent of square canvas with margin. Genuinely transparent background, no background circle, no shadow, no text, no logo, no extra objects, NO CARROT."
+    },
+    {
+      "id": "herbs",
+      "prompt": "Use case: illustration-story. Asset: small grocery category UI icon. Reference image is STYLE ONLY: match its dark-green rounded outlines, bold clean silhouette and illustrated natural colors. Replace the carrot with ONLY one upright green mint herb sprig with four small serrated leaves arranged in pairs on a slender visible stem. Accurate recognizable anatomy, simple polished flat illustration with minimal interior detail, no realistic photo texture, no gradients, no 3D. Must remain legible at 32 pixels. Center the single subject group, fill 85 percent of square canvas with margin. Genuinely transparent background, no background circle, no shadow, no text, no logo, no extra objects, NO CARROT."
+    },
+    {
+      "id": "leaves",
+      "prompt": "Use case: illustration-story. Asset: small grocery category UI icon. Reference image is STYLE ONLY: match its dark-green rounded outlines, bold clean silhouette and illustrated natural colors. Replace the carrot with ONLY one long broad green banana leaf with a strong central rib and neat parallel side veins, diagonally positioned. Accurate recognizable anatomy, simple polished flat illustration with minimal interior detail, no realistic photo texture, no gradients, no 3D. Must remain legible at 32 pixels. Center the single subject group, fill 85 percent of square canvas with margin. Genuinely transparent background, no background circle, no shadow, no text, no logo, no extra objects, NO CARROT."
+    },
+    {
+      "id": "fresh-essentials",
+      "prompt": "Use case: illustration-story. Asset: small grocery category UI icon. Reference image is STYLE ONLY: match its dark-green rounded outlines, bold clean silhouette and illustrated natural colors. Replace the carrot with ONLY one ivory white garlic bulb with distinct curved cloves, a short stalk, and a subtle green outline. Accurate recognizable anatomy, simple polished flat illustration with minimal interior detail, no realistic photo texture, no gradients, no 3D. Must remain legible at 32 pixels. Center the single subject group, fill 85 percent of square canvas with margin. Genuinely transparent background, no background circle, no shadow, no text, no logo, no extra objects, NO CARROT."
+    },
+    {
+      "id": "fruits",
+      "prompt": "Use case: illustration-story. Asset: small grocery category UI icon. Reference image is STYLE ONLY: match its dark-green rounded outlines, bold clean silhouette and illustrated natural colors. Replace the carrot with ONLY one red apple with a short brown stalk and one green leaf. Accurate recognizable anatomy, simple polished flat illustration with minimal interior detail, no realistic photo texture, no gradients, no 3D. Must remain legible at 32 pixels. Center the single subject group, fill 85 percent of square canvas with margin. Genuinely transparent background, no background circle, no shadow, no text, no logo, no extra objects, NO CARROT."
+    }
+  ]
+}
