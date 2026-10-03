@@ -10,13 +10,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@400;600&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --green: #2e7d32; --green-dark: #1b5e20; --bg: #f4f7f2; --card: #fff;
+      --green: #0b6b3a; --green-dark: #064d29; --bg: #f3f8f2; --card: #fff;
       --text: #1d2b1f; --muted: #6b7c6d; --line: #dfe7dc; --red: #c62828; --amber: #fff4d6;
     }
     @media (prefers-color-scheme: dark) {
       :root { --bg: #121a13; --card: #1b261c; --text: #e6efe6; --muted: #98a99a; --line: #2c3b2d; --amber: #3a3114; }
     }
     * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    .tokenbox { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+    .tokenbox input { flex: 1 1 240px; font: inherit; padding: 9px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); color: var(--text); }
     body { margin: 0; background: var(--bg); color: var(--text);
       font: 15px/1.5 "Plus Jakarta Sans", "Noto Sans Tamil", system-ui, sans-serif; }
     header { position: sticky; top: 0; z-index: 5; background: var(--card); border-bottom: 1px solid var(--line); padding: 12px 16px; }
@@ -92,7 +95,9 @@
     const original = {};      // id -> in_stock as loaded
     const changes = {};       // id -> new in_stock
 
+    const TOKEN_KEY = 'am-stock-token';
     function getToken() {
+      try { const t = localStorage.getItem(TOKEN_KEY); if (t) return t; } catch (_) {}
       for (const key of ['decap-cms-user', 'netlify-cms-user']) {
         try {
           const u = JSON.parse(localStorage.getItem(key) || 'null');
@@ -235,7 +240,17 @@
 
     async function init() {
       if (!getToken()) {
-        show('', false, 'You are not logged in. <a href="/admin/">Open the CMS and click “Login with GitHub”</a>, then come back to this page.');
+        show('', false,
+          'You are not logged in. On the live site, <a href="/admin/">open the CMS and click “Login with GitHub”</a>, then come back here.' +
+          '<br><br>On localhost (or if that does not work), paste a GitHub token with <b>Contents: read &amp; write</b> access to <code>' + REPO + '</code>:' +
+          '<div class="tokenbox"><input type="password" id="tok" placeholder="github_pat_…" autocomplete="off" />' +
+          '<button class="primary" id="tokSave">Use token</button></div>');
+        $('tokSave').addEventListener('click', () => {
+          const v = $('tok').value.trim();
+          if (!v) return;
+          try { localStorage.setItem(TOKEN_KEY, v); } catch (_) {}
+          location.reload();
+        });
         return;
       }
       show('Loading products…');

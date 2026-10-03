@@ -2,8 +2,11 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const root = path.resolve(__dirname, '..');
-const target = path.join(root, 'content/products.json');
-const data = JSON.parse(fs.readFileSync(target, 'utf8'));
+// Source of truth is one file per product (content/products/<id>.json);
+// content/products.json is regenerated from them by scripts/build-products.cjs.
+const dir = path.join(root, 'content/products');
+fs.mkdirSync(dir, { recursive: true });
+const data = { products: fs.readdirSync(dir).filter(f => f.endsWith('.json')).map(f => JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'))) };
 const groups = [
   ['Vegetables', 'காய்கறிகள்', 'weight', `
 hybrid-tomato|Hybrid Tomato|ஹைப்ரிட் தக்காளி|Hybrid Thakkali
@@ -169,5 +172,6 @@ for (const p of data.products) {
   p.description_ta ||= `${p.name_ta}. விலை மற்றும் இருப்பு வாட்ஸ்அப் மூலம் கடையால் உறுதி செய்யப்படும்.`;
   p.keywords = [...new Set([...p.keywords, p.name_alt.toLowerCase()])];
 }
-fs.writeFileSync(target, JSON.stringify(data, null, 2) + '\n', 'utf8');
+for (const p of data.products) fs.writeFileSync(path.join(dir, `${p.id}.json`), JSON.stringify(p, null, 2) + '\n', 'utf8');
+require('./build-products.cjs');
 console.log(`Catalog: ${data.products.length} products, ${new Set(data.products.map(p => p.category_en)).size} categories`);

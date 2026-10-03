@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppConfig {
@@ -7,6 +8,11 @@ class AppConfig {
   /// Falls back to the local CMS (`npm run dev`) as seen from the Android emulator.
   static const defaultBaseUrl =
       String.fromEnvironment('CMS_BASE_URL', defaultValue: 'http://10.0.2.2:8080');
+
+  /// The hidden server switcher is on in debug runs and off in release builds.
+  /// Force it on for a QA build with --dart-define=ALLOW_HOST_SWITCH=true.
+  static const allowHostSwitch =
+      bool.fromEnvironment('ALLOW_HOST_SWITCH', defaultValue: kDebugMode);
 
   static const _prefKey = 'base_url_override';
 
@@ -19,6 +25,7 @@ class AppConfig {
 
   /// Call once before runApp.
   static Future<void> init() async {
+    if (!allowHostSwitch) return; // release: always use the build default
     final prefs = await SharedPreferences.getInstance();
     _override = prefs.getString(_prefKey);
   }

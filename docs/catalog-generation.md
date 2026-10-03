@@ -3,7 +3,7 @@
 The catalog contains 129 products across Vegetables, Roots & Tubers, Leafy Greens,
 Herbs, Leaves, Fresh Essentials, and Fruits. English names, Tamil names,
 transliterations, search terms, descriptions, and weight/bunch/piece packs are stored
-in `content/products.json`. Categories are derived by the app; there is no separate
+in `content/products/` (one file per product, merged into `content/products.json` by `npm run catalog:build`). Categories are derived by the app; there is no separate
 categories file to maintain.
 
 The original seven product IDs, packs, stock settings, and existing shop claims were

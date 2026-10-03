@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../config.dart';
 import '../state.dart';
 import '../widgets.dart';
 import 'server_dialog.dart';
@@ -17,7 +18,7 @@ class ContactScreen extends StatelessWidget {
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           GestureDetector(
             behavior: HitTestBehavior.opaque,
-            onLongPress: () => showServerDialog(context),
+            onLongPress: AppConfig.allowHostSwitch ? () => showServerDialog(context) : null,
             child: BiText(s.nameEn, s.nameTa, size: 20),
           ),
           const SizedBox(height: 12),
