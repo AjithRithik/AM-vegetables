@@ -12,6 +12,9 @@ backend:
   name: github
   repo: AjithRithik/AM-vegetables
   branch: main
+  # GitHub login handled by api/auth.js + api/callback.js on this Vercel site.
+  base_url: https://am-veg.vercel.app
+  auth_endpoint: api/auth
   # If hosting on Netlify, you can instead use:
   #   name: git-gateway
   # For GitHub without Netlify you need an OAuth proxy; uncomment & set:
