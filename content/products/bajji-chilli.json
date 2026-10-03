@@ -38,7 +38,7 @@
   ],
   "allow_note": true,
   "note_hint": "Tell us your size or ripeness preference",
-  "featured": false,
+  "featured": true,
   "paired_with": [],
   "in_stock": true,
   "sort": 840,
