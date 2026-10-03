@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <meta name="theme-color" content="#0b6b3a" />
+  <title>AM Vegetables · Staff</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root { --green:#0b6b3a; --green-dark:#064d29; --mint:#d8f5df; --bg:#f3f8f2; --ink:#1b2b22; --muted:#6b7c72;
+            --line:#dfe8dc; --card:#fff; --amber:#f5a623; --red:#c62828; }
+    * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+    [hidden] { display:none !important; }
+    body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.45 "Plus Jakarta Sans","Noto Sans Tamil",system-ui,sans-serif; }
+    button, input, select { font:inherit; color:inherit; }
+    button { cursor:pointer; }
+    .ta { font-family:"Noto Sans Tamil",sans-serif; }
+
+    /* top bar */
+    header { background:var(--green); color:#fff; padding:12px 16px; position:sticky; top:0; z-index:10; }
+    .bar { max-width:1000px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:8px; }
+    header h1 { margin:0; font-size:18px; }
+    header h1 small { display:block; font-size:12px; font-weight:400; opacity:.85; }
+    .linkbtn { background:none; border:0; color:#fff; opacity:.9; font-size:14px; padding:8px; }
+
+    .wrap { max-width:1000px; margin:0 auto; padding:12px 16px 120px; }
+    .search { width:100%; padding:13px 16px; border:1.5px solid var(--line); border-radius:14px; background:#fff; font-size:16px; }
+    .chips { display:flex; gap:8px; overflow-x:auto; padding:10px 0 4px; scrollbar-width:none; }
+    .chips::-webkit-scrollbar { display:none; }
+    .chip { flex:none; padding:9px 16px; border-radius:20px; border:1.5px solid var(--line); background:#fff; font-weight:600; font-size:14px; }
+    .chip.on { background:var(--green); border-color:var(--green); color:#fff; }
+    .tabs { display:flex; gap:6px; margin:10px 0 4px; background:#e6efe4; padding:4px; border-radius:14px; }
+    .tab { flex:1; padding:10px 6px; border:0; background:none; border-radius:11px; font-weight:600; font-size:14px; color:var(--muted); }
+    .tab.on { background:#fff; color:var(--green); box-shadow:0 1px 4px rgba(0,0,0,.12); }
+    .count { color:var(--muted); font-size:13px; margin:8px 2px; }
+
+    /* product cards */
+    .grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+    @media (min-width:640px) { .grid { grid-template-columns:repeat(3,1fr); } }
+    @media (min-width:900px) { .grid { grid-template-columns:repeat(4,1fr); } }
+    .pcard { background:var(--card); border-radius:20px; overflow:hidden; box-shadow:0 4px 14px rgba(0,0,0,.07); display:flex; flex-direction:column; }
+    .pcard.out .pimg { filter:grayscale(1); opacity:.6; }
+    .pcard.changed { outline:3px solid var(--amber); }
+    .pimg { width:100%; aspect-ratio:1.15; object-fit:cover; background:var(--mint); display:block; border:0; padding:0; }
+    .pbody { padding:10px 12px 6px; flex:1; text-align:left; background:none; border:0; width:100%; }
+    .pname { font-weight:700; font-size:15px; line-height:1.25; }
+    .pta { color:var(--muted); font-size:13px; }
+    .pfoot { display:flex; align-items:center; justify-content:space-between; padding:6px 12px 12px; gap:8px; }
+    .status { font-size:13px; font-weight:700; color:var(--green); }
+    .pcard.out .status { color:var(--red); }
+    .star { color:var(--amber); }
+
+    /* toggle switch */
+    .switch { position:relative; width:56px; height:32px; flex:none; }
+    .switch input { position:absolute; inset:0; width:100%; height:100%; opacity:0; margin:0; z-index:1; cursor:pointer; }
+    .switch i { position:absolute; inset:0; background:#b9c4ba; border-radius:32px; transition:.15s; }
+    .switch i::after { content:""; position:absolute; top:3px; left:3px; width:26px; height:26px; background:#fff; border-radius:50%; transition:.15s; box-shadow:0 1px 3px rgba(0,0,0,.3); }
+    .switch input:checked + i { background:var(--green); }
+    .switch input:checked + i::after { transform:translateX(24px); }
+
+    /* buttons */
+    .btn { padding:14px 20px; border-radius:14px; border:1.5px solid var(--line); background:#fff; font-weight:700; }
+    .btn.primary { background:var(--green); border-color:var(--green); color:#fff; }
+    .btn.primary:disabled { opacity:.55; }
+    .btn.danger { color:var(--red); }
+    .btn.small { padding:9px 14px; font-size:14px; border-radius:12px; }
+    .fab { position:fixed; right:16px; bottom:16px; z-index:9; background:var(--amber); color:#1b2b22; border:0; border-radius:28px; padding:16px 22px; font-weight:700; box-shadow:0 6px 18px rgba(0,0,0,.25); }
+    .savebar { position:fixed; left:0; right:0; bottom:0; z-index:12; background:#fff; border-top:1px solid var(--line); padding:12px 16px; box-shadow:0 -4px 14px rgba(0,0,0,.1); }
+    .savebar .bar { gap:12px; }
+
+    /* login */
+    .login { max-width:380px; margin:12vh auto 0; background:#fff; border-radius:24px; padding:28px 22px; box-shadow:0 8px 28px rgba(0,0,0,.1); text-align:center; }
+    .login h2 { margin:0 0 4px; color:var(--green); }
+    .login p { margin:0 0 18px; color:var(--muted); }
+    .field { width:100%; padding:14px 16px; border:1.5px solid var(--line); border-radius:14px; background:#fff; font-size:16px; }
+    .login .btn { width:100%; margin-top:12px; }
+    .err { color:var(--red); font-size:14px; margin-top:10px; min-height:20px; }
+
+    /* bottom sheet */
+    .overlay { position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:30; display:flex; align-items:flex-end; justify-content:center; }
+    .sheet { background:#fff; width:100%; max-width:560px; max-height:92vh; overflow:auto; border-radius:24px 24px 0 0; padding:18px 18px 28px; }
+    @media (min-width:640px) { .overlay { align-items:center; } .sheet { border-radius:24px; } }
+    .sheet h3 { margin:0; font-size:19px; }
+    .sheethead { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+    .x { background:#eef3ec; border:0; width:38px; height:38px; border-radius:50%; font-size:18px; }
+    .photo { position:relative; border-radius:18px; overflow:hidden; background:var(--mint); aspect-ratio:1.6; margin-bottom:12px; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block; }
+    .photo label { position:absolute; right:10px; bottom:10px; background:#fff; border-radius:20px; padding:9px 14px; font-weight:700; font-size:14px; box-shadow:0 2px 8px rgba(0,0,0,.25); cursor:pointer; }
+    .photo input { display:none; }
+    .lbl { display:block; font-weight:700; font-size:14px; margin:16px 0 6px; }
+    .lbl small { color:var(--muted); font-weight:400; }
+    .line { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid var(--line); }
+    .seg { display:flex; gap:8px; }
+    .seg button { flex:1; padding:12px 6px; border-radius:14px; border:1.5px solid var(--line); background:#fff; font-weight:600; font-size:14px; }
+    .seg button.on { background:var(--mint); border-color:var(--green); color:var(--green-dark); }
+    .size { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+    .size select { flex:1; padding:12px; border:1.5px solid var(--line); border-radius:12px; background:#fff; }
+    .size label { display:flex; align-items:center; gap:5px; font-size:13px; font-weight:600; white-space:nowrap; }
+    .size input[type=radio] { width:20px; height:20px; accent-color:var(--green); }
+    .hint { font-size:13px; color:var(--muted); margin:4px 0 0; }
+    .sheet .btn.primary { width:100%; margin-top:20px; }
+
+    .toast { position:fixed; left:50%; top:16px; transform:translateX(-50%); background:#1b2b22; color:#fff; padding:13px 20px; border-radius:14px; z-index:50; max-width:92vw; box-shadow:0 6px 20px rgba(0,0,0,.3); font-weight:600; }
+    .toast.bad { background:var(--red); }
+    .empty { text-align:center; color:var(--muted); padding:40px 0; }
+  </style>
+</head>
+<body>
+  <!-- LOGIN -->
+  <div id="loginView" hidden>
+    <div class="login">
+      <h2>AM Vegetables</h2>
+      <p>Staff login<br /><span class="ta">பணியாளர் உள்நுழைவு</span></p>
+      <input class="field" id="pw" type="password" placeholder="Shop password / கடை கடவுச்சொல்" autocomplete="current-password" />
+      <button class="btn primary" id="loginBtn">Login / உள்நுழை</button>
+      <div class="err" id="loginErr"></div>
+    </div>
+  </div>
+
+  <!-- APP -->
+  <div id="appView" hidden>
+    <header><div class="bar">
+      <h1>Today's Stock <small class="ta">இன்றைய இருப்பு</small></h1>
+      <button class="linkbtn" id="logout">Logout</button>
+    </div></header>
+    <div class="wrap">
+      <input class="search" id="q" type="search" placeholder="🔍 Search / தேடு…" />
+      <div class="chips" id="chips"></div>
+      <div class="tabs" id="tabs">
+        <button class="tab on" data-t="all">All<br /><span class="ta">அனைத்தும்</span></button>
+        <button class="tab" data-t="in">Available<br /><span class="ta">உள்ளது</span></button>
+        <button class="tab" data-t="out">Not available<br /><span class="ta">இல்லை</span></button>
+      </div>
+      <div class="count" id="count"></div>
+      <div class="grid" id="grid"></div>
+    </div>
+    <button class="fab" id="addBtn">＋ Add product<br /><span class="ta" style="font-weight:400;font-size:12px">புதிய பொருள்</span></button>
+    <div class="savebar" id="savebar" hidden><div class="bar">
+      <b id="pending"></b>
+      <span style="display:flex;gap:8px">
+        <button class="btn small" id="discard">Cancel</button>
+        <button class="btn primary small" id="saveStock">Save / சேமி</button>
+      </span>
+    </div></div>
+  </div>
+
+  <div id="sheetRoot"></div>
+
+  <script>
+    const API = '/api/admin';
+    const TK = 'am-staff-token';
+    const $ = (id) => document.getElementById(id);
+    let token = null;
+    try { token = localStorage.getItem(TK); } catch (_) {}
+    let products = [];
+    const pending = {};            // id -> new in_stock
+    let q = '', cat = '', tab = 'all';
+
+    function el(tag, attrs, ...kids) {
+      const n = document.createElement(tag);
+      for (const [k, v] of Object.entries(attrs || {})) {
+        if (k === 'class') n.className = v;
+        else if (k.startsWith('on')) n.addEventListener(k.slice(2), v);
+        else if (v === true) n.setAttribute(k, '');
+        else if (v !== false && v != null) n.setAttribute(k, v);
+      }
+      for (const kid of kids.flat()) if (kid != null) n.append(kid.nodeType ? kid : document.createTextNode(kid));
+      return n;
+    }
+
+    function toast(msg, bad) {
+      const t = el('div', { class: 'toast' + (bad ? ' bad' : '') }, msg);
+      document.body.append(t);
+      setTimeout(() => t.remove(), bad ? 5000 : 3200);
+    }
+
+    async function api(path, body) {
+      const r = await fetch(API + path, {
+        method: body ? 'POST' : 'GET',
+        headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: 'Bearer ' + token } : {}) },
+        body: body ? JSON.stringify(body) : undefined,
+      });
+      let j = {};
+      try { j = await r.json(); } catch (_) {}
+      if (r.status === 401 && path !== '/login') { logout('Please log in again.'); throw new Error(j.error || 'Please log in again.'); }
+      if (!r.ok) throw new Error(j.error || 'Something went wrong. Please try again.');
+      return j;
+    }
+
+    // ---------------------------------------------------------------- login
+    function showLogin(msg) {
+      $('appView').hidden = true; $('loginView').hidden = false;
+      $('loginErr').textContent = msg || ''; $('pw').value = '';
+    }
+    function logout(msg) {
+      token = null; try { localStorage.removeItem(TK); } catch (_) {}
+      showLogin(msg);
+    }
+    $('logout').onclick = () => logout();
+    async function doLogin() {
+      const btn = $('loginBtn'); btn.disabled = true; $('loginErr').textContent = '';
+      try {
+        const j = await api('/login', { password: $('pw').value });
+        token = j.token; try { localStorage.setItem(TK, token); } catch (_) {}
+        await start();
+      } catch (e) { $('loginErr').textContent = e.message; }
+      btn.disabled = false;
+    }
+    $('loginBtn').onclick = doLogin;
+    $('pw').addEventListener('keydown', (e) => { if (e.key === 'Enter') doLogin(); });
+
+    // ---------------------------------------------------------------- list
+    const stockOf = (p) => (p.id in pending ? pending[p.id] : p.in_stock !== false);
+
+    function filtered() {
+      const s = q.trim().toLowerCase();
+      return products.filter((p) =>
+        (!cat || p.category_en === cat) &&
+        (tab === 'all' || (tab === 'in') === stockOf(p)) &&
+        (!s || (p.name_en + ' ' + p.name_ta + ' ' + (p.name_alt || '')).toLowerCase().includes(s)));
+    }
+
+    function renderChips() {
+      const cats = [...new Set(products.map((p) => p.category_en))];
+      $('chips').replaceChildren(
+        ...['', ...cats].map((c) => el('button', { class: 'chip' + (c === cat ? ' on' : ''), onclick: () => { cat = c; renderChips(); render(); } }, c || 'All')));
+    }
+
+    function render() {
+      const list = filtered();
+      $('count').textContent = list.length + ' of ' + products.length + ' products';
+      $('grid').replaceChildren(...(list.length ? list.map(card) : [el('div', { class: 'empty' }, 'No products found.')]));
+      const n = Object.keys(pending).length;
+      $('savebar').hidden = n === 0;
+      $('pending').textContent = n + (n === 1 ? ' change' : ' changes');
+    }
+
+    function card(p) {
+      const on = stockOf(p);
+      const cb = el('input', { type: 'checkbox', 'aria-label': p.name_en + ' available', onchange: () => setStock(p, cb.checked) });
+      cb.checked = on;
+      return el('div', { class: 'pcard' + (on ? '' : ' out') + (p.id in pending ? ' changed' : '') },
+        el('button', { class: 'pimg-btn', style: 'border:0;padding:0;background:none', onclick: () => editSheet(p), 'aria-label': 'Edit ' + p.name_en },
+          el('img', { class: 'pimg', src: p.image || '', alt: '', loading: 'lazy' })),
+        el('button', { class: 'pbody', onclick: () => editSheet(p) },
+          el('div', { class: 'pname' }, p.name_en, p.featured ? el('span', { class: 'star' }, ' ★') : null),
+          el('div', { class: 'pta ta' }, p.name_ta)),
+        el('div', { class: 'pfoot' },
+          el('span', { class: 'status' }, on ? 'Available' : 'Not available'),
+          el('span', { class: 'switch' }, cb, el('i'))));
+    }
+
+    function setStock(p, v) {
+      if (v === (p.in_stock !== false)) delete pending[p.id]; else pending[p.id] = v;
+      render();
+    }
+
+    $('q').addEventListener('input', (e) => { q = e.target.value; render(); });
+    $('tabs').addEventListener('click', (e) => {
+      const b = e.target.closest('.tab'); if (!b) return;
+      tab = b.dataset.t;
+      document.querySelectorAll('.tab').forEach((t) => t.classList.toggle('on', t === b));
+      render();
+    });
+    $('discard').onclick = () => { for (const k in pending) delete pending[k]; render(); };
+    $('saveStock').onclick = async () => {
+      const changes = {};
+      for (const [id, v] of Object.entries(pending)) changes[id] = { in_stock: v };
+      const btn = $('saveStock'); btn.disabled = true; btn.textContent = 'Saving…';
+      try {
+        await api('/save', { changes });
+        for (const k in pending) delete pending[k];
+        toast('✓ Saved. The app updates in about 1 minute.');
+        await load();
+      } catch (e) { toast(e.message, true); }
+      btn.disabled = false; btn.textContent = 'Save / சேமி';
+    };
+    window.addEventListener('beforeunload', (e) => { if (Object.keys(pending).length) { e.preventDefault(); e.returnValue = ''; } });
+
+    // ---------------------------------------------------------------- sheets
+    function openSheet(title, body) {
+      const root = $('sheetRoot');
+      const close = () => root.replaceChildren();
+      root.replaceChildren(el('div', { class: 'overlay', onclick: (e) => { if (e.target.classList.contains('overlay')) close(); } },
+        el('div', { class: 'sheet' },
+          el('div', { class: 'sheethead' }, el('h3', null, title), el('button', { class: 'x', onclick: close, 'aria-label': 'Close' }, '✕')),
+          body)));
+      return close;
+    }
+
+    // Resize phone photos in the browser so uploads stay small.
+    function resizeImage(file) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => {
+          const max = 1000, s = Math.min(1, max / Math.max(img.width, img.height));
+          const c = document.createElement('canvas');
+          c.width = Math.round(img.width * s); c.height = Math.round(img.height * s);
+          c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+          resolve(c.toDataURL('image/jpeg', 0.82));
+        };
+        img.onerror = () => reject(new Error('Could not read that photo.'));
+        img.src = URL.createObjectURL(file);
+      });
+    }
+
+    function photoPicker(initial, onData) {
+      const img = el('img', { src: initial || '', alt: '' });
+      const input = el('input', { type: 'file', accept: 'image/*', onchange: async () => {
+        const f = input.files[0]; if (!f) return;
+        try { const d = await resizeImage(f); img.src = d; onData(d); } catch (e) { toast(e.message, true); }
+      } });
+      return el('div', { class: 'photo' }, img, el('label', null, '📷 Change photo', input));
+    }
+
+    const SIZE_OPTIONS = {
+      weight: [[0.1, '100 g'], [0.25, '250 g'], [0.5, '500 g'], [0.75, '750 g'], [1, '1 kg'], [1.5, '1.5 kg'], [2, '2 kg'], [3, '3 kg'], [5, '5 kg']],
+      bunch: [1, 2, 3, 4, 5, 6].map((n) => [n, n + (n === 1 ? ' Bunch' : ' Bunches')]),
+      piece: [1, 2, 3, 4, 5, 6, 8, 10, 12].map((n) => [n, n + (n === 1 ? ' Piece' : ' Pieces')]),
+    };
+
+    // Editable list of sizes. Returns {node, get()}.
+    function sizesEditor(soldBy, packs) {
+      let rows = packs.map((p) => ({ quantity: Number(p.quantity), is_default: !!p.is_default }));
+      const box = el('div');
+      const opts = (q) => {
+        const base = SIZE_OPTIONS[soldBy].slice();
+        if (!base.some(([v]) => v === q)) base.push([q, String(q)]);
+        return base;
+      };
+      function draw() {
+        box.replaceChildren(
+          ...rows.map((r, i) => {
+            const sel = el('select', { onchange: () => { r.quantity = Number(sel.value); } },
+              ...opts(r.quantity).map(([v, t]) => { const o = el('option', { value: v }, t); if (v === r.quantity) o.selected = true; return o; }));
+            const radio = el('input', { type: 'radio', name: 'def', onchange: () => { rows.forEach((x, j) => { x.is_default = i === j; }); } });
+            radio.checked = r.is_default;
+            return el('div', { class: 'size' }, sel, el('label', null, radio, 'Default'),
+              rows.length > 1 ? el('button', { class: 'x', 'aria-label': 'Remove', onclick: () => { const was = r.is_default; rows.splice(i, 1); if (was) rows[0].is_default = true; draw(); } }, '✕') : null);
+          }),
+          el('button', { class: 'btn small', onclick: () => {
+            const used = new Set(rows.map((r) => r.quantity));
+            const next = SIZE_OPTIONS[soldBy].find(([v]) => !used.has(v));
+            if (!next) return toast('No more sizes to add.', true);
+            rows.push({ quantity: next[0], is_default: false }); draw();
+          } }, '＋ Add size'),
+          el('p', { class: 'hint' }, 'The "Default" size is pre-selected for customers.'));
+      }
+      draw();
+      return { node: box, get: () => rows.map((r) => ({ ...r })) };
+    }
+
+    function toggleLine(label, ta, checked, onChange) {
+      const cb = el('input', { type: 'checkbox', onchange: () => onChange(cb.checked) });
+      cb.checked = checked;
+      return el('div', { class: 'line' }, el('div', null, el('b', null, label), el('div', { class: 'pta ta' }, ta)), el('span', { class: 'switch' }, cb, el('i')));
+    }
+
+    function editSheet(p) {
+      const orig = { in_stock: stockOf(p), featured: !!p.featured, badge: p.badge || '', tagline: p.tagline || '' };
+      const cur = { ...orig };
+      let imageData = null;
+      const sizes = sizesEditor(p.sold_by, p.packs);
+      const badge = el('input', { class: 'field', value: cur.badge, maxlength: 40, list: 'badges', placeholder: 'e.g. Fresh Harvest', oninput: () => { cur.badge = badge.value; } });
+      const tag = el('input', { class: 'field', value: cur.tagline, maxlength: 80, placeholder: 'e.g. Firm & Juicy', oninput: () => { cur.tagline = tag.value; } });
+      const save = el('button', { class: 'btn primary' }, 'Save / சேமி');
+      const close = openSheet(p.name_en, el('div', null,
+        el('div', { class: 'pta ta', style: 'margin:-8px 0 12px' }, p.name_ta),
+        photoPicker(p.image, (d) => { imageData = d; }),
+        toggleLine('Available today', 'இன்று உள்ளது', cur.in_stock, (v) => { cur.in_stock = v; }),
+        toggleLine('Show on home page', 'முகப்பில் காட்டு', cur.featured, (v) => { cur.featured = v; }),
+        el('label', { class: 'lbl' }, 'Label on photo ', el('small', null, '(optional)')), badge,
+        el('datalist', { id: 'badges' }, ...['Fresh Harvest', 'Big Size', '100% Organic', 'Best Seller'].map((v) => el('option', { value: v }))),
+        el('label', { class: 'lbl' }, 'Short line ', el('small', null, '(optional)')), tag,
+        el('label', { class: 'lbl' }, 'Sizes / அளவுகள்'), sizes.node,
+        save));
+      save.onclick = async () => {
+        const patch = {};
+        for (const k of Object.keys(orig)) if (cur[k] !== orig[k]) patch[k] = cur[k];
+        const packs = sizes.get();
+        if (JSON.stringify(packs) !== JSON.stringify(p.packs.map((x) => ({ quantity: Number(x.quantity), is_default: !!x.is_default })))) patch.packs = packs;
+        if (imageData) patch.imageData = imageData;
+        if (!Object.keys(patch).length) return close();
+        save.disabled = true; save.textContent = 'Saving…';
+        try {
+          await api('/save', { changes: { [p.id]: patch } });
+          delete pending[p.id];
+          close(); toast('✓ Saved. The app updates in about 1 minute.');
+          await load();
+        } catch (e) { toast(e.message, true); save.disabled = false; save.textContent = 'Save / சேமி'; }
+      };
+    }
+
+    function addSheet() {
+      const f = { name_en: '', name_ta: '', category_en: '', category_ta: '', sold_by: 'weight' };
+      let imageData = null, sizes = sizesEditor('weight', [{ quantity: 0.5, is_default: true }, { quantity: 1 }]);
+      const cats = [...new Map(products.map((p) => [p.category_en, p.category_ta]))];
+      const sizeBox = el('div', null, sizes.node);
+      const newCat = el('div', { hidden: true },
+        el('input', { class: 'field', placeholder: 'New category (English)', style: 'margin-bottom:8px', oninput: (e) => { f.category_en = e.target.value; } }),
+        el('input', { class: 'field ta', placeholder: 'புதிய வகை (தமிழ்)', oninput: (e) => { f.category_ta = e.target.value; } }));
+      const sel = el('select', { class: 'field', onchange: () => {
+        if (sel.value === '__new') { newCat.hidden = false; f.category_en = ''; f.category_ta = ''; }
+        else { newCat.hidden = true; f.category_en = sel.value; }
+      } }, el('option', { value: '' }, 'Choose category…'), ...cats.map(([en, ta]) => el('option', { value: en }, en + ' / ' + ta)), el('option', { value: '__new' }, '＋ New category'));
+      const seg = el('div', { class: 'seg' });
+      const drawSeg = () => seg.replaceChildren(...[['weight', 'Weight', 'எடை'], ['bunch', 'Bunch', 'கட்டு'], ['piece', 'Piece', 'எண்ணம்']].map(([v, en, ta]) =>
+        el('button', { class: f.sold_by === v ? 'on' : '', onclick: () => {
+          f.sold_by = v;
+          sizes = sizesEditor(v, v === 'weight' ? [{ quantity: 0.5, is_default: true }, { quantity: 1 }] : [{ quantity: 1, is_default: true }]);
+          sizeBox.replaceChildren(sizes.node); drawSeg();
+        } }, en, el('br'), el('span', { class: 'ta' }, ta))));
+      drawSeg();
+      const save = el('button', { class: 'btn primary' }, 'Add product / சேர்');
+      const close = openSheet('Add new product', el('div', null,
+        el('label', { class: 'lbl' }, 'Name (English)'), el('input', { class: 'field', maxlength: 60, placeholder: 'e.g. Raw Banana', oninput: (e) => { f.name_en = e.target.value; } }),
+        el('label', { class: 'lbl' }, 'பெயர் (தமிழ்)'), el('input', { class: 'field ta', maxlength: 60, placeholder: 'எ.கா. வாழைக்காய்', oninput: (e) => { f.name_ta = e.target.value; } }),
+        el('label', { class: 'lbl' }, 'Category / வகை'), sel, newCat,
+        el('label', { class: 'lbl' }, 'Sold by / விற்பனை முறை'), seg,
+        el('label', { class: 'lbl' }, 'Photo ', el('small', null, '(optional, you can add later)')), photoPicker('', (d) => { imageData = d; }),
+        el('label', { class: 'lbl' }, 'Sizes / அளவுகள்'), sizeBox,
+        el('p', { class: 'hint' }, 'The product is added as Available. Prices are confirmed on WhatsApp.'),
+        save));
+      save.onclick = async () => {
+        save.disabled = true; save.textContent = 'Adding…';
+        try {
+          await api('/create', { ...f, packs: sizes.get(), imageData });
+          close(); toast('✓ Added. It shows in the app in about 1 minute.');
+          await load();
+        } catch (e) { toast(e.message, true); save.disabled = false; save.textContent = 'Add product / சேர்'; }
+      };
+    }
+    $('addBtn').onclick = addSheet;
+
+    // ---------------------------------------------------------------- boot
+    async function load() {
+      $('count').textContent = 'Loading…';
+      const j = await api('/products');
+      products = j.products;
+      if (cat && !products.some((p) => p.category_en === cat)) cat = '';
+      renderChips(); render();
+    }
+    async function start() {
+      $('loginView').hidden = true; $('appView').hidden = false;
+      try { await load(); } catch (e) { if (token) toast(e.message, true); }
+    }
+    if (token) start(); else showLogin();
+  </script>
+</body>
+</html>
