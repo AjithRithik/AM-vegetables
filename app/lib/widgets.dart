@@ -514,87 +514,92 @@ class ShopHeader extends StatelessWidget implements PreferredSizeWidget {
     final st = context.watch<AppState>();
     final shop = st.shop;
     if (shop == null) return const SizedBox.shrink();
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-            colors: [AppColors.greenDark, AppColors.green],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight),
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(26)),
-        boxShadow: [
-          BoxShadow(
-              color: Color(0x33064D29), blurRadius: 14, offset: Offset(0, 5))
-        ],
-      ),
-      child: SafeArea(
-        bottom: false,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 10, 12, 12),
-          child: Column(mainAxisSize: MainAxisSize.min, children: [
-            Row(children: [
-              Container(
-                width: 44,
-                height: 44,
-                decoration: const BoxDecoration(
-                    color: Colors.white, shape: BoxShape.circle),
-                padding: const EdgeInsets.all(5),
-                child: const AppLogo(size: 34),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(children: [
-                        Flexible(
-                            child: Text(shop.nameEn,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                    fontSize: 19,
-                                    fontWeight: FontWeight.w800,
-                                    color: Colors.white))),
-                        const SizedBox(width: 6),
-                        Pill(shop.badge,
-                            bg: AppColors.amber, fg: Colors.black87),
-                      ]),
-                      Text(shop.nameTa,
-                          style: const TextStyle(
-                              fontSize: 12, color: Colors.white70)),
-                    ]),
-              ),
-              IconButton(
-                style: IconButton.styleFrom(backgroundColor: Colors.white24),
-                onPressed: st.call,
-                icon: const Icon(Icons.call, size: 20, color: Colors.white),
-              ),
-              const SizedBox(width: 4),
-              Stack(clipBehavior: Clip.none, children: [
-                IconButton(
-                  style: IconButton.styleFrom(backgroundColor: Colors.white),
-                  onPressed: () => st.setTab(AppState.tabCart),
-                  icon: const Icon(Icons.shopping_basket,
-                      size: 20, color: AppColors.green),
+    // The bar has a fixed height, so don't let a large system font size outgrow it.
+    final mq = MediaQuery.of(context);
+    return MediaQuery(
+      data: mq.copyWith(textScaler: mq.textScaler.clamp(maxScaleFactor: 1.1)),
+      child: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+              colors: [AppColors.greenDark, AppColors.green],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight),
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(26)),
+          boxShadow: [
+            BoxShadow(
+                color: Color(0x33064D29), blurRadius: 14, offset: Offset(0, 5))
+          ],
+        ),
+        child: SafeArea(
+          bottom: false,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 10, 12, 12),
+            child: Column(mainAxisSize: MainAxisSize.min, children: [
+              Row(children: [
+                Container(
+                  width: 44,
+                  height: 44,
+                  decoration: const BoxDecoration(
+                      color: Colors.white, shape: BoxShape.circle),
+                  padding: const EdgeInsets.all(5),
+                  child: const AppLogo(size: 34),
                 ),
-                Positioned(right: -2, top: -2, child: PopBadge(st.cartCount)),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(children: [
+                          Flexible(
+                              child: Text(shop.nameEn,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                      fontSize: 19,
+                                      fontWeight: FontWeight.w800,
+                                      color: Colors.white))),
+                          const SizedBox(width: 6),
+                          Pill(shop.badge,
+                              bg: AppColors.amber, fg: Colors.black87),
+                        ]),
+                        Text(shop.nameTa,
+                            style: const TextStyle(
+                                fontSize: 12, color: Colors.white70)),
+                      ]),
+                ),
+                IconButton(
+                  style: IconButton.styleFrom(backgroundColor: Colors.white24),
+                  onPressed: st.call,
+                  icon: const Icon(Icons.call, size: 20, color: Colors.white),
+                ),
+                const SizedBox(width: 4),
+                Stack(clipBehavior: Clip.none, children: [
+                  IconButton(
+                    style: IconButton.styleFrom(backgroundColor: Colors.white),
+                    onPressed: () => st.setTab(AppState.tabCart),
+                    icon: const Icon(Icons.shopping_basket,
+                        size: 20, color: AppColors.green),
+                  ),
+                  Positioned(right: -2, top: -2, child: PopBadge(st.cartCount)),
+                ]),
+              ]),
+              const SizedBox(height: 8),
+              Row(children: [
+                Icon(Icons.circle,
+                    size: 9,
+                    color: shop.isOpen ? AppColors.whatsapp : Colors.redAccent),
+                const SizedBox(width: 6),
+                Expanded(
+                    child: Text(
+                  '${shop.isOpen ? shop.openEn : 'Closed'} • ${shop.openTa}   ${shop.paymentNote}',
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                      fontSize: 11,
+                      color: Colors.white70,
+                      fontWeight: FontWeight.w600),
+                )),
               ]),
             ]),
-            const SizedBox(height: 8),
-            Row(children: [
-              Icon(Icons.circle,
-                  size: 9,
-                  color: shop.isOpen ? AppColors.whatsapp : Colors.redAccent),
-              const SizedBox(width: 6),
-              Expanded(
-                  child: Text(
-                '${shop.isOpen ? shop.openEn : 'Closed'} • ${shop.openTa}   ${shop.paymentNote}',
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                    fontSize: 11,
-                    color: Colors.white70,
-                    fontWeight: FontWeight.w600),
-              )),
-            ]),
-          ]),
+          ),
         ),
       ),
     );

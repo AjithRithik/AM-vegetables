@@ -87,17 +87,23 @@ class _CatalogueScreenState extends State<CatalogueScreen> {
             else
               SliverPadding(
                 padding: const EdgeInsets.fromLTRB(16, 0, 16, 110),
-                sliver: SliverGrid(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 14,
-                    crossAxisSpacing: 12,
-                    mainAxisExtent: kProductCardHeight,
-                  ),
-                  delegate: SliverChildBuilderDelegate(
-                    (_, i) => PopIn(delayMs: 80 * (i % 4), child: ProductCard(list[i], key: ValueKey(list[i].id))),
-                    childCount: list.length,
-                  ),
+                sliver: SliverLayoutBuilder(
+                  builder: (context, constraints) {
+                    const gap = 12.0;
+                    final cellWidth = (constraints.crossAxisExtent - gap) / 2;
+                    return SliverGrid(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 14,
+                        crossAxisSpacing: gap,
+                        mainAxisExtent: productCardHeight(context, cellWidth),
+                      ),
+                      delegate: SliverChildBuilderDelegate(
+                        (_, i) => PopIn(delayMs: 80 * (i % 4), child: ProductCard(list[i], key: ValueKey(list[i].id))),
+                        childCount: list.length,
+                      ),
+                    );
+                  },
                 ),
               ),
           ],

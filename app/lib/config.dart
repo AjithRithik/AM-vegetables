@@ -3,11 +3,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AppConfig {
   /// Build-time default. Set per environment:
-  ///   flutter run --dart-define-from-file=env/local.json
+  ///   flutter run --dart-define-from-file=env/local.json   (emulator + `npm run dev`)
   ///   flutter build apk --release --dart-define-from-file=env/prod.json
-  /// Falls back to the local CMS (`npm run dev`) as seen from the Android emulator.
+  /// With no define, the app uses the live site. (10.0.2.2 only works inside the
+  /// Android emulator, so it must never be the default for a phone build.)
   static const defaultBaseUrl =
-      String.fromEnvironment('CMS_BASE_URL', defaultValue: 'http://10.0.2.2:8080');
+      String.fromEnvironment('CMS_BASE_URL', defaultValue: 'https://am-veg.vercel.app');
 
   /// The hidden server switcher is on in debug runs and off in release builds.
   /// Force it on for a QA build with --dart-define=ALLOW_HOST_SWITCH=true.

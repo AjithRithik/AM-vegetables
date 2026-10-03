@@ -20,8 +20,20 @@ Route<T> fadeRoute<T>(Widget page) => PageRouteBuilder<T>(
       ),
     );
 
-/// Fixed height of a [ProductCard] — use as the grid's mainAxisExtent.
-const double kProductCardHeight = 275;
+/// Photo shape used by [ProductCard] (width / height).
+const double _kImageAspect = 1.05;
+
+/// Height a [ProductCard] needs when its grid cell is [cellWidth] wide — use as the
+/// grid's mainAxisExtent. The photo scales with the width and the text with the
+/// phone's font-size setting, so a fixed height overflows on wider phones or larger fonts.
+double productCardHeight(BuildContext context, double cellWidth) {
+  const padding = 8.0 * 2 + 1.6 * 2; // card padding + border
+  const nameGap = 10.0, actionRow = 44.0, minGap = 8.0;
+  final scaler = MediaQuery.textScalerOf(context);
+  final image = (cellWidth - padding) / _kImageAspect;
+  final text = scaler.scale(15) * 1.2 + scaler.scale(12.5) * 1.3; // English + Tamil name
+  return (padding + image + nameGap + text + minGap + actionRow).ceilToDouble() + 2;
+}
 
 const _grayscale = ColorFilter.matrix(<double>[
   0.2126, 0.7152, 0.0722, 0, 0,
@@ -93,7 +105,7 @@ class _ProductCardState extends State<ProductCard> {
               key: _imgKey,
               borderRadius: BorderRadius.circular(22),
               child: AspectRatio(
-                aspectRatio: 1.05,
+                aspectRatio: _kImageAspect,
                 child: Stack(fit: StackFit.expand, children: [
                   image,
                   const Positioned(
