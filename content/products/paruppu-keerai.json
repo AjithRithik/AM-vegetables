@@ -1,0 +1,50 @@
+{
+  "id": "paruppu-keerai",
+  "name_en": "Purslane",
+  "name_ta": "பருப்புக்கீரை",
+  "name_alt": "Paruppu Keerai",
+  "category_en": "Leafy Greens",
+  "category_ta": "கீரை வகைகள்",
+  "image": "/images/uploads/products/paruppu-keerai.jpg",
+  "origin": "",
+  "tagline": "Paruppu Keerai",
+  "badge": "",
+  "description_en": "Purslane. Select your preferred number of bunches. Price and availability are confirmed by the shop on WhatsApp.",
+  "description_ta": "பருப்புக்கீரை. தேவையான அளவைத் தேர்வு செய்யவும். விலை மற்றும் இருப்பு வாட்ஸ்அப் மூலம் கடையால் உறுதி செய்யப்படும்.",
+  "highlights": [],
+  "sold_by": "bunch",
+  "packs": [
+    {
+      "label_en": "1 Bunch",
+      "label_ta": "1 கட்டு",
+      "quantity": 1,
+      "unit": "bunch",
+      "is_default": true
+    },
+    {
+      "label_en": "2 Bunches",
+      "label_ta": "2 கட்டு",
+      "quantity": 2,
+      "unit": "bunch",
+      "is_default": false
+    },
+    {
+      "label_en": "3 Bunches",
+      "label_ta": "3 கட்டு",
+      "quantity": 3,
+      "unit": "bunch",
+      "is_default": false
+    }
+  ],
+  "allow_note": true,
+  "note_hint": "Tell us your size or ripeness preference",
+  "featured": false,
+  "paired_with": [],
+  "in_stock": true,
+  "sort": 720,
+  "keywords": [
+    "purslane",
+    "பருப்புக்கீரை",
+    "paruppu keerai"
+  ]
+}

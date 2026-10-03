@@ -2,7 +2,8 @@
   "name": "am-vegetables-cms",
   "private": true,
   "scripts": {
-    "catalog:validate": "node scripts/validate-catalog.cjs --require-images",
+    "catalog:build": "node scripts/build-products.cjs",
+    "catalog:validate": "node scripts/build-products.cjs && node scripts/validate-catalog.cjs --require-images",
     "cms:proxy": "decap-server",
     "cms:serve": "serve . -l 8080",
     "dev": "npx concurrently \"npm:cms:proxy\" \"npm:cms:serve\""

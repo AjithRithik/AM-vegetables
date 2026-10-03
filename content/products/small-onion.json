@@ -1,0 +1,47 @@
+{
+  "id": "small-onion",
+  "name_en": "Small Onion",
+  "name_ta": "சின்ன வெங்காயம்",
+  "category_en": "Vegetables",
+  "category_ta": "காய்கறிகள்",
+  "image": "/images/uploads/products/small-onion.jpg",
+  "origin": "Trichy Local",
+  "tagline": "Naattu Sambar Rasam",
+  "badge": "Sambar Special",
+  "sold_by": "weight",
+  "packs": [
+    {
+      "label_en": "250 g",
+      "label_ta": "கால் கிலோ",
+      "quantity": 0.25,
+      "unit": "kg"
+    },
+    {
+      "label_en": "500 g",
+      "label_ta": "அரை கிலோ",
+      "quantity": 0.5,
+      "unit": "kg",
+      "is_default": true
+    },
+    {
+      "label_en": "1 kg",
+      "label_ta": "1 கிலோ",
+      "quantity": 1,
+      "unit": "kg"
+    }
+  ],
+  "allow_note": true,
+  "featured": true,
+  "in_stock": true,
+  "sort": 60,
+  "keywords": [
+    "shallot",
+    "small onion",
+    "sambar onion",
+    "சின்ன வெங்காயம்",
+    "chinna vengayam"
+  ],
+  "name_alt": "Chinna Vengayam",
+  "description_en": "Small Onion. Price and availability are confirmed by the shop on WhatsApp.",
+  "description_ta": "சின்ன வெங்காயம். விலை மற்றும் இருப்பு வாட்ஸ்அப் மூலம் கடையால் உறுதி செய்யப்படும்."
+}

@@ -1,0 +1,46 @@
+{
+  "id": "agra-potato",
+  "name_en": "Agra Potato",
+  "name_ta": "உருளைக்கிழங்கு",
+  "category_en": "Roots & Tubers",
+  "category_ta": "கிழங்கு வகைகள்",
+  "image": "/images/uploads/products/agra-potato.jpg",
+  "origin": "Agra",
+  "tagline": "Firm & Sweet",
+  "badge": "Agra Special",
+  "sold_by": "weight",
+  "packs": [
+    {
+      "label_en": "500 g",
+      "label_ta": "அரை கிலோ",
+      "quantity": 0.5,
+      "unit": "kg"
+    },
+    {
+      "label_en": "1 kg",
+      "label_ta": "1 கிலோ",
+      "quantity": 1,
+      "unit": "kg"
+    },
+    {
+      "label_en": "2 kg",
+      "label_ta": "2 கிலோ",
+      "quantity": 2,
+      "unit": "kg",
+      "is_default": true
+    }
+  ],
+  "allow_note": true,
+  "featured": false,
+  "in_stock": true,
+  "sort": 50,
+  "keywords": [
+    "potato",
+    "urulai",
+    "உருளை",
+    "urulaikizhangu"
+  ],
+  "name_alt": "Urulaikizhangu",
+  "description_en": "Agra Potato. Price and availability are confirmed by the shop on WhatsApp.",
+  "description_ta": "உருளைக்கிழங்கு. விலை மற்றும் இருப்பு வாட்ஸ்அப் மூலம் கடையால் உறுதி செய்யப்படும்."
+}

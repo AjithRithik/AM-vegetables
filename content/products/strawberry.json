@@ -1,0 +1,49 @@
+{
+  "id": "strawberry",
+  "name_en": "Strawberry",
+  "name_ta": "ஸ்ட்ராபெர்ரி",
+  "name_alt": "Strawberry",
+  "category_en": "Fruits",
+  "category_ta": "பழங்கள்",
+  "image": "/images/uploads/products/strawberry.jpg",
+  "origin": "",
+  "tagline": "Strawberry",
+  "badge": "",
+  "description_en": "Strawberry. Select your preferred weight. Price and availability are confirmed by the shop on WhatsApp.",
+  "description_ta": "ஸ்ட்ராபெர்ரி. தேவையான அளவைத் தேர்வு செய்யவும். விலை மற்றும் இருப்பு வாட்ஸ்அப் மூலம் கடையால் உறுதி செய்யப்படும்.",
+  "highlights": [],
+  "sold_by": "weight",
+  "packs": [
+    {
+      "label_en": "250 g",
+      "label_ta": "250 கிராம்",
+      "quantity": 0.25,
+      "unit": "kg",
+      "is_default": false
+    },
+    {
+      "label_en": "500 g",
+      "label_ta": "500 கிராம்",
+      "quantity": 0.5,
+      "unit": "kg",
+      "is_default": true
+    },
+    {
+      "label_en": "1 kg",
+      "label_ta": "1 கிலோ",
+      "quantity": 1,
+      "unit": "kg",
+      "is_default": false
+    }
+  ],
+  "allow_note": true,
+  "note_hint": "Tell us your size or ripeness preference",
+  "featured": false,
+  "paired_with": [],
+  "in_stock": true,
+  "sort": 1230,
+  "keywords": [
+    "strawberry",
+    "ஸ்ட்ராபெர்ரி"
+  ]
+}

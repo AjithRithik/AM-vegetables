@@ -1,0 +1,50 @@
+{
+  "id": "ooty-carrot",
+  "name_en": "Fresh Ooty Carrot",
+  "name_ta": "ஊட்டி கேரட்",
+  "category_en": "Vegetables",
+  "category_ta": "காய்கறிகள்",
+  "image": "/images/uploads/products/ooty-carrot.jpg",
+  "origin": "Ooty Hill Station",
+  "tagline": "Crunchy & Sweet",
+  "badge": "Grade-A",
+  "description_en": "Crunchy, sweet Grade-A carrots from the Nilgiri hills.",
+  "highlights": [
+    "Salad ready",
+    "Crunchy & Sweet"
+  ],
+  "sold_by": "weight",
+  "packs": [
+    {
+      "label_en": "250 g",
+      "label_ta": "கால் கிலோ",
+      "quantity": 0.25,
+      "unit": "kg"
+    },
+    {
+      "label_en": "500 g",
+      "label_ta": "அரை கிலோ",
+      "quantity": 0.5,
+      "unit": "kg",
+      "is_default": true
+    },
+    {
+      "label_en": "1 kg",
+      "label_ta": "1 கிலோ",
+      "quantity": 1,
+      "unit": "kg"
+    }
+  ],
+  "allow_note": true,
+  "note_hint": "Salad ready",
+  "featured": false,
+  "in_stock": true,
+  "sort": 30,
+  "keywords": [
+    "carrot",
+    "கேரட்",
+    "ooty carrot"
+  ],
+  "name_alt": "Ooty Carrot",
+  "description_ta": "ஊட்டி கேரட். விலை மற்றும் இருப்பு வாட்ஸ்அப் மூலம் கடையால் உறுதி செய்யப்படும்."
+}

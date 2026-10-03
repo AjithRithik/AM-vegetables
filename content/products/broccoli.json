@@ -1,0 +1,49 @@
+{
+  "id": "broccoli",
+  "name_en": "Broccoli",
+  "name_ta": "ப்ரோக்கோலி",
+  "name_alt": "Broccoli",
+  "category_en": "Vegetables",
+  "category_ta": "காய்கறிகள்",
+  "image": "/images/uploads/products/broccoli.jpg",
+  "origin": "",
+  "tagline": "Broccoli",
+  "badge": "",
+  "description_en": "Broccoli. Select your preferred number of pieces. Price and availability are confirmed by the shop on WhatsApp.",
+  "description_ta": "ப்ரோக்கோலி. தேவையான அளவைத் தேர்வு செய்யவும். விலை மற்றும் இருப்பு வாட்ஸ்அப் மூலம் கடையால் உறுதி செய்யப்படும்.",
+  "highlights": [],
+  "sold_by": "piece",
+  "packs": [
+    {
+      "label_en": "1 Piece",
+      "label_ta": "1 எண்ணம்",
+      "quantity": 1,
+      "unit": "piece",
+      "is_default": true
+    },
+    {
+      "label_en": "2 Pieces",
+      "label_ta": "2 எண்ணம்",
+      "quantity": 2,
+      "unit": "piece",
+      "is_default": false
+    },
+    {
+      "label_en": "3 Pieces",
+      "label_ta": "3 எண்ணம்",
+      "quantity": 3,
+      "unit": "piece",
+      "is_default": false
+    }
+  ],
+  "allow_note": true,
+  "note_hint": "Tell us your size or ripeness preference",
+  "featured": false,
+  "paired_with": [],
+  "in_stock": true,
+  "sort": 440,
+  "keywords": [
+    "broccoli",
+    "ப்ரோக்கோலி"
+  ]
+}

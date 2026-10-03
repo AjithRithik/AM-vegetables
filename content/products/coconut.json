@@ -1,0 +1,50 @@
+{
+  "id": "coconut",
+  "name_en": "Coconut",
+  "name_ta": "தேங்காய்",
+  "name_alt": "Thengai",
+  "category_en": "Fresh Essentials",
+  "category_ta": "சமையல் தேவைகள்",
+  "image": "/images/uploads/products/coconut.jpg",
+  "origin": "",
+  "tagline": "Thengai",
+  "badge": "",
+  "description_en": "Coconut. Select your preferred number of pieces. Price and availability are confirmed by the shop on WhatsApp.",
+  "description_ta": "தேங்காய். தேவையான அளவைத் தேர்வு செய்யவும். விலை மற்றும் இருப்பு வாட்ஸ்அப் மூலம் கடையால் உறுதி செய்யப்படும்.",
+  "highlights": [],
+  "sold_by": "piece",
+  "packs": [
+    {
+      "label_en": "1 Piece",
+      "label_ta": "1 எண்ணம்",
+      "quantity": 1,
+      "unit": "piece",
+      "is_default": true
+    },
+    {
+      "label_en": "2 Pieces",
+      "label_ta": "2 எண்ணம்",
+      "quantity": 2,
+      "unit": "piece",
+      "is_default": false
+    },
+    {
+      "label_en": "3 Pieces",
+      "label_ta": "3 எண்ணம்",
+      "quantity": 3,
+      "unit": "piece",
+      "is_default": false
+    }
+  ],
+  "allow_note": true,
+  "note_hint": "Tell us your size or ripeness preference",
+  "featured": false,
+  "paired_with": [],
+  "in_stock": true,
+  "sort": 880,
+  "keywords": [
+    "coconut",
+    "தேங்காய்",
+    "thengai"
+  ]
+}

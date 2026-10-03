@@ -1,0 +1,52 @@
+{
+  "id": "palak-spinach",
+  "name_en": "Palak Spinach",
+  "name_ta": "பாலக்கீரை கட்டு",
+  "category_en": "Leafy Greens",
+  "category_ta": "கீரை வகைகள்",
+  "image": "/images/uploads/products/palak-spinach.jpg",
+  "origin": "Morning Cut",
+  "tagline": "Clean leaves without soil",
+  "badge": "Harvested Today",
+  "description_en": "Tender spinach, cut in the morning and washed of soil.",
+  "highlights": [
+    "Iron rich",
+    "Morning cut"
+  ],
+  "sold_by": "bunch",
+  "packs": [
+    {
+      "label_en": "1 Bunch",
+      "label_ta": "1 கட்டு",
+      "quantity": 1,
+      "unit": "bunch",
+      "is_default": true
+    },
+    {
+      "label_en": "2 Bunches",
+      "label_ta": "2 கட்டுகள்",
+      "quantity": 2,
+      "unit": "bunch"
+    },
+    {
+      "label_en": "3 Bunches",
+      "label_ta": "3 கட்டுகள்",
+      "quantity": 3,
+      "unit": "bunch"
+    }
+  ],
+  "allow_note": true,
+  "note_hint": "Roots removed",
+  "featured": false,
+  "in_stock": true,
+  "sort": 40,
+  "keywords": [
+    "palak",
+    "spinach",
+    "keerai",
+    "கீரை",
+    "palak keerai"
+  ],
+  "name_alt": "Palak Keerai",
+  "description_ta": "பாலக்கீரை கட்டு. விலை மற்றும் இருப்பு வாட்ஸ்அப் மூலம் கடையால் உறுதி செய்யப்படும்."
+}

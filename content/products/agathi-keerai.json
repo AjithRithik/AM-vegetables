@@ -1,0 +1,50 @@
+{
+  "id": "agathi-keerai",
+  "name_en": "Agathi Leaves",
+  "name_ta": "அகத்திக்கீரை",
+  "name_alt": "Agathi Keerai",
+  "category_en": "Leafy Greens",
+  "category_ta": "கீரை வகைகள்",
+  "image": "/images/uploads/products/agathi-keerai.jpg",
+  "origin": "",
+  "tagline": "Agathi Keerai",
+  "badge": "",
+  "description_en": "Agathi Leaves. Select your preferred number of bunches. Price and availability are confirmed by the shop on WhatsApp.",
+  "description_ta": "அகத்திக்கீரை. தேவையான அளவைத் தேர்வு செய்யவும். விலை மற்றும் இருப்பு வாட்ஸ்அப் மூலம் கடையால் உறுதி செய்யப்படும்.",
+  "highlights": [],
+  "sold_by": "bunch",
+  "packs": [
+    {
+      "label_en": "1 Bunch",
+      "label_ta": "1 கட்டு",
+      "quantity": 1,
+      "unit": "bunch",
+      "is_default": true
+    },
+    {
+      "label_en": "2 Bunches",
+      "label_ta": "2 கட்டு",
+      "quantity": 2,
+      "unit": "bunch",
+      "is_default": false
+    },
+    {
+      "label_en": "3 Bunches",
+      "label_ta": "3 கட்டு",
+      "quantity": 3,
+      "unit": "bunch",
+      "is_default": false
+    }
+  ],
+  "allow_note": true,
+  "note_hint": "Tell us your size or ripeness preference",
+  "featured": false,
+  "paired_with": [],
+  "in_stock": true,
+  "sort": 650,
+  "keywords": [
+    "agathi leaves",
+    "அகத்திக்கீரை",
+    "agathi keerai"
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "id": "sweet-potato",
+  "name_en": "Sweet Potato",
+  "name_ta": "சர்க்கரைவள்ளிக் கிழங்கு",
+  "name_alt": "Sakkaravalli Kizhangu",
+  "category_en": "Roots & Tubers",
+  "category_ta": "கிழங்கு வகைகள்",
+  "image": "/images/uploads/products/sweet-potato.jpg",
+  "origin": "",
+  "tagline": "Sakkaravalli Kizhangu",
+  "badge": "",
+  "description_en": "Sweet Potato. Select your preferred weight. Price and availability are confirmed by the shop on WhatsApp.",
+  "description_ta": "சர்க்கரைவள்ளிக் கிழங்கு. தேவையான அளவைத் தேர்வு செய்யவும். விலை மற்றும் இருப்பு வாட்ஸ்அப் மூலம் கடையால் உறுதி செய்யப்படும்.",
+  "highlights": [],
+  "sold_by": "weight",
+  "packs": [
+    {
+      "label_en": "250 g",
+      "label_ta": "250 கிராம்",
+      "quantity": 0.25,
+      "unit": "kg",
+      "is_default": false
+    },
+    {
+      "label_en": "500 g",
+      "label_ta": "500 கிராம்",
+      "quantity": 0.5,
+      "unit": "kg",
+      "is_default": true
+    },
+    {
+      "label_en": "1 kg",
+      "label_ta": "1 கிலோ",
+      "quantity": 1,
+      "unit": "kg",
+      "is_default": false
+    }
+  ],
+  "allow_note": true,
+  "note_hint": "Tell us your size or ripeness preference",
+  "featured": false,
+  "paired_with": [],
+  "in_stock": true,
+  "sort": 530,
+  "keywords": [
+    "sweet potato",
+    "சர்க்கரைவள்ளிக் கிழங்கு",
+    "sakkaravalli kizhangu"
+  ]
+}

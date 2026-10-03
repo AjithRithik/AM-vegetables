@@ -1,0 +1,49 @@
+{
+  "id": "lettuce",
+  "name_en": "Lettuce",
+  "name_ta": "லெட்டூஸ்",
+  "name_alt": "Lettuce",
+  "category_en": "Leafy Greens",
+  "category_ta": "கீரை வகைகள்",
+  "image": "/images/uploads/products/lettuce.jpg",
+  "origin": "",
+  "tagline": "Lettuce",
+  "badge": "",
+  "description_en": "Lettuce. Select your preferred number of bunches. Price and availability are confirmed by the shop on WhatsApp.",
+  "description_ta": "லெட்டூஸ். தேவையான அளவைத் தேர்வு செய்யவும். விலை மற்றும் இருப்பு வாட்ஸ்அப் மூலம் கடையால் உறுதி செய்யப்படும்.",
+  "highlights": [],
+  "sold_by": "bunch",
+  "packs": [
+    {
+      "label_en": "1 Bunch",
+      "label_ta": "1 கட்டு",
+      "quantity": 1,
+      "unit": "bunch",
+      "is_default": true
+    },
+    {
+      "label_en": "2 Bunches",
+      "label_ta": "2 கட்டு",
+      "quantity": 2,
+      "unit": "bunch",
+      "is_default": false
+    },
+    {
+      "label_en": "3 Bunches",
+      "label_ta": "3 கட்டு",
+      "quantity": 3,
+      "unit": "bunch",
+      "is_default": false
+    }
+  ],
+  "allow_note": true,
+  "note_hint": "Tell us your size or ripeness preference",
+  "featured": false,
+  "paired_with": [],
+  "in_stock": true,
+  "sort": 730,
+  "keywords": [
+    "lettuce",
+    "லெட்டூஸ்"
+  ]
+}

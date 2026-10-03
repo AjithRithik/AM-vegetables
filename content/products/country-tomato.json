@@ -1,0 +1,83 @@
+{
+  "id": "country-tomato",
+  "name_en": "Country Tomato",
+  "name_ta": "நாட்டு தக்காளி",
+  "name_alt": "Nattu Thakkali",
+  "category_en": "Vegetables",
+  "category_ta": "காய்கறிகள்",
+  "image": "/images/uploads/products/country-tomato.jpg",
+  "origin": "Dharmapuri Farm",
+  "tagline": "Firm & Juicy",
+  "badge": "Fresh Harvest",
+  "description_en": "Naturally ripened sour-sweet country tomatoes, handpicked early morning from Krishnagiri & Dharmapuri red soil farms. Specially prized for traditional rasam, paruppu sambar and thakkali thokku.",
+  "description_ta": "நாட்டு தக்காளி. விலை மற்றும் இருப்பு வாட்ஸ்அப் மூலம் கடையால் உறுதி செய்யப்படும்.",
+  "highlights": [
+    "High Lycopene",
+    "Firm & Juicy",
+    "Chemical Ripening Free"
+  ],
+  "trust_points": [
+    {
+      "title_en": "Dharmapuri",
+      "title_ta": "நேரடித் தோட்டம்",
+      "icon": "farm"
+    },
+    {
+      "title_en": "Pure Country",
+      "title_ta": "இயற்கை புளிப்பு",
+      "icon": "verified"
+    },
+    {
+      "title_en": "Clean Washed",
+      "title_ta": "தூய நீர் கழுவல்",
+      "icon": "wash"
+    }
+  ],
+  "harvest_note": "5:30 AM today",
+  "sold_by": "weight",
+  "packs": [
+    {
+      "label_en": "250 g",
+      "label_ta": "கால் கிலோ",
+      "quantity": 0.25,
+      "unit": "kg"
+    },
+    {
+      "label_en": "500 g",
+      "label_ta": "அரை கிலோ",
+      "quantity": 0.5,
+      "unit": "kg"
+    },
+    {
+      "label_en": "1 kg",
+      "label_ta": "1 கிலோ",
+      "note": "Standard Daily Pack",
+      "quantity": 1,
+      "unit": "kg",
+      "is_default": true
+    },
+    {
+      "label_en": "2 kg",
+      "label_ta": "2 கிலோ",
+      "note": "Family size",
+      "quantity": 2,
+      "unit": "kg",
+      "popular": true
+    }
+  ],
+  "allow_note": true,
+  "note_hint": "Semi-ripe preferred",
+  "featured": true,
+  "paired_with": [
+    "small-onion",
+    "coriander-leaves"
+  ],
+  "in_stock": true,
+  "sort": 10,
+  "keywords": [
+    "tomato",
+    "thakkali",
+    "தக்காளி",
+    "nattu thakkali"
+  ]
+}

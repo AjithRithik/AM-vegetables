@@ -1,0 +1,57 @@
+{
+  "id": "bellary-onion",
+  "name_en": "Bellary Big Onion",
+  "name_ta": "பெரிய வெங்காயம்",
+  "category_en": "Vegetables",
+  "category_ta": "காய்கறிகள்",
+  "image": "/images/uploads/products/bellary-onion.jpg",
+  "origin": "Nashik Quality",
+  "tagline": "Clean dry skins",
+  "badge": "Big Size",
+  "description_en": "Large, firm onions with clean dry skins — daily stock.",
+  "highlights": [
+    "Long shelf life",
+    "Clean dry skins"
+  ],
+  "sold_by": "weight",
+  "packs": [
+    {
+      "label_en": "500 g",
+      "label_ta": "அரை கிலோ",
+      "quantity": 0.5,
+      "unit": "kg"
+    },
+    {
+      "label_en": "1 kg",
+      "label_ta": "1 கிலோ",
+      "quantity": 1,
+      "unit": "kg",
+      "is_default": true
+    },
+    {
+      "label_en": "2 kg",
+      "label_ta": "2 கிலோ",
+      "quantity": 2,
+      "unit": "kg"
+    },
+    {
+      "label_en": "5 kg",
+      "label_ta": "5 கிலோ",
+      "quantity": 5,
+      "unit": "kg"
+    }
+  ],
+  "allow_note": true,
+  "note_hint": "Medium sized bulbs",
+  "featured": false,
+  "in_stock": true,
+  "sort": 20,
+  "keywords": [
+    "onion",
+    "vengayam",
+    "வெங்காயம்",
+    "periya vengayam"
+  ],
+  "name_alt": "Periya Vengayam",
+  "description_ta": "பெரிய வெங்காயம். விலை மற்றும் இருப்பு வாட்ஸ்அப் மூலம் கடையால் உறுதி செய்யப்படும்."
+}

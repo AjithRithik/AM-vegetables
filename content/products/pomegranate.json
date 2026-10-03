@@ -1,0 +1,50 @@
+{
+  "id": "pomegranate",
+  "name_en": "Pomegranate",
+  "name_ta": "மாதுளம்பழம்",
+  "name_alt": "Mathulam Pazham",
+  "category_en": "Fruits",
+  "category_ta": "பழங்கள்",
+  "image": "/images/uploads/products/pomegranate.jpg",
+  "origin": "",
+  "tagline": "Mathulam Pazham",
+  "badge": "",
+  "description_en": "Pomegranate. Select your preferred weight. Price and availability are confirmed by the shop on WhatsApp.",
+  "description_ta": "மாதுளம்பழம். தேவையான அளவைத் தேர்வு செய்யவும். விலை மற்றும் இருப்பு வாட்ஸ்அப் மூலம் கடையால் உறுதி செய்யப்படும்.",
+  "highlights": [],
+  "sold_by": "weight",
+  "packs": [
+    {
+      "label_en": "250 g",
+      "label_ta": "250 கிராம்",
+      "quantity": 0.25,
+      "unit": "kg",
+      "is_default": false
+    },
+    {
+      "label_en": "500 g",
+      "label_ta": "500 கிராம்",
+      "quantity": 0.5,
+      "unit": "kg",
+      "is_default": true
+    },
+    {
+      "label_en": "1 kg",
+      "label_ta": "1 கிலோ",
+      "quantity": 1,
+      "unit": "kg",
+      "is_default": false
+    }
+  ],
+  "allow_note": true,
+  "note_hint": "Tell us your size or ripeness preference",
+  "featured": false,
+  "paired_with": [],
+  "in_stock": true,
+  "sort": 1080,
+  "keywords": [
+    "pomegranate",
+    "மாதுளம்பழம்",
+    "mathulam pazham"
+  ]
+}
