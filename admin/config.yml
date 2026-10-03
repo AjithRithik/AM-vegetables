@@ -46,6 +46,7 @@ collections:
     identifier_field: name_en
     slug: "{{id}}"
     summary: "{{name_en}} / {{name_ta}} ({{category_en}})"
+    thumbnail: image
     sortable_fields: [name_en, category_en, sort, in_stock]
     view_filters:
       - { label: "In stock", field: in_stock, pattern: true }
@@ -61,7 +62,7 @@ collections:
       - { label: "Category (English)", name: category_en, widget: string, hint: "Filter chip in the app. Products with identical text are grouped, e.g. Vegetables, Leafy Greens" }
       - { label: "Category (Tamil)", name: category_ta, widget: string, required: false, hint: "e.g. காய்கறிகள்" }
       - { label: "Image", name: image, widget: image, required: false }
-      - { label: "Gallery images", name: gallery, widget: list, required: false, field: { label: Image, name: image, widget: image } }
+      - { label: "Gallery images", name: gallery, widget: list, required: false, collapsed: true, field: { label: Image, name: image, widget: image } }
       - { label: "Origin / Farm", name: origin, widget: string, required: false, hint: "e.g. Dharmapuri Farm, Nashik Quality, Ooty Hill Station" }
       - { label: "Short tagline", name: tagline, widget: string, required: false, hint: "e.g. Firm & Juicy" }
       - { label: "Card badge", name: badge, widget: string, required: false, hint: "e.g. Fresh Harvest, Big Size, 100% Organic" }
@@ -70,12 +71,14 @@ collections:
       - label: "Highlights"
         name: highlights
         widget: list
+        collapsed: true
         required: false
         hint: "Chips on the detail page, e.g. High Lycopene, Chemical Ripening Free"
         field: { label: Highlight, name: highlight, widget: string }
       - label: "Trust points"
         name: trust_points
         widget: list
+        collapsed: true
         required: false
         hint: "Three small icons below the image, e.g. Dharmapuri / Pure Country / Clean Washed"
         max: 3
@@ -101,11 +104,11 @@ collections:
           - { label: "Mark as Popular", name: popular, widget: boolean, default: false }
       - { label: "Allow custom note (preference)", name: allow_note, widget: boolean, default: true }
       - { label: "Preference suggestion", name: note_hint, widget: string, required: false, hint: "Placeholder/preset, e.g. Medium sized bulbs" }
-      - { label: "Featured in Fresh Picks Today", name: featured, widget: boolean, default: false }
-      - { label: "Frequently paired (Don't forget!)", name: paired_with, widget: list, required: false, hint: "IDs of related products", field: { label: "Product ID", name: id, widget: string } }
-      - { label: "In stock today", name: in_stock, widget: boolean, default: true }
+      - { label: "Featured in Fresh Picks Today / இன்றைய தேர்வு", name: featured, widget: boolean, default: false }
+      - { label: "Frequently paired (Don't forget!)", name: paired_with, widget: list, required: false, collapsed: true, hint: "IDs of related products", field: { label: "Product ID", name: id, widget: string } }
+      - { label: "In stock today / இன்று இருப்பு", name: in_stock, widget: boolean, default: true }
       - { label: "Sort order", name: sort, widget: number, value_type: int, default: 100, min: 0 }
-      - { label: "Search keywords", name: keywords, widget: list, required: false, hint: "Extra English/Tamil words for search", field: { label: Keyword, name: keyword, widget: string } }
+      - { label: "Search keywords", name: keywords, widget: list, required: false, collapsed: true, hint: "Extra English/Tamil words for search", field: { label: Keyword, name: keyword, widget: string } }
 
   # ------------------------------------------------------------------
   # SHOP SETTINGS
