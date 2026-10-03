@@ -43,9 +43,17 @@ class AppConfig {
     }
   }
 
-  static String resolveImage(String path) {
+  /// [width] only applies to Cloudinary photos: they are served resized (and as
+  /// WebP/AVIF where supported) so phones download small files.
+  static String resolveImage(String path, {int width = 500}) {
     if (path.isEmpty) return '';
-    if (path.startsWith('http')) return path;
+    if (path.startsWith('http')) {
+      const marker = '/image/upload/';
+      if (path.contains('res.cloudinary.com') && path.contains(marker) && !path.contains('/upload/f_auto')) {
+        return path.replaceFirst(marker, '${marker}f_auto,q_auto,c_limit,w_$width/');
+      }
+      return path;
+    }
     return '$baseUrl${path.startsWith('/') ? '' : '/'}$path';
   }
 }

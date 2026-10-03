@@ -63,15 +63,19 @@ class ProductImage extends StatelessWidget {
   final double? height;
   final BorderRadius radius;
   final String? heroTag;
+
+  /// Max pixel width requested from the image host (Cloudinary photos only).
+  final int width;
   const ProductImage(this.path,
       {super.key,
       this.height,
+      this.width = 500,
       this.heroTag,
       this.radius = const BorderRadius.all(Radius.circular(16))});
 
   @override
   Widget build(BuildContext context) {
-    final url = AppConfig.resolveImage(path);
+    final url = AppConfig.resolveImage(path, width: width);
     final placeholder = Container(
       height: height,
       color: AppColors.mint,

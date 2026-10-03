@@ -5,7 +5,7 @@
   "name_alt": "Apple",
   "category_en": "Fruits",
   "category_ta": "பழங்கள்",
-  "image": "/images/uploads/products/apple.jpg",
+  "image": "https://res.cloudinary.com/menrhqzb/image/upload/v1791040919/am-veg/products/apple.jpg",
   "origin": "",
   "tagline": "Apple",
   "badge": "",

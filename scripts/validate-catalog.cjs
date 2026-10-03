@@ -27,8 +27,12 @@ for (const p of products) {
   for (const id of p.paired_with || []) assert.ok(ids.has(id), `${p.id}: missing paired product ${id}`);
   assert.equal(typeof p.in_stock, 'boolean');
   if (p.image) {
-    assert.ok(p.image.startsWith('/images/uploads/'), `${p.id}: unsupported image path`);
-    assert.ok(fs.existsSync(path.join(root, p.image.slice(1))), `${p.id}: missing image file`);
+    if (/^https:\/\/res\.cloudinary\.com\//.test(p.image)) {
+      assert.ok(p.image.includes('/image/upload/'), `${p.id}: bad Cloudinary image URL`);
+    } else {
+      assert.ok(p.image.startsWith('/images/uploads/'), `${p.id}: unsupported image path`);
+      assert.ok(fs.existsSync(path.join(root, p.image.slice(1))), `${p.id}: missing image file`);
+    }
     images++;
   }
 }

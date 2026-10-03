@@ -48,7 +48,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       ),
       body: ListView(padding: const EdgeInsets.fromLTRB(16, 0, 16, 110), children: [
         Stack(children: [
-          ProductImage(p.image, height: 260, heroTag: 'img-${p.id}', radius: BorderRadius.circular(26)),
+          ProductImage(p.image, height: 260, width: 900, heroTag: 'img-${p.id}', radius: BorderRadius.circular(26)),
           if (p.badge.isNotEmpty) Positioned(left: 12, top: 12, child: Pill(p.badge, bg: Colors.white)),
           if (p.harvestNote.isNotEmpty)
             Positioned(right: 12, bottom: 12, child: Pill(p.harvestNote, bg: Colors.black54, fg: Colors.white, icon: Icons.cloud_upload_outlined)),
