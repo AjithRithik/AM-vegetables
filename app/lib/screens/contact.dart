@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../state.dart';
 import '../widgets.dart';
+import 'server_dialog.dart';
 
 class ContactScreen extends StatelessWidget {
   const ContactScreen({super.key});
@@ -14,7 +15,11 @@ class ContactScreen extends StatelessWidget {
     return ListView(padding: const EdgeInsets.all(16), children: [
       SectionCard(
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          BiText(s.nameEn, s.nameTa, size: 20),
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onLongPress: () => showServerDialog(context),
+            child: BiText(s.nameEn, s.nameTa, size: 20),
+          ),
           const SizedBox(height: 12),
           ListTile(contentPadding: EdgeInsets.zero, leading: const Icon(Icons.schedule, color: AppColors.green), title: Text(s.hours), subtitle: Text(s.isOpen ? s.openEn : 'Closed')),
           ListTile(contentPadding: EdgeInsets.zero, leading: const Icon(Icons.payments_outlined, color: AppColors.green), title: Text(s.paymentNote)),

@@ -10,7 +10,7 @@
 
 backend:
   name: github
-  repo: YOUR_GITHUB_USER/am-vegetables-cms   # TODO: change to your repo
+  repo: AjithRithik/AM-vegetables
   branch: main
   # If hosting on Netlify, you can instead use:
   #   name: git-gateway
@@ -24,8 +24,8 @@ publish_mode: editorial_workflow   # remove this line to publish directly to mai
 media_folder: images/uploads
 public_folder: /images/uploads
 locale: en
-site_url: https://YOUR-SITE.example.com
-display_url: https://YOUR-SITE.example.com
+site_url: https://am-veg.vercel.app
+display_url: https://am-veg.vercel.app
 
 collections:
   # ------------------------------------------------------------------

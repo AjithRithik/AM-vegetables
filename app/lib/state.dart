@@ -58,6 +58,16 @@ class AppState extends ChangeNotifier {
     }
   }
 
+  /// Switches the content host (null resets to the build default), drops the
+  /// cached catalogue from the old host and reloads.
+  Future<void> changeHost(String? url) async {
+    await AppConfig.setOverride(url);
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('cache_shop');
+    await prefs.remove('cache_products');
+    await load();
+  }
+
   Future<void> load() async {
     loading = true;
     error = null;
