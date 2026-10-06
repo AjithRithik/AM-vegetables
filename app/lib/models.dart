@@ -148,6 +148,7 @@ class Shop {
 
 class Customer {
   String name, phone, altPhone, email, address, pincode, landmark, notes;
+  double? lat, lng;
   Customer({
     this.name = '',
     this.phone = '',
@@ -157,19 +158,26 @@ class Customer {
     this.pincode = '',
     this.landmark = '',
     this.notes = '',
+    this.lat,
+    this.lng,
   });
+
+  bool get hasLocation => lat != null && lng != null;
+  String get mapLink => 'https://www.google.com/maps?q=$lat,$lng';
 
   bool get isEmpty => name.isEmpty && phone.isEmpty && address.isEmpty;
 
   Map<String, dynamic> toJson() => {
         'name': name, 'phone': phone, 'altPhone': altPhone, 'email': email,
         'address': address, 'pincode': pincode, 'landmark': landmark, 'notes': notes,
+        'lat': lat, 'lng': lng,
       };
 
   factory Customer.fromJson(Map<String, dynamic> j) => Customer(
         name: _s(j['name']), phone: _s(j['phone']), altPhone: _s(j['altPhone']),
         email: _s(j['email']), address: _s(j['address']), pincode: _s(j['pincode']),
         landmark: _s(j['landmark']), notes: _s(j['notes']),
+        lat: (j['lat'] as num?)?.toDouble(), lng: (j['lng'] as num?)?.toDouble(),
       );
 }
 

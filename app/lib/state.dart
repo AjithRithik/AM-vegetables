@@ -209,6 +209,7 @@ class AppState extends ChangeNotifier {
       ..writeln('Address: ${c.address}')
       ..writeln('Landmark: ${c.landmark}')
       ..writeln('Pincode: ${c.pincode}');
+    if (c.hasLocation) b.writeln('Map Location: ${c.mapLink}');
     if (c.notes.isNotEmpty) b.writeln('Note: ${c.notes}');
     b
       ..writeln()

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../state.dart';
 import '../widgets.dart';
+import 'location_picker.dart';
 import 'review.dart';
 
 class DetailsScreen extends StatefulWidget {
@@ -24,6 +25,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
   late final _landmark = TextEditingController();
   late final _notes = TextEditingController();
   bool _bannerOpen = true;
+  double? _lat, _lng;
 
   @override
   void initState() {
@@ -37,6 +39,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
     _pin.text = c.pincode;
     _landmark.text = c.landmark;
     _notes.text = c.notes;
+    _lat = c.lat;
+    _lng = c.lng;
   }
 
   @override
@@ -67,10 +71,33 @@ class _DetailsScreenState extends State<DetailsScreen> {
       ..address = _address.text.trim()
       ..pincode = _pin.text.trim()
       ..landmark = _landmark.text.trim()
-      ..notes = _notes.text.trim();
+      ..notes = _notes.text.trim()
+      ..lat = _lat
+      ..lng = _lng;
     st.saveCustomer();
     Navigator.push(context, MaterialPageRoute(builder: (_) => const ReviewScreen()));
   }
+
+  Future<void> _pickLocation() async {
+    final r = await Navigator.push<LatLngResult>(
+        context, MaterialPageRoute(builder: (_) => LocationPickerScreen(initialLat: _lat, initialLng: _lng)));
+    if (r != null) setState(() { _lat = r.lat; _lng = r.lng; });
+  }
+
+  Widget _locationButton() => Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        _label('Map Location / வரைபட இருப்பிடம்', hint: 'Optional'),
+        OutlinedButton.icon(
+          style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(50)),
+          onPressed: _pickLocation,
+          icon: Icon(_lat != null ? Icons.check_circle : Icons.my_location, color: AppColors.green),
+          label: Text(_lat != null ? 'Location selected — tap to change' : 'Pick delivery location on map'),
+        ),
+        if (_lat != null)
+          Align(
+            alignment: Alignment.centerRight,
+            child: TextButton(onPressed: () => setState(() { _lat = null; _lng = null; }), child: const Text('Remove pin')),
+          ),
+      ]);
 
   Widget _page(Widget body) => Scaffold(
         appBar: AppBar(
@@ -96,6 +123,9 @@ class _DetailsScreenState extends State<DetailsScreen> {
     }
     final pin = _pin.text.trim();
     final match = st.shop!.pincodes.where((p) => p.pincode == pin && p.active);
+    final pinNum = int.tryParse(pin) ?? 0;
+    final inTamilNadu = pin.length == 6 && pinNum >= 600001 && pinNum <= 643999;
+    final areaLabel = match.isNotEmpty ? match.first.area : (inTamilNadu ? 'Tamil Nadu' : null);
     return _page(Form(
       key: _form,
       child: ListView(padding: const EdgeInsets.fromLTRB(16, 0, 16, 24), children: [
@@ -154,12 +184,12 @@ class _DetailsScreenState extends State<DetailsScreen> {
               decoration: InputDecoration(
                 counterText: '',
                 prefixIcon: const Icon(Icons.local_shipping_outlined),
-                suffixIcon: match.isNotEmpty
-                    ? Padding(padding: const EdgeInsets.all(10), child: Pill('✓ ${match.first.area}'))
+                suffixIcon: areaLabel != null
+                    ? Padding(padding: const EdgeInsets.all(10), child: Pill('✓ $areaLabel'))
                     : null,
               ),
             ),
-            if (pin.length == 6 && match.isEmpty)
+            if (pin.length == 6 && areaLabel == null)
               const Padding(
                 padding: EdgeInsets.only(top: 6),
                 child: Text('We may not deliver to this pincode — we will confirm on WhatsApp.',
@@ -168,6 +198,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
             _label('Landmark / அடையாளம்', required: true),
             TextFormField(controller: _landmark, validator: _req,
                 decoration: const InputDecoration(prefixIcon: Icon(Icons.explore_outlined))),
+            _locationButton(),
             _label('Delivery Notes / Time', hint: 'Optional'),
             Wrap(spacing: 8, children: [
               for (final s in ['Morning', 'Noon', 'Evening'])

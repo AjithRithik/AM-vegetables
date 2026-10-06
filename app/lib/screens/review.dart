@@ -83,6 +83,14 @@ class ReviewScreen extends StatelessWidget {
             Text('${c.address} — ${c.pincode}', style: const TextStyle(fontWeight: FontWeight.w700)),
             const SizedBox(height: 4),
             Text('Landmark: ${c.landmark}', style: const TextStyle(fontSize: 12.5, color: AppColors.muted)),
+            if (c.hasLocation) ...[
+              const SizedBox(height: 4),
+              const Row(children: [
+                Icon(Icons.location_on, size: 14, color: AppColors.green),
+                SizedBox(width: 4),
+                Text('Map pin attached', style: TextStyle(fontSize: 12.5, color: AppColors.green, fontWeight: FontWeight.w700)),
+              ]),
+            ],
             if (c.notes.isNotEmpty) ...[
               const SizedBox(height: 8),
               Container(
