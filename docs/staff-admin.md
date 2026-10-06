@@ -27,7 +27,11 @@ on `main` using the server-side token. Vercel redeploys and rebuilds `content/pr
 
 - Change the password: edit `ADMIN_PASSWORD` in Vercel and redeploy. Existing logins last 12 hours.
 - If the token expires, saving fails — create a new one and update `GITHUB_TOKEN`.
-- Staff can only change stock, featured flag, label, short line, sizes and photo, and add products.
+- The **Shop** tab lets staff change all text settings in `content/shop.json` via `api/admin/shop.js`:
+  WhatsApp and call numbers, shop name, taglines, open/closed switch, hours, payment note, banner,
+  no-advance-payment message, how-it-works steps, footer badges and delivery pincodes. Only the logo
+  and category icons stay owner-only in `/admin/`.
+- On the **Stock** tab, staff can only change stock, featured flag, label, short line, sizes and photo, and add products.
   Everything else (descriptions, Tamil text, pairing, etc.) is edited in the owner CMS at `/admin/`.
 - Products added without a photo have an empty image. `npm run catalog:validate` requires images,
   so add the photo before running it.

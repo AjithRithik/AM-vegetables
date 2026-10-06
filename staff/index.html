@@ -35,6 +35,15 @@
     .tabs { display:flex; gap:6px; margin:10px 0 4px; background:#e6efe4; padding:4px; border-radius:14px; }
     .tab { flex:1; padding:10px 6px; border:0; background:none; border-radius:11px; font-weight:600; font-size:14px; color:var(--muted); }
     .tab.on { background:#fff; color:var(--green); box-shadow:0 1px 4px rgba(0,0,0,.12); }
+    .vtabs { width:100%; margin:0; background:rgba(0,0,0,.2); }
+    .vtabs .tab { color:#fff; opacity:.85; }
+    .vtabs .tab.on { background:#fff; color:var(--green); opacity:1; }
+    .card { background:var(--card); border-radius:20px; padding:4px 16px 16px; margin-bottom:14px; box-shadow:0 4px 14px rgba(0,0,0,.07); }
+    .card h4 { margin:16px 0 0; font-size:16px; }
+    textarea.field { min-height:96px; resize:vertical; }
+    .prow { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+    .prow .pin { width:112px; flex:none; }
+    .prow .area { flex:1; min-width:0; }
     .count { color:var(--muted); font-size:13px; margin:8px 2px; }
 
     /* product cards */
@@ -128,8 +137,13 @@
     <header><div class="bar">
       <h1>Today's Stock <small class="ta">இன்றைய இருப்பு</small></h1>
       <button class="linkbtn" id="logout">Logout</button>
-    </div></header>
-    <div class="wrap">
+    </div>
+    <div class="bar" style="margin-top:8px"><div class="tabs vtabs" id="views">
+      <button class="tab on" data-v="stock">🥬 Stock <span class="ta">இருப்பு</span></button>
+      <button class="tab" data-v="shop">🏪 Shop <span class="ta">கடை</span></button>
+    </div></div></header>
+    <div class="wrap" id="shopView" hidden></div>
+    <div class="wrap" id="stockView">
       <input class="search" id="q" type="search" placeholder="🔍 Search / தேடு…" />
       <div class="chips" id="chips"></div>
       <div class="tabs" id="tabs">
@@ -200,6 +214,7 @@
     }
     function logout(msg) {
       token = null; try { localStorage.removeItem(TK); } catch (_) {}
+      shopLoaded = false; setView('stock');
       showLogin(msg);
     }
     $('logout').onclick = () => logout();
@@ -445,6 +460,127 @@
       };
     }
     $('addBtn').onclick = addSheet;
+
+    // ---------------------------------------------------------------- shop tab
+    let view = 'stock', shopLoaded = false;
+
+    function setView(v) {
+      view = v;
+      document.querySelectorAll('#views .tab').forEach((t) => t.classList.toggle('on', t.dataset.v === v));
+      $('stockView').hidden = v !== 'stock';
+      $('shopView').hidden = v !== 'shop';
+      $('addBtn').hidden = v !== 'stock';
+      if (v === 'stock') render(); else $('savebar').hidden = true;
+      if (v === 'shop' && !shopLoaded) loadShop();
+    }
+    $('views').addEventListener('click', (e) => { const b = e.target.closest('.tab'); if (b) setView(b.dataset.v); });
+
+    async function loadShop() {
+      $('shopView').replaceChildren(el('div', { class: 'empty' }, 'Loading…'));
+      try {
+        const j = await api('/shop');
+        shopLoaded = true;
+        drawShop(j.shop);
+      } catch (e) {
+        $('shopView').replaceChildren(el('div', { class: 'empty' }, e.message));
+      }
+    }
+
+    function drawShop(s) {
+      const f = JSON.parse(JSON.stringify(s));
+      const bind = (obj, key, extra) => (e) => { obj[key] = e.target.value; };
+      const pins = el('div');
+      const drawPins = () => pins.replaceChildren(
+        ...f.pincodes.map((p, i) => {
+          const on = el('input', { type: 'checkbox', onchange: () => { p.active = on.checked; } });
+          on.checked = p.active;
+          return el('div', { class: 'prow' },
+            el('input', { class: 'field pin', value: p.pincode, inputmode: 'numeric', maxlength: 6, placeholder: 'Pincode', oninput: bind(p, 'pincode') }),
+            el('input', { class: 'field area', value: p.area, maxlength: 60, placeholder: 'Area', oninput: bind(p, 'area') }),
+            el('span', { class: 'switch', title: 'Delivers here' }, on, el('i')),
+            el('button', { class: 'x', 'aria-label': 'Remove', onclick: () => { f.pincodes.splice(i, 1); drawPins(); } }, '✕'));
+        }),
+        el('button', { class: 'btn small', onclick: () => { f.pincodes.push({ pincode: '', area: '', active: true }); drawPins(); } }, '＋ Add pincode'));
+      drawPins();
+
+      const save = el('button', { class: 'btn primary', style: 'width:100%' }, 'Save shop settings / சேமி');
+      save.onclick = async () => {
+        save.disabled = true; save.textContent = 'Saving…';
+        try {
+          const j = await api('/shop', f);
+          drawShop(j.shop);
+          toast('✓ Saved. The app updates in about 1 minute.');
+        } catch (e) { toast(e.message, true); save.disabled = false; save.textContent = 'Save shop settings / சேமி'; }
+      };
+
+      // Editable list of bilingual rows (steps, badges). Returns a node.
+      const rowList = (arr, kEn, kTa, max, addLabel) => {
+        const box = el('div');
+        const draw = () => box.replaceChildren(
+          ...arr.map((r, i) => el('div', { class: 'prow' },
+            el('input', { class: 'field area', value: r[kEn], maxlength: 60, placeholder: 'English', oninput: bind(r, kEn) }),
+            el('input', { class: 'field area ta', value: r[kTa], maxlength: 80, placeholder: 'தமிழ்', oninput: bind(r, kTa) }),
+            el('button', { class: 'x', 'aria-label': 'Remove', onclick: () => { arr.splice(i, 1); draw(); } }, '✕'))),
+          arr.length < max ? el('button', { class: 'btn small', onclick: () => { arr.push({ [kEn]: '', [kTa]: '' }); draw(); } }, addLabel) : null);
+        draw();
+        return box;
+      };
+      const txt = (obj, key, max, lbl, ta) => [
+        el('label', { class: 'lbl' }, lbl),
+        el('input', { class: 'field' + (ta ? ' ta' : ''), value: obj[key], maxlength: max, oninput: bind(obj, key) }),
+      ];
+      const area = (obj, key, max, lbl, ta) => [
+        el('label', { class: 'lbl' }, lbl),
+        Object.assign(el('textarea', { class: 'field' + (ta ? ' ta' : ''), maxlength: max, oninput: bind(obj, key) }), { value: obj[key] }),
+      ];
+
+      $('shopView').replaceChildren(
+        el('div', { class: 'card' },
+          el('h4', null, 'Contact numbers / தொடர்பு எண்'),
+          el('label', { class: 'lbl' }, 'WhatsApp number ', el('small', null, '(orders are sent here — digits with country code)')),
+          el('input', { class: 'field', value: f.whatsapp, inputmode: 'numeric', maxlength: 15, placeholder: '919840123456', oninput: bind(f, 'whatsapp') }),
+          el('label', { class: 'lbl' }, 'Call number'),
+          el('input', { class: 'field', value: f.phone, inputmode: 'tel', maxlength: 20, placeholder: '+91 98401 23456', oninput: bind(f, 'phone') }),
+          el('p', { class: 'hint' }, '⚠ Double-check the WhatsApp number. Customer orders go to this number.')),
+        el('div', { class: 'card' },
+          el('h4', null, 'Shop name / கடை பெயர்'),
+          ...txt(f, 'name_en', 60, 'Name (English)'), ...txt(f, 'name_ta', 80, 'பெயர் (தமிழ்)', true),
+          ...txt(f, 'badge', 20, 'Header badge ', false),
+          ...txt(f, 'splash_tagline_en', 80, 'Tagline (English)'), ...txt(f, 'splash_tagline_ta', 120, 'வாசகம் (தமிழ்)', true),
+          ...txt(f, 'open_label_en', 40, '"Open today" label (English)'), ...txt(f, 'open_label_ta', 60, 'லேபிள் (தமிழ்)', true)),
+        el('div', { class: 'card' },
+          toggleLine('Shop is open', 'கடை திறந்துள்ளது', f.is_open, (v) => { f.is_open = v; }),
+          el('label', { class: 'lbl' }, 'Opening hours / நேரம்'),
+          el('input', { class: 'field', value: f.hours, maxlength: 60, placeholder: '6:00 AM – 9:00 PM', oninput: bind(f, 'hours') }),
+          el('label', { class: 'lbl' }, 'Payment note'),
+          el('input', { class: 'field', value: f.payment_note, maxlength: 120, oninput: bind(f, 'payment_note') })),
+        el('div', { class: 'card' },
+          el('h4', null, 'Home page banner'),
+          el('label', { class: 'lbl' }, 'Title (English)'),
+          el('input', { class: 'field', value: f.banner.title_en, maxlength: 80, oninput: bind(f.banner, 'title_en') }),
+          el('label', { class: 'lbl' }, 'தலைப்பு (தமிழ்)'),
+          el('input', { class: 'field ta', value: f.banner.title_ta, maxlength: 120, oninput: bind(f.banner, 'title_ta') }),
+          el('label', { class: 'lbl' }, 'Small tag ', el('small', null, '(e.g. Morning 6 AM)')),
+          el('input', { class: 'field', value: f.banner.chip, maxlength: 40, oninput: bind(f.banner, 'chip') }),
+          el('label', { class: 'lbl' }, 'Message'),
+          Object.assign(el('textarea', { class: 'field', maxlength: 400, oninput: bind(f.banner, 'body') }), { value: f.banner.body })),
+        el('div', { class: 'card' },
+          el('h4', null, 'No advance payment message'),
+          ...txt(f.no_payment, 'title_en', 80, 'Title (English)'), ...txt(f.no_payment, 'title_ta', 120, 'தலைப்பு (தமிழ்)', true),
+          ...area(f.no_payment, 'body_en', 400, 'Message (English)'), ...area(f.no_payment, 'body_ta', 400, 'செய்தி (தமிழ்)', true)),
+        el('div', { class: 'card' },
+          el('h4', null, 'How it works steps (max 3)'),
+          rowList(f.how_it_works, 'title_en', 'title_ta', 3, '＋ Add step')),
+        el('div', { class: 'card' },
+          el('h4', null, 'Footer badges (max 6)'),
+          rowList(f.footer_badges, 'text_en', 'text_ta', 6, '＋ Add badge')),
+        el('div', { class: 'card' },
+          el('h4', null, 'Delivery pincodes / டெலிவரி அஞ்சல் குறியீடு'),
+          el('p', { class: 'hint' }, 'Switch off a pincode to stop delivery there without deleting it.'),
+          pins),
+        save,
+        el('p', { class: 'hint', style: 'text-align:center;margin-top:14px' }, 'The logo and category icons can only be changed by the owner.'));
+    }
 
     // ---------------------------------------------------------------- boot
     async function load() {

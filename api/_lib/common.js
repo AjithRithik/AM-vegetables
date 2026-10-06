@@ -161,6 +161,6 @@ const ID_RE = /^[a-z0-9-]{1,60}$/;
 const json = (o) => JSON.stringify(o, null, 2) + '\n';
 
 module.exports = {
-  DIR, safeEqual, makeToken, requireAuth, configured, gh, loadProducts, commitFiles, readProduct,
+  DIR, BRANCH, safeEqual, makeToken, requireAuth, configured, gh, loadProducts, commitFiles, readProduct,
   text, cleanPacks, imageFile, ID_RE, json, UNITS,
 };
