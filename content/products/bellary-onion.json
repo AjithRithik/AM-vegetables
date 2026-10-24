@@ -44,7 +44,7 @@
   "allow_note": true,
   "note_hint": "Medium sized bulbs",
   "featured": false,
-  "in_stock": true,
+  "in_stock": false,
   "sort": 20,
   "keywords": [
     "onion",
