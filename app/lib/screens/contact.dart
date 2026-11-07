@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../config.dart';
 import '../state.dart';
 import '../widgets.dart';
-import 'server_dialog.dart';
+import 'location_select.dart';
+import 'product_card.dart' show fadeRoute;
+import 'package:url_launcher/url_launcher.dart';
 
 class ContactScreen extends StatelessWidget {
   const ContactScreen({super.key});
@@ -16,12 +17,34 @@ class ContactScreen extends StatelessWidget {
     return ListView(padding: const EdgeInsets.all(16), children: [
       SectionCard(
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onLongPress: AppConfig.allowHostSwitch ? () => showServerDialog(context) : null,
-            child: BiText(s.nameEn, s.nameTa, size: 20),
+          BiText(s.nameEn, s.nameTa, size: 20),
+          const SizedBox(height: 10),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            decoration: BoxDecoration(color: AppColors.mint, borderRadius: BorderRadius.circular(14)),
+            child: Row(children: [
+              const Icon(Icons.location_on, color: AppColors.green, size: 20),
+              const SizedBox(width: 8),
+              Expanded(child: Text(st.location?.nameEn ?? '', style: const TextStyle(fontWeight: FontWeight.w800))),
+              TextButton(
+                onPressed: () => Navigator.push(context, fadeRoute(const LocationSelectScreen(initial: false))),
+                child: const Text('Change'),
+              ),
+            ]),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
+          if (s.address.isNotEmpty)
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: const Icon(Icons.storefront_outlined, color: AppColors.green),
+              title: Text(s.address),
+              trailing: s.mapsUrl.isEmpty
+                  ? null
+                  : IconButton(
+                      icon: const Icon(Icons.directions, color: AppColors.green),
+                      onPressed: () => launchUrl(Uri.parse(s.mapsUrl), mode: LaunchMode.externalApplication),
+                    ),
+            ),
           ListTile(contentPadding: EdgeInsets.zero, leading: const Icon(Icons.schedule, color: AppColors.green), title: Text(s.hours), subtitle: Text(s.isOpen ? s.openEn : 'Closed')),
           ListTile(contentPadding: EdgeInsets.zero, leading: const Icon(Icons.payments_outlined, color: AppColors.green), title: Text(s.paymentNote)),
           const SizedBox(height: 8),

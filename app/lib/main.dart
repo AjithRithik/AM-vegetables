@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-import 'config.dart';
 import 'screens/shell.dart';
 import 'screens/splash.dart';
 import 'state.dart';
@@ -10,7 +9,6 @@ import 'widgets.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await AppConfig.init();
   runApp(ChangeNotifierProvider(create: (_) => AppState(), child: const AmApp()));
 }
 

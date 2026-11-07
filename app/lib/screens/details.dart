@@ -53,6 +53,13 @@ class _DetailsScreenState extends State<DetailsScreen> {
 
   String? _req(String? v) => (v == null || v.trim().isEmpty) ? 'Required / தேவை' : null;
 
+  /// Same minimums as the shop's database, so a too-short entry is caught here, not at the last step.
+  String? _minLen(String? v, int n) {
+    final t = (v ?? '').trim();
+    if (t.isEmpty) return 'Required / தேவை';
+    return t.length < n ? 'Please enter at least $n characters' : null;
+  }
+
   Widget _label(String en, {bool required = false, String? hint}) => Padding(
         padding: const EdgeInsets.only(top: 14, bottom: 6),
         child: Row(children: [
@@ -81,7 +88,18 @@ class _DetailsScreenState extends State<DetailsScreen> {
   Future<void> _pickLocation() async {
     final r = await Navigator.push<LatLngResult>(
         context, MaterialPageRoute(builder: (_) => LocationPickerScreen(initialLat: _lat, initialLng: _lng)));
-    if (r != null) setState(() { _lat = r.lat; _lng = r.lng; });
+    if (r == null) return;
+    setState(() { _lat = r.lat; _lng = r.lng; });
+    // Fill the address from the pin, but never overwrite what the customer already typed.
+    final g = r.place;
+    if (g == null) return;
+    var filled = false;
+    if (_address.text.trim().isEmpty && g.short.isNotEmpty) { _address.text = g.short; filled = true; }
+    if (_pin.text.trim().isEmpty && g.postcode.isNotEmpty) { _pin.text = g.postcode; filled = true; }
+    if (filled && mounted) {
+      setState(() {});
+      showSnack(context, 'Address filled from the map. Please add your door number and check it.');
+    }
   }
 
   Widget _locationButton() => Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -146,7 +164,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             const BiText('Customer Contact Information', 'வாடிக்கையாளர் விவரங்கள்', size: 16),
             _label('Full Name / முழு பெயர்', required: true),
-            TextFormField(controller: _name, validator: _req, textCapitalization: TextCapitalization.words,
+            TextFormField(controller: _name, validator: (v) => _minLen(v, 2), textCapitalization: TextCapitalization.words,
                 decoration: const InputDecoration(prefixIcon: Icon(Icons.person_outline))),
             _label('WhatsApp No. / வாட்ஸ்அப் எண்', required: true),
             TextFormField(
@@ -172,7 +190,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             const BiText('Delivery Address', 'டெலிவரி இருப்பிடம்', size: 16),
             _label('Door No, Flat, Street / கதவு எண், தெரு', required: true),
-            TextFormField(controller: _address, validator: _req, maxLines: 2,
+            TextFormField(controller: _address, validator: (v) => _minLen(v, 5), maxLines: 2,
                 decoration: const InputDecoration(prefixIcon: Icon(Icons.place_outlined))),
             _label('Pincode / அஞ்சல் குறியீடு', required: true),
             TextFormField(

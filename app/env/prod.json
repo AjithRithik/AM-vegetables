@@ -1,3 +1,4 @@
 {
-  "CMS_BASE_URL": "https://am-veg.vercel.app"
+  "SUPABASE_URL": "https://zuucgnnnygtyvwmshwpe.supabase.co",
+  "SUPABASE_KEY": "sb_publishable_koyTn0cjI12NIV-5Xs-Cug_l_YBvhca"
 }

@@ -44,6 +44,18 @@ class MyListScreen extends StatelessWidget {
                 icon: const Icon(Icons.delete_sweep, size: 18, color: Colors.red),
                 label: const Text('Clear', style: TextStyle(color: Colors.red))),
           ]),
+          if (lines.length > 3)
+            Container(
+              margin: const EdgeInsets.only(bottom: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
+              decoration: BoxDecoration(color: AppColors.mint, borderRadius: BorderRadius.circular(14)),
+              child: Row(children: [
+                const Icon(Icons.verified_user, size: 16, color: AppColors.green),
+                const SizedBox(width: 8),
+                Expanded(child: Text('${shop.npTitleEn} · pay on receipt', style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w700, color: AppColors.greenDark))),
+              ]),
+            )
+          else
           SectionCard(
             color: AppColors.mint,
             child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -62,10 +74,10 @@ class MyListScreen extends StatelessWidget {
               direction: DismissDirection.endToStart,
               onDismissed: (_) => st.remove(l.product.id),
               background: Container(
-                margin: const EdgeInsets.only(bottom: 14),
+                margin: const EdgeInsets.only(bottom: 10),
                 padding: const EdgeInsets.only(right: 24),
                 alignment: Alignment.centerRight,
-                decoration: BoxDecoration(color: Colors.red.shade400, borderRadius: BorderRadius.circular(20)),
+                decoration: BoxDecoration(color: Colors.red.shade400, borderRadius: BorderRadius.circular(18)),
                 child: const Icon(Icons.delete_outline, color: Colors.white),
               ),
               child: _LineCard(l),
@@ -114,57 +126,124 @@ class MyListScreen extends StatelessWidget {
         top: false,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
-          child: FilledButton.icon(
+          child: Column(mainAxisSize: MainAxisSize.min, children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(4, 0, 4, 8),
+              child: Row(children: [
+                const Expanded(child: BiText('Estimated total', 'மொத்த தொகை', size: 14)),
+                Text(money(st.cartTotal), style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w800, color: AppColors.green)),
+              ]),
+            ),
+            FilledButton.icon(
             style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(54), backgroundColor: AppColors.green),
             onPressed: () => Navigator.push(context, fadeRoute(const DetailsScreen())),
             icon: const Icon(Icons.arrow_forward),
             iconAlignment: IconAlignment.end,
             label: const Text('Continue • Delivery Details', style: TextStyle(fontWeight: FontWeight.w800)),
           ),
+          ]),
         ),
       ),
     ]);
   }
 }
 
-class _LineCard extends StatelessWidget {
+/// One cart item as a short row. Tap the size pill to change the size or add a note, so a long
+/// cart stays easy to scan and scroll.
+class _LineCard extends StatefulWidget {
   final CartLine l;
   const _LineCard(this.l);
 
   @override
+  State<_LineCard> createState() => _LineCardState();
+}
+
+class _LineCardState extends State<_LineCard> {
+  bool _open = false;
+
+  @override
   Widget build(BuildContext context) {
     final st = context.read<AppState>();
+    final l = widget.l;
     final p = l.product;
-    return SectionCard(
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          SizedBox(width: 72, height: 72, child: ProductImage(p.image, height: 72)),
-          const SizedBox(width: 12),
-          Expanded(child: BiText(p.nameEn, p.nameTa, size: 15)),
-          IconButton(onPressed: () => st.remove(p.id), icon: const Icon(Icons.delete_outline, color: AppColors.muted)),
-        ]),
-        const SizedBox(height: 10),
-        Row(children: [
+    final canEdit = p.packs.length > 1 || p.allowNote;
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.fromLTRB(10, 10, 12, 10),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(18),
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 12, offset: const Offset(0, 3))],
+      ),
+      child: Column(children: [
+        Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+          SizedBox(width: 56, height: 56, child: ProductImage(p.image, height: 56)),
+          const SizedBox(width: 10),
           Expanded(
-            child: Wrap(spacing: 6, runSpacing: 6, children: [
-              for (var i = 0; i < p.packs.length; i++)
-                OptionChip(p.packs[i].labelEn, selected: l.packIndex == i, onTap: () => st.setPack(p.id, i)),
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(p.nameEn, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 14.5)),
+              Text(p.nameTa, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12, color: AppColors.muted)),
+              const SizedBox(height: 5),
+              InkWell(
+                onTap: canEdit ? () => setState(() => _open = !_open) : null,
+                borderRadius: BorderRadius.circular(12),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
+                  decoration: BoxDecoration(color: AppColors.mint, borderRadius: BorderRadius.circular(12)),
+                  child: Row(mainAxisSize: MainAxisSize.min, children: [
+                    Flexible(
+                      child: Text('${l.pack.labelEn} · ${l.pack.priceText}',
+                          maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w700, color: AppColors.greenDark)),
+                    ),
+                    if (canEdit) Icon(_open ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down, size: 16, color: AppColors.green),
+                  ]),
+                ),
+              ),
             ]),
           ),
-          Stepper2(value: l.count, onChanged: (v) => st.setCount(p.id, v)),
+          const SizedBox(width: 8),
+          Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
+            Stepper2(value: l.count, onChanged: (v) => st.setCount(p.id, v)),
+            const SizedBox(height: 6),
+            Text(money(l.total), style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 15, color: AppColors.green)),
+          ]),
         ]),
-        if (p.allowNote) ...[
-          const SizedBox(height: 10),
-          TextFormField(
-            initialValue: l.note,
-            onChanged: (v) => st.setNote(p.id, v),
-            style: const TextStyle(fontSize: 13),
-            decoration: InputDecoration(
-                isDense: true,
-                hintText: p.noteHint.isEmpty ? 'Preference (optional) / விருப்பம்' : 'Preference: ${p.noteHint}',
-                prefixIcon: const Icon(Icons.edit_note, size: 20)),
+        if (l.note.isNotEmpty && !_open)
+          Padding(
+            padding: const EdgeInsets.only(top: 6),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text('Note: ${l.note}', maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 11.5, fontStyle: FontStyle.italic, color: AppColors.muted)),
+            ),
           ),
-        ],
+        AnimatedSize(
+          duration: const Duration(milliseconds: 200),
+          alignment: Alignment.topCenter,
+          child: !_open
+              ? const SizedBox(width: double.infinity)
+              : Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                    if (p.packs.length > 1)
+                      Wrap(spacing: 6, runSpacing: 6, children: [
+                        for (var i = 0; i < p.packs.length; i++)
+                          OptionChip('${p.packs[i].labelEn} · ${p.packs[i].priceText}', selected: l.packIndex == i, onTap: () => st.setPack(p.id, i)),
+                      ]),
+                    if (p.allowNote) ...[
+                      const SizedBox(height: 10),
+                      TextFormField(
+                        initialValue: l.note,
+                        onChanged: (v) => st.setNote(p.id, v),
+                        style: const TextStyle(fontSize: 13),
+                        decoration: InputDecoration(
+                            isDense: true,
+                            hintText: p.noteHint.isEmpty ? 'Preference (optional) / விருப்பம்' : 'Preference: ${p.noteHint}',
+                            prefixIcon: const Icon(Icons.edit_note, size: 20)),
+                      ),
+                    ],
+                  ]),
+                ),
+        ),
       ]),
     );
   }

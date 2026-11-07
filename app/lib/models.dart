@@ -2,6 +2,20 @@ String _s(dynamic v) => v?.toString() ?? '';
 List<String> _ls(dynamic v) => (v as List?)?.map((e) => e.toString()).toList() ?? [];
 bool _b(dynamic v, [bool d = false]) => v is bool ? v : d;
 
+/// Rupee amount without a trailing .00 (34 or 34.50).
+String money(num n) => '₹${n == n.roundToDouble() ? n.toInt() : n.toStringAsFixed(2)}';
+
+/// A shop location the customer can pick (Sivakasi, Krishnan Kovil, ...).
+class ShopLocation {
+  final String id, slug, nameEn, nameTa;
+  const ShopLocation(this.id, this.slug, this.nameEn, this.nameTa);
+  ShopLocation.fromJson(Map<String, dynamic> j)
+      : id = _s(j['id']),
+        slug = _s(j['slug']),
+        nameEn = _s(j['name_en']),
+        nameTa = _s(j['name_ta']);
+}
+
 class ProductCategory {
   /// Built from products: id is the normalised English name.
   final String id, nameEn, nameTa;
@@ -11,17 +25,25 @@ class ProductCategory {
 }
 
 class Pack {
-  final String labelEn, labelTa, note, unit;
+  final String id, labelEn, labelTa, note, unit;
   final double quantity;
+  final double? price, mrp;
   final bool isDefault, popular;
   Pack.fromJson(Map<String, dynamic> j)
-      : labelEn = _s(j['label_en']),
+      : id = _s(j['id']),
+        price = (j['price'] as num?)?.toDouble(),
+        mrp = (j['mrp'] as num?)?.toDouble(),
+        labelEn = _s(j['label_en']),
         labelTa = _s(j['label_ta']),
         note = _s(j['note']),
         unit = _s(j['unit']),
         quantity = (j['quantity'] as num?)?.toDouble() ?? 1,
         isDefault = _b(j['is_default']),
         popular = _b(j['popular']);
+
+  /// Price shown to the customer; the catalogue view only returns priced packs.
+  double get cost => price ?? 0;
+  String get priceText => money(cost);
 }
 
 class TrustPoint {
@@ -82,6 +104,9 @@ class Product {
 
   String get categoryId => ProductCategory.keyOf(categoryEn);
 
+  /// Lowest pack price, for "From ₹x" labels.
+  double get fromPrice => packs.map((k) => k.cost).reduce((a, b) => a < b ? a : b);
+
   bool matches(String q) {
     q = q.toLowerCase().trim();
     if (q.isEmpty) return true;
@@ -99,7 +124,7 @@ class Pincode {
 }
 
 class Shop {
-  final String nameEn, nameTa, badge, logo, splashEn, splashTa, whatsapp, phone;
+  final String nameEn, nameTa, badge, logo, splashEn, splashTa, whatsapp, phone, address, mapsUrl;
   final String openEn, openTa, hours, paymentNote;
   final bool isOpen;
   final String bannerTitleEn, bannerTitleTa, bannerChip, bannerBody;
@@ -122,6 +147,8 @@ class Shop {
         splashTa = _s(j['splash_tagline_ta']),
         whatsapp = _s(j['whatsapp']),
         phone = _s(j['phone']),
+        address = _s(j['address']),
+        mapsUrl = _s(j['maps_url']),
         openEn = _s(j['open_label_en']),
         openTa = _s(j['open_label_ta']),
         hours = _s(j['hours']),
@@ -190,4 +217,5 @@ class CartLine {
 
   Pack get pack => product.packs[packIndex.clamp(0, product.packs.length - 1)];
   String get label => count == 1 ? pack.labelEn : '$count × ${pack.labelEn}';
+  double get total => pack.cost * count;
 }

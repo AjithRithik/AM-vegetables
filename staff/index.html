@@ -4,597 +4,340 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex" />
-  <meta name="theme-color" content="#0b6b3a" />
-  <title>AM Vegetables · Staff</title>
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#0f7a43" />
+  <title>AM Vegetables · Admin</title>
+  <link rel="icon" href="/images/uploads/branding/am-vegetables-logo.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
-    :root { --green:#0b6b3a; --green-dark:#064d29; --mint:#d8f5df; --bg:#f3f8f2; --ink:#1b2b22; --muted:#6b7c72;
-            --line:#dfe8dc; --card:#fff; --amber:#f5a623; --red:#c62828; }
+    :root {
+      --brand:#0f7a43; --brand-ink:#fff; --brand-soft:#e3f4ea; --brand-dark:#0a5a31;
+      --bg:#f5f7f5; --surface:#fff; --surface-2:#f0f4f1; --ink:#14211a; --muted:#65756b; --line:#e3e9e4;
+      --warn:#b45309; --warn-soft:#fff4dc; --red:#c62828; --red-soft:#fdeaea; --amber:#f5a623;
+      --shadow:0 1px 2px rgba(16,32,22,.05), 0 4px 16px rgba(16,32,22,.05);
+      --radius:14px; --bar-h:0px; color-scheme:light;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --brand:#27a862; --brand-soft:#173325; --brand-dark:#6fe0a2; --bg:#0e1411; --surface:#161f1a; --surface-2:#1d2923;
+              --ink:#e8f0ea; --muted:#91a398; --line:#26342c; --warn:#f0b24a; --warn-soft:#33270f; --red:#ff7a7a; --red-soft:#3a1a1a;
+              --shadow:0 1px 2px rgba(0,0,0,.4); color-scheme:dark; }
+    }
     * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
     [hidden] { display:none !important; }
-    body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.45 "Plus Jakarta Sans","Noto Sans Tamil",system-ui,sans-serif; }
-    button, input, select { font:inherit; color:inherit; }
+    html { scroll-padding-top:120px; }
+    body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.45 "Plus Jakarta Sans","Noto Sans Tamil",system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
+    button, input, select, textarea { font:inherit; color:inherit; }
     button { cursor:pointer; }
     .ta { font-family:"Noto Sans Tamil",sans-serif; }
+    .ico { display:inline-flex; flex:none; }
+    small, .muted { color:var(--muted); }
+    h1, h2, h3, h4 { margin:0; }
 
-    /* top bar */
-    header { background:var(--green); color:#fff; padding:12px 16px; position:sticky; top:0; z-index:10; }
-    .bar { max-width:1000px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:8px; }
-    header h1 { margin:0; font-size:18px; }
-    header h1 small { display:block; font-size:12px; font-weight:400; opacity:.85; }
-    .linkbtn { background:none; border:0; color:#fff; opacity:.9; font-size:14px; padding:8px; }
+    /* ---------- app shell ---------- */
+    .shell { display:grid; grid-template-columns:264px minmax(0,1fr); min-height:100vh; }
+    .side { position:sticky; top:0; height:100vh; display:flex; flex-direction:column; gap:18px; padding:20px 16px; background:var(--surface); border-right:1px solid var(--line); }
+    .brand { display:flex; align-items:center; gap:10px; padding:2px 6px; }
+    .brand img { width:38px; height:38px; border-radius:10px; object-fit:cover; background:var(--brand-soft); }
+    .brand b { display:block; font-size:16px; line-height:1.1; }
+    .brand small { font-size:12px; }
+    .locpick { display:block; }
+    .locpick .cap { display:block; font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin:0 4px 6px; }
+    .locpick select { width:100%; padding:11px 12px; border-radius:12px; border:1.5px solid var(--line); background:var(--surface-2); font-weight:700; }
+    .nav { display:flex; flex-direction:column; gap:4px; }
+    .navbtn { display:flex; align-items:center; gap:12px; padding:11px 12px; border:0; background:none; border-radius:12px; font-weight:700; color:var(--muted); text-align:left; }
+    .navbtn:hover { background:var(--surface-2); color:var(--ink); }
+    .navbtn.on { background:var(--brand-soft); color:var(--brand-dark); }
+    .userblock { margin-top:auto; display:flex; align-items:center; gap:10px; padding:10px; border:1px solid var(--line); border-radius:14px; }
+    .avatar { width:36px; height:36px; border-radius:50%; background:var(--brand); color:var(--brand-ink); display:flex; align-items:center; justify-content:center; font-weight:800; flex:none; }
+    .uinfo { min-width:0; flex:1; }
+    .uinfo b { display:block; font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .uinfo small { font-size:12px; }
+    .iconbtn { width:38px; height:38px; flex:none; display:inline-flex; align-items:center; justify-content:center; border-radius:10px; border:1.5px solid var(--line); background:var(--surface); color:var(--ink); padding:0; }
+    .iconbtn:hover:not(:disabled) { background:var(--surface-2); }
+    .iconbtn:disabled { opacity:.35; cursor:default; }
+    .content { min-width:0; padding:28px clamp(16px,3vw,40px) 60px; }
+    #main { max-width:1080px; margin:0 auto; }
 
-    .wrap { max-width:1000px; margin:0 auto; padding:12px 16px 120px; }
-    .search { width:100%; padding:13px 16px; border:1.5px solid var(--line); border-radius:14px; background:#fff; font-size:16px; }
-    .chips { display:flex; gap:8px; overflow-x:auto; padding:10px 0 4px; scrollbar-width:none; }
+    @media (max-width:899px) {
+      .shell { display:block; --bar-h:60px; }
+      .side { height:auto; flex-direction:row; align-items:center; gap:10px; padding:9px 14px; z-index:20; border-right:0; border-bottom:1px solid var(--line); }
+      .brand { flex:1; min-width:0; padding:0; } .brand small { display:none; }
+      .brand b { font-size:15px; }
+      .locpick { flex:none; max-width:44vw; } .locpick .cap { display:none; }
+      .locpick select { padding:8px 10px; font-size:14px; }
+      .userblock { margin:0; padding:0; border:0; } .avatar, .uinfo { display:none; }
+      .nav { position:fixed; left:0; right:0; bottom:0; z-index:25; flex-direction:row; gap:0; padding:6px 8px calc(6px + env(safe-area-inset-bottom)); background:var(--surface); border-top:1px solid var(--line); }
+      .navbtn { flex:1; flex-direction:column; gap:3px; padding:7px 4px; font-size:11px; text-align:center; align-items:center; }
+      .content { padding:16px 14px 100px; }
+    }
+
+    /* ---------- page pieces ---------- */
+    .pagehead { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:16px; }
+    .pagehead h1 { font-size:24px; font-weight:800; letter-spacing:-.01em; }
+    .pagehead .sub { color:var(--muted); font-size:14px; margin-top:2px; }
+    .headacts { display:flex; gap:8px; flex-wrap:wrap; }
+    .card { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:16px; box-shadow:var(--shadow); }
+    .cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr)); gap:14px; margin-bottom:14px; }
+    .card h3 { font-size:17px; font-weight:800; }
+
+    /* buttons + inputs */
+    .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:40px; padding:9px 16px; border-radius:11px; border:1.5px solid var(--line); background:var(--surface); font-weight:700; font-size:14px; text-decoration:none; color:var(--ink); }
+    .btn:hover:not(:disabled) { background:var(--surface-2); }
+    .btn.primary { background:var(--brand); border-color:var(--brand); color:var(--brand-ink); }
+    .btn.primary:hover:not(:disabled) { filter:brightness(1.08); background:var(--brand); }
+    .btn.danger { color:var(--red); border-color:transparent; background:var(--red-soft); }
+    .btn.small { min-height:34px; padding:6px 12px; font-size:13px; border-radius:10px; }
+    .btn.block { width:100%; }
+    .btn:disabled { opacity:.55; cursor:default; }
+    .field { width:100%; padding:11px 13px; border:1.5px solid var(--line); border-radius:11px; background:var(--surface); font-size:15px; }
+    textarea.field { min-height:84px; resize:vertical; }
+    .field:focus, .search-in:focus, .pin-price:focus, .locpick select:focus { outline:3px solid color-mix(in srgb, var(--brand) 28%, transparent); border-color:var(--brand); }
+    .field:disabled { background:var(--surface-2); color:var(--muted); }
+
+    /* toolbar */
+    .toolbar { position:sticky; top:var(--bar-h); z-index:8; background:var(--bg); padding:8px 0 10px; display:grid; gap:10px; }
+    @media (min-width:900px) { .toolbar { grid-template-columns:minmax(220px,320px) 1fr; align-items:center; } .toolbar .chips { grid-column:1 / -1; } }
+    .searchbox { position:relative; display:block; }
+    .searchbox .ico { position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--muted); pointer-events:none; }
+    .search-in { width:100%; padding:11px 13px 11px 38px; border:1.5px solid var(--line); border-radius:11px; background:var(--surface); font-size:15px; }
+    .seg { display:flex; gap:3px; background:var(--surface-2); padding:3px; border-radius:12px; overflow-x:auto; scrollbar-width:none; }
+    .seg::-webkit-scrollbar { display:none; }
+    .seg button { flex:1 0 auto; display:inline-flex; align-items:center; justify-content:center; gap:6px; padding:8px 12px; border:0; background:none; border-radius:9px; font-weight:700; font-size:13px; color:var(--muted); white-space:nowrap; }
+    .seg button.on { background:var(--surface); color:var(--ink); box-shadow:0 1px 3px rgba(0,0,0,.12); }
+    .cnt { font-size:11px; background:var(--line); color:var(--muted); border-radius:20px; padding:1px 7px; font-weight:800; }
+    .seg button.on .cnt { background:var(--brand-soft); color:var(--brand-dark); }
+    .chips { display:flex; gap:6px; overflow-x:auto; scrollbar-width:none; padding-bottom:2px; }
     .chips::-webkit-scrollbar { display:none; }
-    .chip { flex:none; padding:9px 16px; border-radius:20px; border:1.5px solid var(--line); background:#fff; font-weight:600; font-size:14px; }
-    .chip.on { background:var(--green); border-color:var(--green); color:#fff; }
-    .tabs { display:flex; gap:6px; margin:10px 0 4px; background:#e6efe4; padding:4px; border-radius:14px; }
-    .tab { flex:1; padding:10px 6px; border:0; background:none; border-radius:11px; font-weight:600; font-size:14px; color:var(--muted); }
-    .tab.on { background:#fff; color:var(--green); box-shadow:0 1px 4px rgba(0,0,0,.12); }
-    .vtabs { width:100%; margin:0; background:rgba(0,0,0,.2); }
-    .vtabs .tab { color:#fff; opacity:.85; }
-    .vtabs .tab.on { background:#fff; color:var(--green); opacity:1; }
-    .card { background:var(--card); border-radius:20px; padding:4px 16px 16px; margin-bottom:14px; box-shadow:0 4px 14px rgba(0,0,0,.07); }
-    .card h4 { margin:16px 0 0; font-size:16px; }
-    textarea.field { min-height:96px; resize:vertical; }
-    .prow { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
-    .prow .pin { width:112px; flex:none; }
-    .prow .area { flex:1; min-width:0; }
-    .count { color:var(--muted); font-size:13px; margin:8px 2px; }
+    .chip { flex:none; padding:6px 13px; border-radius:20px; border:1.5px solid var(--line); background:var(--surface); font-weight:600; font-size:13px; }
+    .chip.on { background:var(--brand); border-color:var(--brand); color:var(--brand-ink); }
 
-    /* product cards */
-    .grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
-    @media (min-width:640px) { .grid { grid-template-columns:repeat(3,1fr); } }
-    @media (min-width:900px) { .grid { grid-template-columns:repeat(4,1fr); } }
-    .pcard { background:var(--card); border-radius:20px; overflow:hidden; box-shadow:0 4px 14px rgba(0,0,0,.07); display:flex; flex-direction:column; }
-    .pcard.out .pimg { filter:grayscale(1); opacity:.6; }
-    .pcard.changed { outline:3px solid var(--amber); }
-    .pimg { width:100%; aspect-ratio:1.15; object-fit:cover; background:var(--mint); display:block; border:0; padding:0; }
-    .pbody { padding:10px 12px 6px; flex:1; text-align:left; background:none; border:0; width:100%; }
-    .pname { font-weight:700; font-size:15px; line-height:1.25; }
-    .pta { color:var(--muted); font-size:13px; }
-    .pfoot { display:flex; align-items:center; justify-content:space-between; padding:6px 12px 12px; gap:8px; }
-    .status { font-size:13px; font-weight:700; color:var(--green); }
-    .pcard.out .status { color:var(--red); }
-    .star { color:var(--amber); }
+    /* progress */
+    .progress { display:flex; align-items:center; gap:16px; flex-wrap:wrap; margin-bottom:6px; }
+    .progress .txt { flex:1 1 220px; min-width:0; }
+    .progress .txt b { font-size:15px; }
+    .bar { height:8px; background:var(--surface-2); border-radius:8px; overflow:hidden; margin-top:8px; }
+    .bar i { display:block; height:100%; background:var(--brand); border-radius:8px; transition:width .3s; }
 
-    /* toggle switch */
-    .switch { position:relative; width:56px; height:32px; flex:none; }
+    /* product list */
+    .listcard { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow); }
+    .prod { display:grid; grid-template-columns:1fr; gap:10px; padding:12px 14px; border-bottom:1px solid var(--line); }
+    .prod:last-child { border-bottom:0; }
+    .prod:hover { background:color-mix(in srgb, var(--surface-2) 55%, transparent); }
+    /* Layout follows the width of the list, not the screen: stacked -> two lines -> one line */
+    .listcard { container-type:inline-size; }
+    @container (min-width:600px) {
+      .prod { grid-template-columns:minmax(0,1fr) auto; grid-template-areas:"main ctl" "packs packs"; align-items:center; gap:10px 16px; padding:12px 18px; }
+      .pmain { grid-area:main; } .ppacks { grid-area:packs; } .pctl { grid-area:ctl; }
+    }
+    @container (min-width:1120px) {
+      .prod { grid-template-columns:minmax(200px,.9fr) minmax(0,2.1fr) auto; grid-template-areas:"main packs ctl"; padding:10px 18px; }
+    }
+    .pmain { display:flex; align-items:center; gap:12px; min-width:0; }
+    .pthumb { width:52px; height:52px; border-radius:12px; object-fit:cover; background:var(--brand-soft); flex:none; display:flex; align-items:center; justify-content:center; color:var(--brand); }
+    .prod.off .pthumb { filter:grayscale(1); opacity:.5; }
+    .prod.off .pname { color:var(--muted); }
+    .pinfo { min-width:0; }
+    .pname { font-weight:800; line-height:1.2; }
+    .pta { color:var(--muted); font-size:13px; line-height:1.3; }
+    .pmeta { display:flex; flex-wrap:wrap; gap:5px; margin-top:4px; }
+    .pill { font-size:11px; font-weight:700; padding:2px 8px; border-radius:20px; background:var(--surface-2); color:var(--muted); }
+    .pill.warn { background:var(--warn-soft); color:var(--warn); }
+    .pill.ok { background:var(--brand-soft); color:var(--brand-dark); }
+    .pill.off { background:var(--red-soft); color:var(--red); }
+    .ppacks { display:grid; grid-template-columns:repeat(auto-fill, minmax(84px, 100px)); gap:8px; align-items:end; justify-content:start; }
+    .ppacks.note { display:flex; color:var(--muted); font-size:13px; align-items:center; }
+    .pbox { min-width:0; }
+    .pbox .cap { display:block; font-size:11px; font-weight:700; color:var(--muted); margin-bottom:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .money { position:relative; }
+    .money .cur { position:absolute; left:10px; top:50%; transform:translateY(-50%); color:var(--muted); font-weight:700; pointer-events:none; font-size:14px; }
+    .pin-price { width:100%; padding:8px 8px 8px 24px; border:1.5px solid var(--line); border-radius:10px; font-size:15px; font-weight:700; background:var(--surface); }
+    .pin-price.missing { border-color:color-mix(in srgb, var(--warn) 55%, var(--line)); background:var(--warn-soft); }
+    .pin-price.saved { border-color:var(--brand); background:var(--brand-soft); }
+    .pin-price:disabled { background:var(--surface-2); }
+    .pctl { display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+    .pctl { justify-content:space-between; padding-top:8px; border-top:1px dashed var(--line); }
+    @container (min-width:600px) { .pctl { justify-content:flex-end; padding-top:0; border-top:0; flex-wrap:nowrap; } }
+    .pin-price::-webkit-outer-spin-button, .pin-price::-webkit-inner-spin-button { -webkit-appearance:none; margin:0; }
+    .pin-price { -moz-appearance:textfield; appearance:textfield; }
+    .tog { display:flex; align-items:center; gap:8px; font-size:13px; font-weight:700; }
+    .tog.dis { opacity:.45; }
+    .star { color:#b8c2ba; }
+    .star.on { color:var(--amber); } .star.on svg { fill:currentColor; }
+
+    .switch { position:relative; width:40px; height:24px; flex:none; display:inline-block; }
     .switch input { position:absolute; inset:0; width:100%; height:100%; opacity:0; margin:0; z-index:1; cursor:pointer; }
-    .switch i { position:absolute; inset:0; background:#b9c4ba; border-radius:32px; transition:.15s; }
-    .switch i::after { content:""; position:absolute; top:3px; left:3px; width:26px; height:26px; background:#fff; border-radius:50%; transition:.15s; box-shadow:0 1px 3px rgba(0,0,0,.3); }
-    .switch input:checked + i { background:var(--green); }
-    .switch input:checked + i::after { transform:translateX(24px); }
+    .switch input:disabled { cursor:default; }
+    .switch i { position:absolute; inset:0; background:#aab5ad; border-radius:24px; transition:.15s; }
+    .switch i::after { content:""; position:absolute; top:3px; left:3px; width:18px; height:18px; background:#fff; border-radius:50%; transition:.15s; box-shadow:0 1px 3px rgba(0,0,0,.35); }
+    .switch input:checked + i { background:var(--brand); }
+    .switch input:checked + i::after { transform:translateX(16px); }
+    .switch input:focus-visible + i { outline:3px solid color-mix(in srgb, var(--brand) 35%, transparent); }
 
-    /* buttons */
-    .btn { padding:14px 20px; border-radius:14px; border:1.5px solid var(--line); background:#fff; font-weight:700; }
-    .btn.primary { background:var(--green); border-color:var(--green); color:#fff; }
-    .btn.primary:disabled { opacity:.55; }
-    .btn.danger { color:var(--red); }
-    .btn.small { padding:9px 14px; font-size:14px; border-radius:12px; }
-    .fab { position:fixed; right:16px; bottom:16px; z-index:9; background:var(--amber); color:#1b2b22; border:0; border-radius:28px; padding:16px 22px; font-weight:700; box-shadow:0 6px 18px rgba(0,0,0,.25); }
-    .savebar { position:fixed; left:0; right:0; bottom:0; z-index:12; background:#fff; border-top:1px solid var(--line); padding:12px 16px; box-shadow:0 -4px 14px rgba(0,0,0,.1); }
-    .savebar .bar { gap:12px; }
+    /* location / team / shop cards */
+    .lhead { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; }
+    .pills { display:flex; flex-wrap:wrap; gap:6px; margin:10px 0 4px; }
+    .kv { display:flex; align-items:flex-start; gap:10px; font-size:14px; margin:9px 0; }
+    .kv .ico { color:var(--muted); margin-top:2px; }
+    .kv.warn span { color:var(--warn); font-weight:700; }
+    .kv.warn .ico { color:var(--warn); }
+    .stats { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin:12px 0 4px; }
+    .stat { background:var(--surface-2); border-radius:12px; padding:10px 12px; }
+    .stat b { display:block; font-size:20px; line-height:1.1; font-weight:800; }
+    .stat small { font-size:12px; }
+    .acts { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+    .person { display:flex; gap:12px; align-items:center; }
+    .person .avatar { width:44px; height:44px; font-size:17px; }
+    .hint { font-size:13px; color:var(--muted); margin:4px 0 0; }
+    .row { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+
+    /* sheet / drawer */
+    .overlay { position:fixed; inset:0; background:rgba(8,16,11,.5); z-index:40; display:flex; align-items:flex-end; justify-content:center; animation:fade .15s; }
+    .sheet { background:var(--bg); width:100%; max-width:680px; max-height:94vh; overflow:auto; border-radius:22px 22px 0 0; padding:0 16px 16px; animation:rise .2s; }
+    @media (min-width:900px) {
+      .overlay { align-items:stretch; justify-content:flex-end; }
+      .sheet { max-width:640px; max-height:none; height:100%; border-radius:22px 0 0 22px; padding:0 22px 16px; animation:slide .22s; }
+    }
+    @keyframes fade { from { opacity:0 } } @keyframes rise { from { transform:translateY(40px); opacity:.4 } } @keyframes slide { from { transform:translateX(40px); opacity:.4 } }
+    .sheethead { position:sticky; top:0; z-index:3; background:var(--bg); display:flex; justify-content:space-between; align-items:center; padding:16px 0 12px; }
+    .sheethead h3 { font-size:19px; font-weight:800; }
+    .sheetfoot { position:sticky; bottom:-16px; z-index:3; background:var(--bg); padding:12px 0 16px; display:flex; gap:10px; border-top:1px solid var(--line); margin-top:14px; }
+    .sheetfoot .btn.primary { flex:1; }
+    .sec { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:4px 16px 16px; margin-bottom:12px; }
+    .sec > h4 { margin:14px 0 0; font-size:12px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); }
+    .lbl { display:block; font-weight:700; font-size:13px; margin:14px 0 6px; }
+    .lbl small { font-weight:500; }
+    .two { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .photo { display:flex; gap:14px; align-items:center; margin-top:14px; }
+    .photo .pthumb { width:88px; height:88px; border-radius:14px; }
+    .photo .col { flex:1; min-width:0; }
+    .presets { display:flex; flex-wrap:wrap; gap:6px; margin:12px 0 2px; align-items:center; }
+    .packcard { border:1.5px solid var(--line); border-radius:12px; padding:12px; margin-top:10px; background:var(--surface-2); }
+    .packcard .head { display:flex; gap:8px; align-items:center; }
+    .packcard .head .field { padding:9px 10px; }
+    .packcard .head select.field { width:84px; flex:none; }
+    .packcard .head input.q { width:88px; flex:none; }
+    .plocs { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+    .plocs .pbox { flex:1 1 112px; max-width:none; }
+    .plocs .pbox.na { opacity:.45; }
+    .sellrow { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+    .sellrow label { display:flex; align-items:center; gap:8px; background:var(--surface-2); border:1.5px solid var(--line); border-radius:11px; padding:8px 12px; font-weight:700; font-size:14px; cursor:pointer; }
+    .sellrow input { width:18px; height:18px; accent-color:var(--brand); }
+    .def { display:flex; align-items:center; gap:7px; font-size:13px; font-weight:700; margin-top:10px; }
+    .prow { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+    .prow .pin { width:112px; flex:none; } .prow .area { flex:1; min-width:0; }
+    details > summary { cursor:pointer; font-weight:800; padding:14px 0 2px; }
+
+    /* orders */
+    .navbtn { position:relative; }
+    .navbadge { position:absolute; top:4px; right:10px; min-width:18px; height:18px; padding:0 5px; border-radius:9px; background:var(--red); color:#fff; font-size:11px; font-weight:800; line-height:18px; text-align:center; }
+    @media (min-width:900px) { .navbadge { position:static; margin-left:auto; } }
+    .ocard.isnew { border-color:var(--amber); box-shadow:0 0 0 3px color-mix(in srgb, var(--amber) 22%, transparent), var(--shadow); }
+    .ocard h3 { display:flex; align-items:center; gap:8px; }
+    .ototal { font-size:20px; font-weight:800; color:var(--brand-dark); white-space:nowrap; }
+    .ocard a { color:var(--brand-dark); font-weight:700; }
+    .oitems { margin:10px 0 2px; border-top:1px dashed var(--line); padding-top:8px; }
+    .oitem { display:flex; gap:8px; padding:4px 0; font-size:14px; }
+    .oitem .q { width:34px; font-weight:800; color:var(--muted); flex:none; }
+    .oitem .n { flex:1; min-width:0; }
+    .oitem .p { font-weight:700; }
+
+    /* orders table + filters + reports */
+    .filters { display:flex; flex-wrap:wrap; gap:10px; align-items:center; padding:12px; margin-bottom:10px; }
+    .filters .grow { flex:1 1 240px; min-width:200px; }
+    .datectl { display:inline-flex; gap:8px; align-items:center; flex-wrap:wrap; }
+    .datepair { display:inline-flex; gap:6px; align-items:center; }
+    .field.slim { width:auto; min-width:0; padding:9px 11px; font-size:14px; border-radius:10px; }
+    .otable { margin-top:10px; }
+    .orow { display:grid; grid-template-columns:1fr auto; grid-template-areas:"no total" "cust status" "items items" "date act"; gap:4px 12px; padding:12px 14px; border-bottom:1px solid var(--line); align-items:center; cursor:pointer; }
+    .orow:last-child { border-bottom:0; }
+    .orow:hover, .orow:focus-visible { background:color-mix(in srgb, var(--surface-2) 60%, transparent); outline:none; }
+    .orow.isnew { box-shadow:inset 3px 0 0 var(--amber); }
+    .orow > span { min-width:0; }
+    .c-no { grid-area:no; font-weight:800; } .c-total { grid-area:total; font-weight:800; text-align:right; } .c-cust { grid-area:cust; display:flex; flex-direction:column; line-height:1.25; }
+    .c-status { grid-area:status; text-align:right; } .c-items { grid-area:items; font-size:13px; color:var(--muted); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+    .c-date { grid-area:date; font-size:12.5px; color:var(--muted); } .c-act { grid-area:act; text-align:right; } .c-loc { display:none; }
+    .c-cust small { color:var(--muted); font-size:12.5px; }
+    .ohead { display:none; cursor:default; background:var(--surface-2); font-size:12px; font-weight:800; letter-spacing:.04em; text-transform:uppercase; color:var(--muted); }
+    .ohead:hover { background:var(--surface-2); }
+    @container (min-width:820px) {
+      .orow { grid-template-columns:70px 112px 112px minmax(150px,1.1fr) minmax(170px,1.8fr) 92px 104px 96px; grid-template-areas:"no date loc cust items total status act"; gap:12px; padding:11px 16px; }
+      .otable.noloc .orow { grid-template-columns:70px 112px minmax(150px,1.1fr) minmax(170px,1.8fr) 92px 104px 96px; grid-template-areas:"no date cust items total status act"; }
+      .c-loc { display:block; } .otable.noloc .c-loc { display:none; } .loc-inline { display:none; }
+      .c-items { display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; } .c-status { text-align:left; }
+      .ohead { display:grid; } .ohead .c-total { text-align:right; }
+    }
+    .pager { display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-top:12px; font-size:13.5px; }
+    .pgbtns { display:inline-flex; gap:6px; align-items:center; flex-wrap:wrap; }
+    .pgnum { font-weight:700; padding:0 6px; }
+    .kpis { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:14px; }
+    @media (min-width:700px) { .kpis { grid-template-columns:repeat(4,1fr); } }
+    .kpi { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:14px 16px; box-shadow:var(--shadow); }
+    .kpi small { display:block; font-weight:700; } .kpi b { font-size:24px; font-weight:800; letter-spacing:-.01em; }
+    .tscroll { overflow-x:auto; }
+    .rtable { width:100%; border-collapse:collapse; font-size:14px; }
+    .rtable th { text-align:left; font-size:12px; letter-spacing:.04em; text-transform:uppercase; color:var(--muted); padding:8px 10px; border-bottom:1px solid var(--line); white-space:nowrap; }
+    .rtable td { padding:9px 10px; border-bottom:1px solid var(--line); vertical-align:middle; }
+    .rtable tr:last-child td { border-bottom:0; }
+    .rtable .r { text-align:right; font-variant-numeric:tabular-nums; }
+
+    /* misc */
+    .toast { position:fixed; left:50%; bottom:28px; transform:translateX(-50%); display:flex; align-items:center; gap:10px; background:#14211a; color:#fff; padding:12px 18px; border-radius:12px; z-index:80; max-width:92vw; box-shadow:0 8px 28px rgba(0,0,0,.35); font-weight:600; font-size:14px; animation:rise .18s; }
+    .toast.bad { background:#b71c1c; }
+    @media (max-width:899px) { .toast { bottom:84px; } }
+    .empty { text-align:center; color:var(--muted); padding:48px 16px; }
+    .empty .ico { display:flex; justify-content:center; margin-bottom:8px; opacity:.6; }
+    .skel { background:linear-gradient(90deg,var(--surface-2) 25%,var(--line) 37%,var(--surface-2) 63%); background-size:400% 100%; animation:shim 1.3s infinite; border-radius:12px; }
+    @keyframes shim { 0% { background-position:100% 50% } 100% { background-position:0 50% } }
 
     /* login */
-    .login { max-width:380px; margin:12vh auto 0; background:#fff; border-radius:24px; padding:28px 22px; box-shadow:0 8px 28px rgba(0,0,0,.1); text-align:center; }
-    .login h2 { margin:0 0 4px; color:var(--green); }
-    .login p { margin:0 0 18px; color:var(--muted); }
-    .field { width:100%; padding:14px 16px; border:1.5px solid var(--line); border-radius:14px; background:#fff; font-size:16px; }
-    .login .btn { width:100%; margin-top:12px; }
-    .err { color:var(--red); font-size:14px; margin-top:10px; min-height:20px; }
-
-    /* bottom sheet */
-    .overlay { position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:30; display:flex; align-items:flex-end; justify-content:center; }
-    .sheet { background:#fff; width:100%; max-width:560px; max-height:92vh; overflow:auto; border-radius:24px 24px 0 0; padding:18px 18px 28px; }
-    @media (min-width:640px) { .overlay { align-items:center; } .sheet { border-radius:24px; } }
-    .sheet h3 { margin:0; font-size:19px; }
-    .sheethead { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
-    .x { background:#eef3ec; border:0; width:38px; height:38px; border-radius:50%; font-size:18px; }
-    .photo { position:relative; border-radius:18px; overflow:hidden; background:var(--mint); aspect-ratio:1.6; margin-bottom:12px; }
-    .photo img { width:100%; height:100%; object-fit:cover; display:block; }
-    .photo label { position:absolute; right:10px; bottom:10px; background:#fff; border-radius:20px; padding:9px 14px; font-weight:700; font-size:14px; box-shadow:0 2px 8px rgba(0,0,0,.25); cursor:pointer; }
-    .photo input { display:none; }
-    .noimg { width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; color:var(--green-dark); font-weight:600; font-size:14px; background:linear-gradient(135deg,#d8f5df,#eaf8ee); }
-    .noimg b { font-size:34px; line-height:1; }
-    div.pimg { display:flex; align-items:center; justify-content:center; font-size:38px; }
-    .lbl { display:block; font-weight:700; font-size:14px; margin:16px 0 6px; }
-    .lbl small { color:var(--muted); font-weight:400; }
-    .line { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid var(--line); }
-    .seg { display:flex; gap:8px; }
-    .seg button { flex:1; padding:12px 6px; border-radius:14px; border:1.5px solid var(--line); background:#fff; font-weight:600; font-size:14px; }
-    .seg button.on { background:var(--mint); border-color:var(--green); color:var(--green-dark); }
-    .size { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
-    .size select { flex:1; padding:12px; border:1.5px solid var(--line); border-radius:12px; background:#fff; }
-    .size label { display:flex; align-items:center; gap:5px; font-size:13px; font-weight:600; white-space:nowrap; }
-    .size input[type=radio] { width:20px; height:20px; accent-color:var(--green); }
-    .hint { font-size:13px; color:var(--muted); margin:4px 0 0; }
-    .sheet .btn.primary { width:100%; margin-top:20px; }
-
-    .toast { position:fixed; left:50%; top:16px; transform:translateX(-50%); background:#1b2b22; color:#fff; padding:13px 20px; border-radius:14px; z-index:50; max-width:92vw; box-shadow:0 6px 20px rgba(0,0,0,.3); font-weight:600; }
-    .toast.bad { background:var(--red); }
-    .empty { text-align:center; color:var(--muted); padding:40px 0; }
+    .loginwrap { min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; background:radial-gradient(1200px 500px at 50% -10%, var(--brand-soft), transparent), var(--bg); }
+    .login { width:100%; max-width:380px; background:var(--surface); border:1px solid var(--line); border-radius:22px; padding:30px 24px; box-shadow:0 12px 40px rgba(16,32,22,.12); }
+    .login .logo { width:64px; height:64px; border-radius:16px; object-fit:cover; display:block; margin:0 auto 12px; background:var(--brand-soft); }
+    .login h2 { text-align:center; font-size:22px; font-weight:800; }
+    .login p { text-align:center; margin:4px 0 20px; color:var(--muted); }
+    .login .field { margin-bottom:12px; padding:13px 14px; }
+    .login .btn { width:100%; min-height:46px; font-size:15px; margin-top:4px; }
+    .err { color:var(--red); font-size:14px; margin-top:12px; min-height:20px; text-align:center; }
   </style>
 </head>
 <body>
-  <!-- LOGIN -->
-  <div id="loginView" hidden>
+  <div id="loginView" class="loginwrap" hidden>
     <div class="login">
+      <img class="logo" src="/images/uploads/branding/am-vegetables-logo.png" alt="" onerror="this.style.display='none'" />
       <h2>AM Vegetables</h2>
-      <p>Staff login<br /><span class="ta">பணியாளர் உள்நுழைவு</span></p>
-      <input class="field" id="pw" type="password" placeholder="Shop password / கடை கடவுச்சொல்" autocomplete="current-password" />
+      <p>Staff login · <span class="ta">பணியாளர் உள்நுழைவு</span></p>
+      <input class="field" id="email" type="text" inputmode="tel" placeholder="Mobile number / மொபைல் எண்" autocomplete="username" />
+      <input class="field" id="pw" type="password" placeholder="Password / கடவுச்சொல்" autocomplete="current-password" />
       <button class="btn primary" id="loginBtn">Login / உள்நுழை</button>
       <div class="err" id="loginErr"></div>
     </div>
   </div>
 
-  <!-- APP -->
-  <div id="appView" hidden>
-    <header><div class="bar">
-      <h1>Today's Stock <small class="ta">இன்றைய இருப்பு</small></h1>
-      <button class="linkbtn" id="logout">Logout</button>
-    </div>
-    <div class="bar" style="margin-top:8px"><div class="tabs vtabs" id="views">
-      <button class="tab on" data-v="stock">🥬 Stock <span class="ta">இருப்பு</span></button>
-      <button class="tab" data-v="shop">🏪 Shop <span class="ta">கடை</span></button>
-    </div></div></header>
-    <div class="wrap" id="shopView" hidden></div>
-    <div class="wrap" id="stockView">
-      <input class="search" id="q" type="search" placeholder="🔍 Search / தேடு…" />
-      <div class="chips" id="chips"></div>
-      <div class="tabs" id="tabs">
-        <button class="tab on" data-t="all">All<br /><span class="ta">அனைத்தும்</span></button>
-        <button class="tab" data-t="in">Available<br /><span class="ta">உள்ளது</span></button>
-        <button class="tab" data-t="out">Not available<br /><span class="ta">இல்லை</span></button>
+  <div id="appView" class="shell" hidden>
+    <aside class="side">
+      <div class="brand">
+        <img src="/images/uploads/branding/am-vegetables-logo.png" alt="" onerror="this.style.display='none'" />
+        <div><b>AM Vegetables</b><small>Admin</small></div>
       </div>
-      <div class="count" id="count"></div>
-      <div class="grid" id="grid"></div>
-    </div>
-    <button class="fab" id="addBtn">＋ Add product<br /><span class="ta" style="font-weight:400;font-size:12px">புதிய பொருள்</span></button>
-    <div class="savebar" id="savebar" hidden><div class="bar">
-      <b id="pending"></b>
-      <span style="display:flex;gap:8px">
-        <button class="btn small" id="discard">Cancel</button>
-        <button class="btn primary small" id="saveStock">Save / சேமி</button>
-      </span>
-    </div></div>
+      <label class="locpick"><span class="cap">Location</span><select id="locSel" aria-label="Location"></select></label>
+      <nav class="nav" id="nav"></nav>
+      <div class="userblock">
+        <div class="avatar" id="avatar">A</div>
+        <div class="uinfo"><b id="who">Admin</b><small id="whoSub"></small></div>
+        <button class="iconbtn" id="logout" title="Log out" aria-label="Log out"></button>
+      </div>
+    </aside>
+    <main class="content"><div id="main"></div></main>
   </div>
 
   <div id="sheetRoot"></div>
 
-  <script>
-    const API = '/api/admin';
-    const TK = 'am-staff-token';
-    const $ = (id) => document.getElementById(id);
-    let token = null;
-    try { token = localStorage.getItem(TK); } catch (_) {}
-    let products = [];
-    const pending = {};            // id -> new in_stock
-    let q = '', cat = '', tab = 'all';
-
-    function el(tag, attrs, ...kids) {
-      const n = document.createElement(tag);
-      for (const [k, v] of Object.entries(attrs || {})) {
-        if (k === 'class') n.className = v;
-        else if (k.startsWith('on')) n.addEventListener(k.slice(2), v);
-        else if (v === true) n.setAttribute(k, '');
-        else if (v !== false && v != null) n.setAttribute(k, v);
-      }
-      for (const kid of kids.flat()) if (kid != null) n.append(kid.nodeType ? kid : document.createTextNode(kid));
-      return n;
-    }
-
-    function toast(msg, bad) {
-      const t = el('div', { class: 'toast' + (bad ? ' bad' : '') }, msg);
-      document.body.append(t);
-      setTimeout(() => t.remove(), bad ? 5000 : 3200);
-    }
-
-    async function api(path, body) {
-      const r = await fetch(API + path, {
-        method: body ? 'POST' : 'GET',
-        headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: 'Bearer ' + token } : {}) },
-        body: body ? JSON.stringify(body) : undefined,
-      });
-      let j = {};
-      try { j = await r.json(); } catch (_) {}
-      if (r.status === 401 && path !== '/login') { logout('Please log in again.'); throw new Error(j.error || 'Please log in again.'); }
-      if (!r.ok) throw new Error(j.error || 'Something went wrong. Please try again.');
-      return j;
-    }
-
-    // ---------------------------------------------------------------- login
-    function showLogin(msg) {
-      $('appView').hidden = true; $('loginView').hidden = false;
-      $('loginErr').textContent = msg || ''; $('pw').value = '';
-    }
-    function logout(msg) {
-      token = null; try { localStorage.removeItem(TK); } catch (_) {}
-      shopLoaded = false; setView('stock');
-      showLogin(msg);
-    }
-    $('logout').onclick = () => logout();
-    async function doLogin() {
-      const btn = $('loginBtn'); btn.disabled = true; $('loginErr').textContent = '';
-      try {
-        const j = await api('/login', { password: $('pw').value });
-        token = j.token; try { localStorage.setItem(TK, token); } catch (_) {}
-        await start();
-      } catch (e) { $('loginErr').textContent = e.message; }
-      btn.disabled = false;
-    }
-    $('loginBtn').onclick = doLogin;
-    $('pw').addEventListener('keydown', (e) => { if (e.key === 'Enter') doLogin(); });
-
-    // ---------------------------------------------------------------- list
-    const stockOf = (p) => (p.id in pending ? pending[p.id] : p.in_stock !== false);
-
-    function filtered() {
-      const s = q.trim().toLowerCase();
-      return products.filter((p) =>
-        (!cat || p.category_en === cat) &&
-        (tab === 'all' || (tab === 'in') === stockOf(p)) &&
-        (!s || (p.name_en + ' ' + p.name_ta + ' ' + (p.name_alt || '')).toLowerCase().includes(s)));
-    }
-
-    function renderChips() {
-      const cats = [...new Set(products.map((p) => p.category_en))];
-      $('chips').replaceChildren(
-        ...['', ...cats].map((c) => el('button', { class: 'chip' + (c === cat ? ' on' : ''), onclick: () => { cat = c; renderChips(); render(); } }, c || 'All')));
-    }
-
-    function render() {
-      const list = filtered();
-      $('count').textContent = list.length + ' of ' + products.length + ' products';
-      $('grid').replaceChildren(...(list.length ? list.map(card) : [el('div', { class: 'empty' }, 'No products found.')]));
-      const n = Object.keys(pending).length;
-      $('savebar').hidden = n === 0;
-      $('pending').textContent = n + (n === 1 ? ' change' : ' changes');
-    }
-
-    function card(p) {
-      const on = stockOf(p);
-      const cb = el('input', { type: 'checkbox', 'aria-label': p.name_en + ' available', onchange: () => setStock(p, cb.checked) });
-      cb.checked = on;
-      return el('div', { class: 'pcard' + (on ? '' : ' out') + (p.id in pending ? ' changed' : '') },
-        el('button', { class: 'pimg-btn', style: 'border:0;padding:0;background:none', onclick: () => editSheet(p), 'aria-label': 'Edit ' + p.name_en },
-          p.image ? el('img', { class: 'pimg', src: p.image, alt: '', loading: 'lazy' }) : el('div', { class: 'pimg' }, '🥬')),
-        el('button', { class: 'pbody', onclick: () => editSheet(p) },
-          el('div', { class: 'pname' }, p.name_en, p.featured ? el('span', { class: 'star' }, ' ★') : null),
-          el('div', { class: 'pta ta' }, p.name_ta)),
-        el('div', { class: 'pfoot' },
-          el('span', { class: 'status' }, on ? 'Available' : 'Not available'),
-          el('span', { class: 'switch' }, cb, el('i'))));
-    }
-
-    function setStock(p, v) {
-      if (v === (p.in_stock !== false)) delete pending[p.id]; else pending[p.id] = v;
-      render();
-    }
-
-    $('q').addEventListener('input', (e) => { q = e.target.value; render(); });
-    $('tabs').addEventListener('click', (e) => {
-      const b = e.target.closest('.tab'); if (!b) return;
-      tab = b.dataset.t;
-      document.querySelectorAll('.tab').forEach((t) => t.classList.toggle('on', t === b));
-      render();
-    });
-    $('discard').onclick = () => { for (const k in pending) delete pending[k]; render(); };
-    $('saveStock').onclick = async () => {
-      const changes = {};
-      for (const [id, v] of Object.entries(pending)) changes[id] = { in_stock: v };
-      const btn = $('saveStock'); btn.disabled = true; btn.textContent = 'Saving…';
-      try {
-        await api('/save', { changes });
-        for (const k in pending) delete pending[k];
-        toast('✓ Saved. The app updates in about 1 minute.');
-        await load();
-      } catch (e) { toast(e.message, true); }
-      btn.disabled = false; btn.textContent = 'Save / சேமி';
-    };
-    window.addEventListener('beforeunload', (e) => { if (Object.keys(pending).length) { e.preventDefault(); e.returnValue = ''; } });
-
-    // ---------------------------------------------------------------- sheets
-    function openSheet(title, body) {
-      const root = $('sheetRoot');
-      const close = () => root.replaceChildren();
-      root.replaceChildren(el('div', { class: 'overlay', onclick: (e) => { if (e.target.classList.contains('overlay')) close(); } },
-        el('div', { class: 'sheet' },
-          el('div', { class: 'sheethead' }, el('h3', null, title), el('button', { class: 'x', onclick: close, 'aria-label': 'Close' }, '✕')),
-          body)));
-      return close;
-    }
-
-    // Resize phone photos in the browser so uploads stay small.
-    function resizeImage(file) {
-      return new Promise((resolve, reject) => {
-        const img = new Image();
-        img.onload = () => {
-          const max = 1000, s = Math.min(1, max / Math.max(img.width, img.height));
-          const c = document.createElement('canvas');
-          c.width = Math.round(img.width * s); c.height = Math.round(img.height * s);
-          c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
-          resolve(c.toDataURL('image/jpeg', 0.82));
-        };
-        img.onerror = () => reject(new Error('Could not read that photo.'));
-        img.src = URL.createObjectURL(file);
-      });
-    }
-
-    function photoPicker(initial, onData) {
-      const frame = el('div', { class: 'photo' });
-      const show = (src) => {
-        const old = frame.querySelector('img, .noimg'); if (old) old.remove();
-        frame.prepend(src
-          ? el('img', { src, alt: '', onerror: () => show('') })
-          : el('div', { class: 'noimg' }, el('b', null, '🥬'), 'No photo yet'));
-      };
-      const input = el('input', { type: 'file', accept: 'image/*', onchange: async () => {
-        const f = input.files[0]; if (!f) return;
-        try { const d = await resizeImage(f); show(d); onData(d); } catch (e) { toast(e.message, true); }
-      } });
-      frame.append(el('label', null, initial ? '📷 Change photo' : '📷 Add photo', input));
-      show(initial);
-      return frame;
-    }
-
-    const SIZE_OPTIONS = {
-      weight: [[0.1, '100 g'], [0.25, '250 g'], [0.5, '500 g'], [0.75, '750 g'], [1, '1 kg'], [1.5, '1.5 kg'], [2, '2 kg'], [3, '3 kg'], [5, '5 kg']],
-      bunch: [1, 2, 3, 4, 5, 6].map((n) => [n, n + (n === 1 ? ' Bunch' : ' Bunches')]),
-      piece: [1, 2, 3, 4, 5, 6, 8, 10, 12].map((n) => [n, n + (n === 1 ? ' Piece' : ' Pieces')]),
-    };
-
-    // Editable list of sizes. Returns {node, get()}.
-    function sizesEditor(soldBy, packs) {
-      let rows = packs.map((p) => ({ quantity: Number(p.quantity), is_default: !!p.is_default }));
-      const box = el('div');
-      const opts = (q) => {
-        const base = SIZE_OPTIONS[soldBy].slice();
-        if (!base.some(([v]) => v === q)) base.push([q, String(q)]);
-        return base;
-      };
-      function draw() {
-        box.replaceChildren(
-          ...rows.map((r, i) => {
-            const sel = el('select', { onchange: () => { r.quantity = Number(sel.value); } },
-              ...opts(r.quantity).map(([v, t]) => { const o = el('option', { value: v }, t); if (v === r.quantity) o.selected = true; return o; }));
-            const radio = el('input', { type: 'radio', name: 'def', onchange: () => { rows.forEach((x, j) => { x.is_default = i === j; }); } });
-            radio.checked = r.is_default;
-            return el('div', { class: 'size' }, sel, el('label', null, radio, 'Default'),
-              rows.length > 1 ? el('button', { class: 'x', 'aria-label': 'Remove', onclick: () => { const was = r.is_default; rows.splice(i, 1); if (was) rows[0].is_default = true; draw(); } }, '✕') : null);
-          }),
-          el('button', { class: 'btn small', onclick: () => {
-            const used = new Set(rows.map((r) => r.quantity));
-            const next = SIZE_OPTIONS[soldBy].find(([v]) => !used.has(v));
-            if (!next) return toast('No more sizes to add.', true);
-            rows.push({ quantity: next[0], is_default: false }); draw();
-          } }, '＋ Add size'),
-          el('p', { class: 'hint' }, 'The "Default" size is pre-selected for customers.'));
-      }
-      draw();
-      return { node: box, get: () => rows.map((r) => ({ ...r })) };
-    }
-
-    function toggleLine(label, ta, checked, onChange) {
-      const cb = el('input', { type: 'checkbox', onchange: () => onChange(cb.checked) });
-      cb.checked = checked;
-      return el('div', { class: 'line' }, el('div', null, el('b', null, label), el('div', { class: 'pta ta' }, ta)), el('span', { class: 'switch' }, cb, el('i')));
-    }
-
-    function editSheet(p) {
-      const orig = { in_stock: stockOf(p), featured: !!p.featured, badge: p.badge || '', tagline: p.tagline || '' };
-      const cur = { ...orig };
-      let imageData = null;
-      const sizes = sizesEditor(p.sold_by, p.packs);
-      const badge = el('input', { class: 'field', value: cur.badge, maxlength: 40, list: 'badges', placeholder: 'e.g. Fresh Harvest', oninput: () => { cur.badge = badge.value; } });
-      const tag = el('input', { class: 'field', value: cur.tagline, maxlength: 80, placeholder: 'e.g. Firm & Juicy', oninput: () => { cur.tagline = tag.value; } });
-      const save = el('button', { class: 'btn primary' }, 'Save / சேமி');
-      const close = openSheet(p.name_en, el('div', null,
-        el('div', { class: 'pta ta', style: 'margin:-8px 0 12px' }, p.name_ta),
-        photoPicker(p.image, (d) => { imageData = d; }),
-        toggleLine('Available today', 'இன்று உள்ளது', cur.in_stock, (v) => { cur.in_stock = v; }),
-        toggleLine('Show on home page', 'முகப்பில் காட்டு', cur.featured, (v) => { cur.featured = v; }),
-        el('label', { class: 'lbl' }, 'Label on photo ', el('small', null, '(optional)')), badge,
-        el('datalist', { id: 'badges' }, ...['Fresh Harvest', 'Big Size', '100% Organic', 'Best Seller'].map((v) => el('option', { value: v }))),
-        el('label', { class: 'lbl' }, 'Short line ', el('small', null, '(optional)')), tag,
-        el('label', { class: 'lbl' }, 'Sizes / அளவுகள்'), sizes.node,
-        save));
-      save.onclick = async () => {
-        const patch = {};
-        for (const k of Object.keys(orig)) if (cur[k] !== orig[k]) patch[k] = cur[k];
-        const packs = sizes.get();
-        if (JSON.stringify(packs) !== JSON.stringify(p.packs.map((x) => ({ quantity: Number(x.quantity), is_default: !!x.is_default })))) patch.packs = packs;
-        if (imageData) patch.imageData = imageData;
-        if (!Object.keys(patch).length) return close();
-        save.disabled = true; save.textContent = 'Saving…';
-        try {
-          await api('/save', { changes: { [p.id]: patch } });
-          delete pending[p.id];
-          close(); toast('✓ Saved. The app updates in about 1 minute.');
-          await load();
-        } catch (e) { toast(e.message, true); save.disabled = false; save.textContent = 'Save / சேமி'; }
-      };
-    }
-
-    function addSheet() {
-      const f = { name_en: '', name_ta: '', category_en: '', category_ta: '', sold_by: 'weight' };
-      let imageData = null, sizes = sizesEditor('weight', [{ quantity: 0.5, is_default: true }, { quantity: 1 }]);
-      const cats = [...new Map(products.map((p) => [p.category_en, p.category_ta]))];
-      const sizeBox = el('div', null, sizes.node);
-      const newCat = el('div', { hidden: true },
-        el('input', { class: 'field', placeholder: 'New category (English)', style: 'margin-bottom:8px', oninput: (e) => { f.category_en = e.target.value; } }),
-        el('input', { class: 'field ta', placeholder: 'புதிய வகை (தமிழ்)', oninput: (e) => { f.category_ta = e.target.value; } }));
-      const sel = el('select', { class: 'field', onchange: () => {
-        if (sel.value === '__new') { newCat.hidden = false; f.category_en = ''; f.category_ta = ''; }
-        else { newCat.hidden = true; f.category_en = sel.value; }
-      } }, el('option', { value: '' }, 'Choose category…'), ...cats.map(([en, ta]) => el('option', { value: en }, en + ' / ' + ta)), el('option', { value: '__new' }, '＋ New category'));
-      const seg = el('div', { class: 'seg' });
-      const drawSeg = () => seg.replaceChildren(...[['weight', 'Weight', 'எடை'], ['bunch', 'Bunch', 'கட்டு'], ['piece', 'Piece', 'எண்ணம்']].map(([v, en, ta]) =>
-        el('button', { class: f.sold_by === v ? 'on' : '', onclick: () => {
-          f.sold_by = v;
-          sizes = sizesEditor(v, v === 'weight' ? [{ quantity: 0.5, is_default: true }, { quantity: 1 }] : [{ quantity: 1, is_default: true }]);
-          sizeBox.replaceChildren(sizes.node); drawSeg();
-        } }, en, el('br'), el('span', { class: 'ta' }, ta))));
-      drawSeg();
-      const save = el('button', { class: 'btn primary' }, 'Add product / சேர்');
-      const close = openSheet('Add new product', el('div', null,
-        el('label', { class: 'lbl' }, 'Name (English)'), el('input', { class: 'field', maxlength: 60, placeholder: 'e.g. Raw Banana', oninput: (e) => { f.name_en = e.target.value; } }),
-        el('label', { class: 'lbl' }, 'பெயர் (தமிழ்)'), el('input', { class: 'field ta', maxlength: 60, placeholder: 'எ.கா. வாழைக்காய்', oninput: (e) => { f.name_ta = e.target.value; } }),
-        el('label', { class: 'lbl' }, 'Category / வகை'), sel, newCat,
-        el('label', { class: 'lbl' }, 'Sold by / விற்பனை முறை'), seg,
-        el('label', { class: 'lbl' }, 'Photo ', el('small', null, '(optional, you can add later)')), photoPicker('', (d) => { imageData = d; }),
-        el('label', { class: 'lbl' }, 'Sizes / அளவுகள்'), sizeBox,
-        el('p', { class: 'hint' }, 'The product is added as Available. Prices are confirmed on WhatsApp.'),
-        save));
-      save.onclick = async () => {
-        save.disabled = true; save.textContent = 'Adding…';
-        try {
-          await api('/create', { ...f, packs: sizes.get(), imageData });
-          close(); toast('✓ Added. It shows in the app in about 1 minute.');
-          await load();
-        } catch (e) { toast(e.message, true); save.disabled = false; save.textContent = 'Add product / சேர்'; }
-      };
-    }
-    $('addBtn').onclick = addSheet;
-
-    // ---------------------------------------------------------------- shop tab
-    let view = 'stock', shopLoaded = false;
-
-    function setView(v) {
-      view = v;
-      document.querySelectorAll('#views .tab').forEach((t) => t.classList.toggle('on', t.dataset.v === v));
-      $('stockView').hidden = v !== 'stock';
-      $('shopView').hidden = v !== 'shop';
-      $('addBtn').hidden = v !== 'stock';
-      if (v === 'stock') render(); else $('savebar').hidden = true;
-      if (v === 'shop' && !shopLoaded) loadShop();
-    }
-    $('views').addEventListener('click', (e) => { const b = e.target.closest('.tab'); if (b) setView(b.dataset.v); });
-
-    async function loadShop() {
-      $('shopView').replaceChildren(el('div', { class: 'empty' }, 'Loading…'));
-      try {
-        const j = await api('/shop');
-        shopLoaded = true;
-        drawShop(j.shop);
-      } catch (e) {
-        $('shopView').replaceChildren(el('div', { class: 'empty' }, e.message));
-      }
-    }
-
-    function drawShop(s) {
-      const f = JSON.parse(JSON.stringify(s));
-      const bind = (obj, key, extra) => (e) => { obj[key] = e.target.value; };
-      const pins = el('div');
-      const drawPins = () => pins.replaceChildren(
-        ...f.pincodes.map((p, i) => {
-          const on = el('input', { type: 'checkbox', onchange: () => { p.active = on.checked; } });
-          on.checked = p.active;
-          return el('div', { class: 'prow' },
-            el('input', { class: 'field pin', value: p.pincode, inputmode: 'numeric', maxlength: 6, placeholder: 'Pincode', oninput: bind(p, 'pincode') }),
-            el('input', { class: 'field area', value: p.area, maxlength: 60, placeholder: 'Area', oninput: bind(p, 'area') }),
-            el('span', { class: 'switch', title: 'Delivers here' }, on, el('i')),
-            el('button', { class: 'x', 'aria-label': 'Remove', onclick: () => { f.pincodes.splice(i, 1); drawPins(); } }, '✕'));
-        }),
-        el('button', { class: 'btn small', onclick: () => { f.pincodes.push({ pincode: '', area: '', active: true }); drawPins(); } }, '＋ Add pincode'));
-      drawPins();
-
-      const save = el('button', { class: 'btn primary', style: 'width:100%' }, 'Save shop settings / சேமி');
-      save.onclick = async () => {
-        save.disabled = true; save.textContent = 'Saving…';
-        try {
-          const j = await api('/shop', f);
-          drawShop(j.shop);
-          toast('✓ Saved. The app updates in about 1 minute.');
-        } catch (e) { toast(e.message, true); save.disabled = false; save.textContent = 'Save shop settings / சேமி'; }
-      };
-
-      // Editable list of bilingual rows (steps, badges). Returns a node.
-      const rowList = (arr, kEn, kTa, max, addLabel) => {
-        const box = el('div');
-        const draw = () => box.replaceChildren(
-          ...arr.map((r, i) => el('div', { class: 'prow' },
-            el('input', { class: 'field area', value: r[kEn], maxlength: 60, placeholder: 'English', oninput: bind(r, kEn) }),
-            el('input', { class: 'field area ta', value: r[kTa], maxlength: 80, placeholder: 'தமிழ்', oninput: bind(r, kTa) }),
-            el('button', { class: 'x', 'aria-label': 'Remove', onclick: () => { arr.splice(i, 1); draw(); } }, '✕'))),
-          arr.length < max ? el('button', { class: 'btn small', onclick: () => { arr.push({ [kEn]: '', [kTa]: '' }); draw(); } }, addLabel) : null);
-        draw();
-        return box;
-      };
-      const txt = (obj, key, max, lbl, ta) => [
-        el('label', { class: 'lbl' }, lbl),
-        el('input', { class: 'field' + (ta ? ' ta' : ''), value: obj[key], maxlength: max, oninput: bind(obj, key) }),
-      ];
-      const area = (obj, key, max, lbl, ta) => [
-        el('label', { class: 'lbl' }, lbl),
-        Object.assign(el('textarea', { class: 'field' + (ta ? ' ta' : ''), maxlength: max, oninput: bind(obj, key) }), { value: obj[key] }),
-      ];
-
-      $('shopView').replaceChildren(
-        el('div', { class: 'card' },
-          el('h4', null, 'Contact numbers / தொடர்பு எண்'),
-          el('label', { class: 'lbl' }, 'WhatsApp number ', el('small', null, '(orders are sent here — digits with country code)')),
-          el('input', { class: 'field', value: f.whatsapp, inputmode: 'numeric', maxlength: 15, placeholder: '919840123456', oninput: bind(f, 'whatsapp') }),
-          el('label', { class: 'lbl' }, 'Call number'),
-          el('input', { class: 'field', value: f.phone, inputmode: 'tel', maxlength: 20, placeholder: '+91 98401 23456', oninput: bind(f, 'phone') }),
-          el('p', { class: 'hint' }, '⚠ Double-check the WhatsApp number. Customer orders go to this number.')),
-        el('div', { class: 'card' },
-          el('h4', null, 'Shop name / கடை பெயர்'),
-          ...txt(f, 'name_en', 60, 'Name (English)'), ...txt(f, 'name_ta', 80, 'பெயர் (தமிழ்)', true),
-          ...txt(f, 'badge', 20, 'Header badge ', false),
-          ...txt(f, 'splash_tagline_en', 80, 'Tagline (English)'), ...txt(f, 'splash_tagline_ta', 120, 'வாசகம் (தமிழ்)', true),
-          ...txt(f, 'open_label_en', 40, '"Open today" label (English)'), ...txt(f, 'open_label_ta', 60, 'லேபிள் (தமிழ்)', true)),
-        el('div', { class: 'card' },
-          toggleLine('Shop is open', 'கடை திறந்துள்ளது', f.is_open, (v) => { f.is_open = v; }),
-          el('label', { class: 'lbl' }, 'Opening hours / நேரம்'),
-          el('input', { class: 'field', value: f.hours, maxlength: 60, placeholder: '6:00 AM – 9:00 PM', oninput: bind(f, 'hours') }),
-          el('label', { class: 'lbl' }, 'Payment note'),
-          el('input', { class: 'field', value: f.payment_note, maxlength: 120, oninput: bind(f, 'payment_note') })),
-        el('div', { class: 'card' },
-          el('h4', null, 'Home page banner'),
-          el('label', { class: 'lbl' }, 'Title (English)'),
-          el('input', { class: 'field', value: f.banner.title_en, maxlength: 80, oninput: bind(f.banner, 'title_en') }),
-          el('label', { class: 'lbl' }, 'தலைப்பு (தமிழ்)'),
-          el('input', { class: 'field ta', value: f.banner.title_ta, maxlength: 120, oninput: bind(f.banner, 'title_ta') }),
-          el('label', { class: 'lbl' }, 'Small tag ', el('small', null, '(e.g. Morning 6 AM)')),
-          el('input', { class: 'field', value: f.banner.chip, maxlength: 40, oninput: bind(f.banner, 'chip') }),
-          el('label', { class: 'lbl' }, 'Message'),
-          Object.assign(el('textarea', { class: 'field', maxlength: 400, oninput: bind(f.banner, 'body') }), { value: f.banner.body })),
-        el('div', { class: 'card' },
-          el('h4', null, 'No advance payment message'),
-          ...txt(f.no_payment, 'title_en', 80, 'Title (English)'), ...txt(f.no_payment, 'title_ta', 120, 'தலைப்பு (தமிழ்)', true),
-          ...area(f.no_payment, 'body_en', 400, 'Message (English)'), ...area(f.no_payment, 'body_ta', 400, 'செய்தி (தமிழ்)', true)),
-        el('div', { class: 'card' },
-          el('h4', null, 'How it works steps (max 3)'),
-          rowList(f.how_it_works, 'title_en', 'title_ta', 3, '＋ Add step')),
-        el('div', { class: 'card' },
-          el('h4', null, 'Footer badges (max 6)'),
-          rowList(f.footer_badges, 'text_en', 'text_ta', 6, '＋ Add badge')),
-        el('div', { class: 'card' },
-          el('h4', null, 'Delivery pincodes / டெலிவரி அஞ்சல் குறியீடு'),
-          el('p', { class: 'hint' }, 'Switch off a pincode to stop delivery there without deleting it.'),
-          pins),
-        save,
-        el('p', { class: 'hint', style: 'text-align:center;margin-top:14px' }, 'The logo and category icons can only be changed by the owner.'));
-    }
-
-    // ---------------------------------------------------------------- boot
-    async function load() {
-      $('count').textContent = 'Loading…';
-      const j = await api('/products');
-      products = j.products;
-      if (cat && !products.some((p) => p.category_en === cat)) cat = '';
-      renderChips(); render();
-    }
-    async function start() {
-      $('loginView').hidden = true; $('appView').hidden = false;
-      try { await load(); } catch (e) { if (token) toast(e.message, true); }
-    }
-    if (token) start(); else showLogin();
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0/dist/umd/supabase.js"></script>
+  <!-- Excel export (client side only). If it cannot load, the CSV downloads still work. -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" defer></script>
+  <script src="/staff/config.js"></script>
+  <script src="/staff/app.js"></script>
 </body>
 </html>

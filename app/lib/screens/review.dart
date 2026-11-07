@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../models.dart';
 import '../state.dart';
 import '../widgets.dart';
 
-class ReviewScreen extends StatelessWidget {
+class ReviewScreen extends StatefulWidget {
   const ReviewScreen({super.key});
+
+  @override
+  State<ReviewScreen> createState() => _ReviewScreenState();
+}
+
+class _ReviewScreenState extends State<ReviewScreen> {
+  bool _sending = false;
 
   Widget _row(String k, String v) => Padding(
         padding: const EdgeInsets.symmetric(vertical: 4),
@@ -14,6 +22,38 @@ class ReviewScreen extends StatelessWidget {
           Expanded(child: Text(v, textAlign: TextAlign.right, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13))),
         ]),
       );
+
+  Future<void> _send(AppState st, Shop shop) async {
+    final messenger = ScaffoldMessenger.of(context);
+    final nav = Navigator.of(context);
+    setState(() => _sending = true);
+    PlacedOrder? placed;
+    try {
+      placed = await st.placeOrder(); // null = offline, still let the customer send on WhatsApp
+    } on OrderRejected catch (e) {
+      st.refreshCatalogue(); // prices / stock may have changed
+      if (!mounted) return;
+      setState(() => _sending = false);
+      showSnack(context, e.message);
+      return;
+    }
+    final ok = await st.sendWhatsApp(st.fullMessage(orderNo: placed?.orderNo));
+    if (!mounted) return;
+    setState(() => _sending = false);
+    if (!ok && placed == null) {
+      showSnack(context, shop.whatsapp.isEmpty ? 'This shop has no WhatsApp number yet. Please call instead.' : 'Could not open WhatsApp.');
+      return;
+    }
+    st.clearCart();
+    st.setTab(0);
+    nav.popUntil((r) => r.isFirst);
+    final text = placed == null
+        ? 'Order sent on WhatsApp. We will confirm shortly.'
+        : ok
+            ? 'Order #${placed.orderNo} placed. We will confirm on WhatsApp.'
+            : 'Order #${placed.orderNo} placed. The shop has it, but WhatsApp could not open.';
+    messenger.showSnackBar(SnackBar(content: Text(text), behavior: SnackBarBehavior.floating));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,8 +96,15 @@ class ReviewScreen extends StatelessWidget {
                 leading: SizedBox(width: 52, height: 52, child: ProductImage(l.product.image, height: 52, radius: BorderRadius.circular(12))),
                 title: Text(l.product.nameEn, style: const TextStyle(fontWeight: FontWeight.w700)),
                 subtitle: Text([l.product.nameTa, if (l.note.isNotEmpty) l.note].join(' • '), style: const TextStyle(fontSize: 12)),
-                trailing: Pill(l.label, bg: AppColors.mint),
+                trailing: Pill('${l.label} · ${money(l.total)}', bg: AppColors.mint),
               ),
+            const Divider(),
+            Row(children: [
+              const Expanded(child: BiText('Estimated total', 'மொத்த தொகை', size: 14)),
+              Text(money(st.cartTotal), style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w800, color: AppColors.green)),
+            ]),
+            const SizedBox(height: 4),
+            const Text('Final price and availability are confirmed by the shop on WhatsApp.', style: TextStyle(fontSize: 11.5, color: AppColors.muted)),
           ]),
         ),
         SectionCard(
@@ -104,7 +151,7 @@ class ReviewScreen extends StatelessWidget {
         SectionCard(
           color: const Color(0xFFE5F7D8),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text('Live WhatsApp Preview → ${shop.nameEn} (${shop.phone})', style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 12)),
+            Text('Live WhatsApp Preview → ${shop.nameEn} (${st.location?.nameEn ?? ''}, ${shop.whatsapp})', style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 12)),
             const SizedBox(height: 8),
             Text(st.fullMessage().replaceAll('*', ''), style: const TextStyle(fontSize: 12.5, height: 1.4)),
           ]),
@@ -112,21 +159,11 @@ class ReviewScreen extends StatelessWidget {
         FilledButton.icon(
           style: FilledButton.styleFrom(
               minimumSize: const Size.fromHeight(58), backgroundColor: AppColors.whatsapp, foregroundColor: Colors.black87),
-          onPressed: () async {
-            final messenger = ScaffoldMessenger.of(context);
-            final ok = await st.sendWhatsApp(st.fullMessage());
-            if (!context.mounted) return;
-            if (ok) {
-              st.clearCart();
-              st.setTab(0);
-              Navigator.popUntil(context, (r) => r.isFirst);
-              messenger.showSnackBar(const SnackBar(content: Text('Enquiry sent. We will confirm on WhatsApp.'), behavior: SnackBarBehavior.floating));
-            } else {
-              showSnack(context, 'Could not open WhatsApp.');
-            }
-          },
-          icon: const Icon(Icons.send),
-          label: const Text('Send Enquiry on WhatsApp', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 16)),
+          onPressed: _sending ? null : () => _send(st, shop),
+          icon: _sending
+              ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2.5, color: Colors.black87))
+              : const Icon(Icons.send),
+          label: Text(_sending ? 'Sending…' : 'Send Order on WhatsApp', style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 16)),
         ),
         const SizedBox(height: 8),
         Wrap(alignment: WrapAlignment.center, spacing: 12, children: [

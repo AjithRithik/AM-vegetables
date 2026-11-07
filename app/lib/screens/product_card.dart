@@ -222,7 +222,7 @@ class _ProductCardState extends State<ProductCard> {
                               child: SizedBox(
                                 width: w - 52,
                                 child: _PackPill(
-                                  label: p.packs[pack].labelEn,
+                                  label: '${p.packs[pack].labelEn} · ${p.packs[pack].priceText}',
                                   onTap: () => showPackSheet(context, p, pack, (i) => setState(() => _pack = i)),
                                 ),
                               ),
@@ -334,8 +334,8 @@ class _QtyContent extends StatelessWidget {
                   AnimatedSwitcher(
                     duration: const Duration(milliseconds: 200),
                     transitionBuilder: (c, a) => ScaleTransition(scale: a, child: FadeTransition(opacity: a, child: c)),
-                    child: Text(line.label,
-                        key: ValueKey(line.label),
+                    child: Text('${line.label} · ${money(line.total)}',
+                        key: ValueKey('${line.label}-${line.total}'),
                         style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 13)),
                   ),
                   const Icon(Icons.keyboard_arrow_down_rounded, color: Colors.white70, size: 16),
@@ -376,6 +376,8 @@ void showPackSheet(BuildContext context, Product product, int selected, ValueCha
               title: Row(children: [
                 Text(product.packs[i].labelEn, style: const TextStyle(fontWeight: FontWeight.w800)),
                 if (product.packs[i].popular) ...[const SizedBox(width: 8), const Pill('Popular', bg: AppColors.amber, fg: Colors.black87)],
+                const Spacer(),
+                Text(product.packs[i].priceText, style: const TextStyle(fontWeight: FontWeight.w800, color: AppColors.green)),
               ]),
               subtitle: Text([product.packs[i].labelTa, product.packs[i].note].where((s) => s.isNotEmpty).join(' • ')),
               trailing: Icon(i == selected ? Icons.check_circle : Icons.circle_outlined,
@@ -418,6 +420,9 @@ class FeaturedCard extends StatelessWidget {
                     maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 13.5)),
                 Text(p.nameTa,
                     maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 11.5, color: AppColors.muted)),
+                const SizedBox(height: 2),
+                Text('From ${money(p.fromPrice)}',
+                    style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w800, color: AppColors.green)),
               ]),
             ),
           ]),

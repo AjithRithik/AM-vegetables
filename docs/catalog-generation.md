@@ -1,3 +1,5 @@
+> **Historical.** This describes the old file-based catalogue tooling (`content/*.json`) that has been replaced by Supabase and the admin panel at `/staff`. The scripts it mentions were removed. Kept only for reference (image prompts, naming conventions).
+
 # AM Vegetables catalog
 
 The catalog contains 129 products across Vegetables, Roots & Tubers, Leafy Greens,

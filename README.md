@@ -1,26 +1,41 @@
-# AM Vegetables – Decap CMS
+# AM Vegetables
 
-Git-based headless CMS for the AM Vegetables Flutter app.
+One app, several shops. Each location (Sivakasi, Krishnan Kovil, Srivilliputtur, ...) has its own
+products, prices, address, WhatsApp number and team. Customers pick their location first and order
+over WhatsApp; the order is also saved so the owner and the shop's vendor see it in the admin.
 
-## Files the Flutter app consumes
-| URL path | Content |
-|---|---|
-| `/content/products.json` | all products (packs, Tamil/English names, featured flag, stock) |
-| `/content/shop.json` | shop name, WhatsApp number, hours, banners, pincodes, message template |
+| Part | Folder | What it is |
+|---|---|---|
+| Customer app | `app/` | Flutter app (Android / iOS / web). Reads the catalogue from Supabase. |
+| Admin panel | `staff/` | Web page at `/staff`: products, prices, orders, locations, team. |
+| Server function | `api/admin/users.js` | Owner-only: creates vendor logins (needs the secret key). |
+| Database | `supabase/migrations/` | Tables, security rules, order function. |
+| Tools | `scripts/` | Data migration, local dev server. |
+| `content/` | | The original product files. Only used as the source for `npm run db:migrate`. |
 
-Uploaded images land in `/images/uploads/` (product `image` values are paths like `/images/uploads/tomato.jpg`; prefix with your site URL in the app).
+## Roles
+- **Owner**: everything. Adds locations, products and sizes, sets prices for any location, creates vendors.
+- **Vendor**: only their own location(s): stock, availability, prices, shop details, orders.
+- **Customer**: anonymous, read-only catalogue, can place an order.
+
+Security is enforced by the database (Row Level Security), not by the pages.
+
+## One-time setup
+1. **Supabase**: in the SQL editor run, in order, `supabase/migrations/0001` to `0005`.
+   Optional: `supabase/seed/sample_prices.sql` fills made-up prices for testing.
+2. **Keys**: copy `.env.example` to `.env.local` and fill it in
+   (`SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` = the `sb_secret_...` key, owner phone and password).
+   The secret key is server-side only; never put it in `staff/` or `app/`.
+3. **Load the data**: `npm install`, then `npm run db:migrate` (safe to re-run; it never overwrites prices or vendor edits).
+4. **Public key**: `staff/config.js` and `app/lib/config.dart` hold the publishable (anon) key. That one is meant to be public.
+5. **Vercel**: set `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` as environment variables (used only by `api/admin/users.js`).
 
 ## Run locally
 ```
-npm install
-npm run dev        # decap-server proxy + static server
+npm run dev:admin        # admin panel + api at http://localhost:8080/staff
+cd app && flutter run --dart-define-from-file=env/local.json
+cd app && flutter build apk --release --dart-define-from-file=env/prod.json
 ```
-Open http://localhost:8080/admin/ — edits write straight to `content/*.json`.
 
-## Go live
-1. Push this folder to GitHub, set `backend.repo` in `admin/config.yml`.
-2. Host it on Netlify (use `name: git-gateway` + Netlify Identity) **or** GitHub Pages / any static host with an OAuth proxy (`base_url`).
-3. In Flutter, set `baseUrl` to your site (or `https://raw.githubusercontent.com/<user>/<repo>/main`).
-4. Edit at `https://<site>/admin/`. With `editorial_workflow`, content goes live after "Publish".
-
-Notes: keep `id` values stable once the app is released; there are no prices because rates are confirmed daily over WhatsApp.
+## Day to day
+See `docs/staff-admin.md` for the admin walkthrough (prices, vendors, orders).

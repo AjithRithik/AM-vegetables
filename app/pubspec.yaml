@@ -1,5 +1,5 @@
 name: am_vegetables
-description: AM Vegetables - fresh produce enquiry app driven by Decap CMS.
+description: AM Vegetables - fresh produce ordering app, one catalogue per shop location (Supabase).
 publish_to: none
 version: 1.0.0+1
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../state.dart';
+import 'location_select.dart';
 import 'shell.dart';
 import '../widgets.dart';
 
@@ -32,16 +33,21 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     // Load CMS data while the animation plays; keep splash at least 2.2s.
     await Future.wait([st.load(), Future.delayed(const Duration(milliseconds: 2200))]);
     if (!mounted) return;
-    if (st.error != null && st.shop == null) {
+    if (_failed(st)) {
       setState(() {}); // show retry
       return;
     }
+    // First launch (or the saved location was switched off): ask which shop first.
+    final next = st.location == null ? const LocationSelectScreen(initial: true) : const Shell();
     Navigator.of(context).pushReplacement(PageRouteBuilder(
-      pageBuilder: (_, __, ___) => const Shell(),
+      pageBuilder: (_, __, ___) => next,
       transitionsBuilder: (_, a, __, child) => FadeTransition(opacity: a, child: child),
       transitionDuration: const Duration(milliseconds: 500),
     ));
   }
+
+  bool _failed(AppState st) =>
+      st.error != null && (st.locations.isEmpty || (st.location != null && st.shop == null));
 
   @override
   void dispose() {
@@ -53,7 +59,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     final st = context.watch<AppState>();
-    final failed = !st.loading && st.error != null && st.shop == null;
+    final failed = !st.loading && _failed(st);
     return Scaffold(
       body: Container(
         width: double.infinity,

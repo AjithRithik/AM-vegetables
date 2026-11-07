@@ -1,3 +1,4 @@
 {
-  "CMS_BASE_URL": "http://10.0.2.2:8080"
+  "SUPABASE_URL": "https://zuucgnnnygtyvwmshwpe.supabase.co",
+  "SUPABASE_KEY": "sb_publishable_koyTn0cjI12NIV-5Xs-Cug_l_YBvhca"
 }

@@ -1,0 +1,9 @@
+# Not part of the website: Flutter project, tools, database files, docs, migration source data.
+app
+scripts
+supabase
+docs
+content
+node_modules
+*.log
+.env*

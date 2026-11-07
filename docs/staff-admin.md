@@ -1,37 +1,42 @@
-# Staff admin (`/staff`)
+# Admin panel (`/staff`)
 
-A simple phone-friendly page for shop staff: mark products available / not available, edit
-sizes, photo, label, and add new products. English + Tamil labels, no GitHub account needed.
+Log in with your **mobile number and password**. The panel works on phone and desktop.
 
-URL: `https://am-veg.vercel.app/staff`
+## Products (owner and vendor)
+- Pick the location at the top (sidebar on desktop). Everything on this page is for that location.
+- Each row is a product with its price boxes. Type a price and press **Enter** or tap away: it saves
+  immediately and the box flashes green. Enter jumps to the next price.
+- **Selling** switch: is this product sold at this location? **In stock** switch: greyed out for customers when off.
+  The star features it on the app's home screen.
+- A product with no price at a location is hidden from customers there. The yellow bar shows how many still need one,
+  and **Needs price** filters to them.
+- **Tools**: copy prices from another location, or export / import a CSV to fill prices in Excel.
 
-## One-time setup (owner)
+## Add / edit a product (owner)
+**Add product** (or the pencil on a row) opens one form: photo link, English and Tamil name, category, how it is sold,
+which locations sell it, and every size with its price **per location side by side**. Tap the quick buttons
+(250 g, 500 g, 1 kg ...) to add sizes. Vendors open the same form but can only change availability and prices
+for their own locations.
 
-1. **Create a GitHub token** (GitHub → Settings → Developer settings → Personal access tokens →
-   Fine-grained tokens). Repository access: **only** `AjithRithik/AM-vegetables`.
-   Permissions: **Contents → Read and write**. Set a long expiry and note the date.
-2. **Add environment variables in Vercel** (Project → Settings → Environment Variables, Production):
-   - `GITHUB_TOKEN` — the token from step 1
-   - `ADMIN_PASSWORD` — the shop password staff will type (make it long)
-   - `SESSION_SECRET` — optional, any long random text (otherwise the password is used)
-3. **Redeploy** so the variables take effect.
+## Orders (owner and vendor)
+Orders placed in the app appear here, newest first, for the right location. The number on the **Orders** tab
+is how many are waiting; a pop-up and a beep appear when a new one arrives (the panel checks every 30 seconds,
+browsers only play the beep after the page has been clicked once). Buttons: **Confirm**, **Mark delivered**,
+**Cancel**, **WhatsApp** the customer, **Call**. Prices on an order are the ones in force when it was placed.
+The owner sees all locations; a vendor sees only theirs.
 
-## How it works
+## Locations (owner)
+One card per location: address, WhatsApp number (orders from that location are sent to it), hours, delivery pincodes,
+open/closed and **Live in app**. **Add location** starts empty: enable products and set prices afterwards (or copy
+another location's product list while creating). Your own number under *Owner copy of orders* is stored for a future
+automatic copy; today you see every order in this panel.
 
-`staff/index.html` talks to `api/admin/*` (Vercel functions). The functions check the password,
-then commit changes to `content/products/<id>.json` (and photos to `images/uploads/products/`)
-on `main` using the server-side token. Vercel redeploys and rebuilds `content/products.json`
-(see `scripts/build-products.cjs`), so the app shows the change in about a minute.
+## Team (owner)
+**Add vendor**: mobile number, name, a password (a strong one is suggested) and the locations they manage.
+After saving you get a screen with the login details to copy or send on WhatsApp. To reset a password, edit the
+vendor and type a new one. Vendors can edit only their own locations.
 
 ## Notes
-
-- Change the password: edit `ADMIN_PASSWORD` in Vercel and redeploy. Existing logins last 12 hours.
-- If the token expires, saving fails — create a new one and update `GITHUB_TOKEN`.
-- The **Shop** tab lets staff change all text settings in `content/shop.json` via `api/admin/shop.js`:
-  WhatsApp and call numbers, shop name, taglines, open/closed switch, hours, payment note, banner,
-  no-advance-payment message, how-it-works steps, footer badges and delivery pincodes. Only the logo
-  and category icons stay owner-only in `/admin/`.
-- On the **Stock** tab, staff can only change stock, featured flag, label, short line, sizes and photo, and add products.
-  Everything else (descriptions, Tamil text, pairing, etc.) is edited in the owner CMS at `/admin/`.
-- Products added without a photo have an empty image. `npm run catalog:validate` requires images,
-  so add the photo before running it.
+- If saving fails with a permission message, the account probably is not assigned to that location (Team tab).
+- Product photos are Cloudinary links. Paste the image URL in the product form.
+- Change the owner password in Supabase: Authentication -> Users.

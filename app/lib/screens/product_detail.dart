@@ -116,6 +116,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         if (p.packs[i].popular) const Pill('Popular', bg: AppColors.amber, fg: Colors.black87),
                         if (_pack == i) const Icon(Icons.check_circle, size: 18, color: Colors.white),
                       ]),
+                      Text(p.packs[i].priceText,
+                          style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800, color: _pack == i ? Colors.white : AppColors.green)),
                       Text([p.packs[i].labelTa, p.packs[i].note].where((s) => s.isNotEmpty).join(' • '),
                           style: TextStyle(fontSize: 11, color: _pack == i ? Colors.white70 : AppColors.muted)),
                     ]),
@@ -168,7 +170,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       }
                     : null,
                 icon: const Icon(Icons.add_shopping_cart),
-                label: Text(st.inCart(p.id) ? 'Update Cart' : 'Add to Cart', style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 15)),
+                label: Text('${st.inCart(p.id) ? 'Update Cart' : 'Add to Cart'} · ${money(pack.cost * _count)}', style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 15)),
               ),
             ),
           ]),

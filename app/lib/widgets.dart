@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'config.dart';
+import 'screens/location_select.dart';
+import 'screens/product_card.dart' show fadeRoute;
 import 'state.dart';
 
 class AppColors {
@@ -561,9 +563,19 @@ class ShopHeader extends StatelessWidget implements PreferredSizeWidget {
                           Pill(shop.badge,
                               bg: AppColors.amber, fg: Colors.black87),
                         ]),
-                        Text(shop.nameTa,
-                            style: const TextStyle(
-                                fontSize: 12, color: Colors.white70)),
+                        GestureDetector(
+                          onTap: () => Navigator.push(context, fadeRoute(const LocationSelectScreen(initial: false))),
+                          child: Row(mainAxisSize: MainAxisSize.min, children: [
+                            const Icon(Icons.location_on, size: 13, color: Colors.white70),
+                            const SizedBox(width: 2),
+                            Flexible(
+                              child: Text(st.location?.nameEn ?? shop.nameTa,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(fontSize: 12.5, color: Colors.white, fontWeight: FontWeight.w700)),
+                            ),
+                            const Icon(Icons.keyboard_arrow_down, size: 16, color: Colors.white70),
+                          ]),
+                        ),
                       ]),
                 ),
                 IconButton(

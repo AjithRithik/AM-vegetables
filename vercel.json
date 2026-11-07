@@ -1,4 +1,3 @@
 {
-  "buildCommand": "node scripts/build-products.cjs",
   "outputDirectory": "."
 }
