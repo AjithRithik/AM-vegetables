@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import '../state.dart';
 import '../widgets.dart';
 import 'location_picker.dart';
+import 'location_select.dart';
+import 'product_card.dart' show fadeRoute;
 import 'review.dart';
 
 class DetailsScreen extends StatefulWidget {
@@ -67,6 +69,43 @@ class _DetailsScreenState extends State<DetailsScreen> {
           if (hint != null) Text(hint, style: const TextStyle(fontSize: 11, color: AppColors.muted)),
         ]),
       );
+
+  /// Shown when the pincode is outside the location's delivery area. The order cannot continue.
+  Widget _notDelivering(AppState st, String pin) {
+    final shop = st.shop!;
+    final served = shop.servedPincodes.map((p) => p.area.isEmpty ? p.pincode : '${p.pincode} · ${p.area}').toList();
+    return Container(
+      margin: const EdgeInsets.only(top: 8),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(color: const Color(0xFFFDECEC), borderRadius: BorderRadius.circular(14), border: Border.all(color: const Color(0xFFF1B5B5))),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          const Icon(Icons.block, color: Color(0xFFC62828), size: 20),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text("Sorry, we don't deliver to $pin from ${st.location?.nameEn ?? 'this location'}.",
+                style: const TextStyle(color: Color(0xFFC62828), fontWeight: FontWeight.w800, fontSize: 13)),
+          ),
+        ]),
+        const SizedBox(height: 2),
+        Padding(
+          padding: const EdgeInsets.only(left: 28),
+          child: Text('மன்னிக்கவும், $pin அஞ்சல் குறியீட்டிற்கு டெலிவரி இல்லை.', style: const TextStyle(color: Color(0xFFC62828), fontSize: 12)),
+        ),
+        const SizedBox(height: 8),
+        Text('We deliver to: ${served.join(', ')}', style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w600)),
+        const SizedBox(height: 6),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: TextButton.icon(
+            onPressed: () => Navigator.push(context, fadeRoute(const LocationSelectScreen(initial: false))),
+            icon: const Icon(Icons.swap_horiz, size: 18),
+            label: const Text('Choose a different location'),
+          ),
+        ),
+      ]),
+    );
+  }
 
   void _next(AppState st) {
     if (!_form.currentState!.validate()) return;
@@ -140,10 +179,14 @@ class _DetailsScreenState extends State<DetailsScreen> {
       ));
     }
     final pin = _pin.text.trim();
-    final match = st.shop!.pincodes.where((p) => p.pincode == pin && p.active);
+    final shop = st.shop!;
     final pinNum = int.tryParse(pin) ?? 0;
     final inTamilNadu = pin.length == 6 && pinNum >= 600001 && pinNum <= 643999;
-    final areaLabel = match.isNotEmpty ? match.first.area : (inTamilNadu ? 'Tamil Nadu' : null);
+    // When the location lists delivery pincodes, only those are accepted. With none listed it is unrestricted.
+    final blocked = shop.limitsDelivery && pin.length == 6 && !shop.deliversTo(pin);
+    final areaLabel = shop.limitsDelivery
+        ? (pin.length == 6 && shop.deliversTo(pin) ? (shop.areaFor(pin) ?? 'We deliver here') : null)
+        : (inTamilNadu ? 'Tamil Nadu' : null);
     return _page(Form(
       key: _form,
       child: ListView(padding: const EdgeInsets.fromLTRB(16, 0, 16, 24), children: [
@@ -198,7 +241,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
               keyboardType: TextInputType.number,
               maxLength: 6,
               onChanged: (_) => setState(() {}),
-              validator: (v) => (v ?? '').length != 6 ? '6 digit pincode' : null,
+              validator: (v) => (v ?? '').length != 6 ? '6 digit pincode' : (shop.deliversTo(v!) ? null : 'We do not deliver to this pincode'),
               decoration: InputDecoration(
                 counterText: '',
                 prefixIcon: const Icon(Icons.local_shipping_outlined),
@@ -207,7 +250,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     : null,
               ),
             ),
-            if (pin.length == 6 && areaLabel == null)
+            if (blocked) _notDelivering(st, pin),
+            if (!shop.limitsDelivery && pin.length == 6 && areaLabel == null)
               const Padding(
                 padding: EdgeInsets.only(top: 6),
                 child: Text('We may not deliver to this pincode — we will confirm on WhatsApp.',
@@ -253,7 +297,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
             flex: 2,
             child: FilledButton.icon(
               style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(54), backgroundColor: AppColors.green),
-              onPressed: () => _next(st),
+              onPressed: blocked ? null : () => _next(st),
               icon: const Icon(Icons.arrow_forward),
               iconAlignment: IconAlignment.end,
               label: const Text('Review Enquiry', style: TextStyle(fontWeight: FontWeight.w800)),

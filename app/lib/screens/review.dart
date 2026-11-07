@@ -24,6 +24,10 @@ class _ReviewScreenState extends State<ReviewScreen> {
       );
 
   Future<void> _send(AppState st, Shop shop) async {
+    if (!shop.deliversTo(st.customer.pincode)) {
+      showSnack(context, "Sorry, we don't deliver to ${st.customer.pincode} from ${st.location?.nameEn ?? 'this location'}. Please change your address or location.");
+      return;
+    }
     final messenger = ScaffoldMessenger.of(context);
     final nav = Navigator.of(context);
     setState(() => _sending = true);

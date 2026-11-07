@@ -134,6 +134,17 @@ class Shop {
   final List<Pincode> pincodes;
   final Map<String, String> categoryIcons;
 
+  /// Pincodes this location delivers to. Empty = the location has not set any, so it is not restricted.
+  List<Pincode> get servedPincodes => pincodes.where((p) => p.active && p.pincode.isNotEmpty).toList();
+  bool get limitsDelivery => servedPincodes.isNotEmpty;
+  bool deliversTo(String pin) => !limitsDelivery || servedPincodes.any((p) => p.pincode == pin.trim());
+  String? areaFor(String pin) {
+    for (final p in servedPincodes) {
+      if (p.pincode == pin.trim()) return p.area.isEmpty ? null : p.area;
+    }
+    return null;
+  }
+
   Shop.fromJson(Map<String, dynamic> j)
       : categoryIcons = {
           for (final entry in (j['category_icons'] as List?) ?? [])

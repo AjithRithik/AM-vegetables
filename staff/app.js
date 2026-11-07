@@ -48,6 +48,7 @@
     upload: '<path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/>',
     refresh: '<path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>',
     image: '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/>',
+    truck: '<rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>',
     receipt: '<path d="M4 2v20l3-2 3 2 3-2 3 2 3-2V2l-3 2-3-2-3 2-3-2z"/><path d="M8 9h8M8 13h8"/>',
     phone: '<path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/>',
     chart: '<path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/>',
@@ -82,6 +83,12 @@
     el('div', { class: 'headacts' }, ...acts));
   const skeleton = (n = 3, h = 140) => el('div', { class: 'cards' }, Array.from({ length: n }, () => el('div', { class: 'skel', style: `height:${h}px` })));
   const emptyState = (icon, text) => el('div', { class: 'empty' }, ico(icon, 34), el('div', null, text));
+  const deliveryLine = (s) => {
+    const pins = (s.pincodes || []).filter((x) => x.active !== false && x.pincode);
+    return pins.length
+      ? kv('truck', 'Delivers to ' + pins.length + ' pincode' + (pins.length > 1 ? 's' : '') + ': ' + pins.slice(0, 6).map((x) => x.pincode).join(', ') + (pins.length > 6 ? '…' : ''))
+      : kv('truck', 'No delivery pincodes set: orders are accepted from any pincode', true);
+  };
   const kv = (icon, text, warn) => el('div', { class: 'kv' + (warn ? ' warn' : '') }, ico(icon, 16), el('span', null, text));
   const stat = (n, label) => el('div', { class: 'stat' }, el('b', null, String(n)), el('small', null, label));
   const tog = (text, checked, fn, disabled) => el('div', { class: 'tog' + (disabled ? ' dis' : '') }, el('span', null, text), sw(checked, fn, disabled));
@@ -1122,6 +1129,7 @@
           !s.address ? el('span', { class: 'pill warn' }, 'No address') : null),
         kv('pin', s.address || 'Address not set', !s.address),
         kv('chat', s.whatsapp ? showPhone(s.whatsapp) : 'WhatsApp number not set', !s.whatsapp),
+        deliveryLine(s),
         kv('clock', s.hours || 'Opening hours not set', !s.hours),
         kv('users', team.length ? team.join(', ') : 'No vendors yet'),
         el('div', { class: 'stats' }, stat(c.selling || 0, 'products selling'), stat(c.priced || 0, 'prices set')),
@@ -1147,6 +1155,7 @@
           !s.whatsapp ? el('span', { class: 'pill warn' }, 'No WhatsApp number') : null),
         kv('pin', s.address || 'Address not set', !s.address),
         kv('chat', s.whatsapp ? 'Orders go to ' + showPhone(s.whatsapp) : 'WhatsApp number not set. Orders have nowhere to go.', !s.whatsapp),
+        deliveryLine(s),
         kv('clock', s.hours || 'Opening hours not set', !s.hours),
         s.phone ? kv('chat', 'Call: ' + s.phone) : null));
   }
@@ -1187,7 +1196,7 @@
         lbl('Address', 'முகவரி'), addr, lbl('Map link'), maps,
         lbl('WhatsApp number for orders', null, 'orders from this location go here'), wa,
         lbl('Call number'), ph, lbl('Opening hours'), hrs),
-      sec('Delivery pincodes', el('p', { class: 'hint' }, 'Customers outside these pincodes are told delivery is unavailable.'), pinBox,
+      sec('Delivery pincodes', el('p', { class: 'hint' }, 'Orders to any other pincode are refused. Leave this empty to accept every pincode.'), pinBox,
         el('button', { class: 'btn small', onclick: () => { pins.push({ pincode: '', area: '', active: true }); drawPins(); } }, '＋ Add pincode')),
       el('div', { class: 'sec' }, el('details', null, el('summary', null, 'Banner & payment note (optional)'),
         lbl('Payment note'), pay, lbl('Banner title (English)'), bt, lbl('Banner title (Tamil)'), btt, lbl('Banner chip'), chip, lbl('Banner text'), body)),
